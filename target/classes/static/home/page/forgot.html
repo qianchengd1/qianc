@@ -1,0 +1,429 @@
+<!-- 密码找回/Retrieve password -->
+<!DOCTYPE html>
+<html lang="en" class="forgot">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title></title>
+    <link rel="stylesheet" href="../layui/css/layui.css" />
+    <link rel="stylesheet" href="../css/diy.css" />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        /* 头部 */
+      }
+      .header {
+        width: 990px;
+        height: 60px;
+        margin: 0 auto;
+        padding: 10px 0;
+      }
+      .header .register {
+        vertical-align: middle;
+        margin-right: 20px;
+      }
+      .header .register-title {
+        display: inline-block;
+        height: 60px;
+        line-height: 60px;
+        font-size: 24px;
+        color: #333;
+      }
+      /* 头部下边 */
+      .header_top {
+        background-color: #fff8f0;
+      }
+      .header_top p {
+        line-height: 40px;
+        text-align: center;
+        margin: 0 auto;
+        font-size: 12px;
+        color: #999999;
+      }
+      .header_top p img {
+        vertical-align: middle;
+        font-size: 12px;
+        margin-right: 5px;
+        margin-top: -4px;
+      }
+      .header_top p a {
+        color: black;
+      }
+      .header_top p a:hover {
+        border-bottom: 1px solid black;
+      }
+
+      /* 整个内容   注册页 */
+      .content {
+        padding: 1% 0;
+        background-color: #f1f1f1;
+      }
+      .content .contion {
+        width: 990px;
+        margin: 0 auto;
+
+        /* background-color: #fff; */
+        /* background: url(img/background.png); */
+      }
+      .content .contion .register {
+        width: 80%;
+
+        margin: 0 auto;
+        text-align: center;
+        background-color: white;
+      }
+      .content .contion .register .register_header {
+        width: 100%;
+        line-height: 55px;
+        text-align: center;
+        /* background-color: #fff8f0; */
+        text-decoration: none;
+        color: gray;
+        font-size: 22px;
+        /* border-bottom: 1px solid #f4f4f4; */
+      }
+      .content .contion .register .register_a::after {
+        clear: both;
+      }
+      .content .contion .register .register_a:hover {
+        color: red;
+      }
+      .content .contion .register .register_content {
+        display: flex;
+        width: 70%;
+        /* height: 38px; */
+        /* line-height: 38px; */
+        text-align: center;
+        margin: 0 auto;
+        margin-top: 30px;
+      }
+      .content .contion .register .register_content:nth-of-type(1) {
+        margin-bottom: -10px;
+      }
+      .content .contion .register .register_content > i {
+        /* display: inline-block; */
+        font-size: 14px;
+        height: 38px;
+        line-height: 38px;
+        width: 20%;
+        float: left;
+        color: gray;
+        font-style: normal;
+      }
+      .content .contion .register .register_content input {
+        border: 1px solid #999999;
+        box-sizing: border-box;
+        flex: 1;
+        height: 38px;
+        line-height: 38px;
+        padding-left: 10px;
+        outline: none;
+      }
+      /* .content .contion .register .register_content select {
+        display: inline-block;
+        flex: 1;
+      } */
+      .content .contion .register_btn {
+        width: 70%;
+        margin: 0 auto;
+        text-align: center;
+        padding: 20px 0;
+      }
+      .footer {
+        width: 845px;
+        margin: 0 auto;
+        text-align: center;
+        color: gray;
+        font-size: 14px;
+        margin-top: 20px;
+      }
+      .footer a {
+        text-decoration: none;
+        color: gray;
+      }
+      .footer p {
+        margin-top: 10px;
+      }
+      .register_content .upload-content {
+        height: auto;
+      }
+      .register_content .enclosure {
+      }
+      .footer {
+        width: 845px;
+        margin: 0 auto;
+        text-align: center;
+        color: gray;
+        font-size: 14px;
+        margin-top: 20px;
+      }
+      .footer a {
+        text-decoration: none;
+        color: gray;
+      }
+      .footer p {
+        margin-top: 10px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="header">
+      <span class="register-title">找回密码</span>
+    </div>
+    <div class="content">
+      <div class="contion">
+        <div class="register">
+          <p class="register_header">找回密码</p>
+          <form class="layui-form" action="">
+            <div class="register_content layui-form-item">
+              <i>用户名</i>
+              <input
+                type="password"
+                name="password"
+                lay-verify="title"
+                autocomplete="off"
+                placeholder="请输入用户名"
+                class="layui-input"
+                id="username"
+              />
+            </div>
+            <div class="register_content layui-form-item">
+              <i>找回方式</i>
+              <select name="interest" lay-filter="aihao">
+                <option value=""></option>
+                <option value="0">手机号</option>
+                <option value="1">邮箱</option>
+              </select>
+            </div>
+            <div id="phone" style="display: none">
+              <div class="register_content layui-form-item">
+                <i>手机号</i>
+                <input
+                  type="text"
+                  name="title"
+                  lay-verify="title"
+                  autocomplete="off"
+                  placeholder="请输入手机号"
+                  class="layui-input"
+                  id="phone"
+                />
+              </div>
+
+              <div class="register_content layui-form-item">
+                <i>验证码</i>
+                <input
+                  type="text"
+                  name="title"
+                  lay-verify="title"
+                  autocomplete="off"
+                  placeholder="验证码"
+                  class="layui-input"
+                  id="codice1"
+                />
+                <button type="button" class="layui-btn" id="verificare1">
+                  发送验证码
+                </button>
+              </div>
+            </div>
+            <div id="email" style="display: none">
+              <div class="register_content layui-form-item">
+                <i>邮箱</i>
+                <input
+                  type="text"
+                  name="title"
+                  lay-verify="title"
+                  autocomplete="off"
+                  placeholder="请输入邮箱"
+                  class="layui-input"
+                />
+              </div>
+              <div class="register_content layui-form-item">
+                <i>验证码</i>
+                <input
+                  type="text"
+                  name="title"
+                  lay-verify="title"
+                  autocomplete="off"
+                  placeholder="验证码"
+                  class="layui-input"
+                  id="codice2"
+                />
+                <button type="button" class="layui-btn" id="verificare2">
+                  发送验证码
+                </button>
+              </div>
+            </div>
+            <div class="register_content layui-form-item">
+              <i>新密码</i>
+              <input
+                type="password"
+                name="title"
+                lay-verify="title"
+                autocomplete="off"
+                placeholder="新密码"
+                class="layui-input"
+                id="password"
+              />
+            </div>
+            <div class="register_content layui-form-item">
+              <i>确认密码</i>
+              <input
+                type="password"
+                name="title"
+                lay-verify="title"
+                autocomplete="off"
+                placeholder="确认密码"
+                class="layui-input"
+                id="confirmPasssword"
+              />
+            </div>
+            <div class="register_btn">
+              <a type="button" class="layui-btn layui-bg-red" href="#" id="btn"
+                >确定</a
+              >
+              <a
+                href="../index.html"
+                type="button"
+                class="layui-btn"
+                id="cancel"
+                >取消</a
+              >
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <footer class="color-F00">
+      <div class="footer_wrap">
+        <div class="footer_2_7_2">
+          　　© Copyright buildnox2024 . All right reserved.
+        </div>
+    </footer>
+  </body>
+  <script src="../js/base.js"></script>
+    <script src="../layui/layui.js"></script>
+    <script src="../js/axios.min.js"></script>
+
+  <script>
+    var BaseUrl = baseUrl();
+    layui.use(["element", "layer", "util"], function () {
+      var element = layui.element,
+        layer = layui.layer,
+        util = layui.util,
+        table = layui.table,
+        form = layui.form,
+        $ = layui.$;
+
+      let token = localStorage.getItem("token") || null;
+      //常规使用 - 普通图片上传
+
+      let from = {
+        email: "",
+        phone: "",
+      };
+      let phone = document.querySelector("#phone");
+      let lable = document.querySelector("#lable");
+      let verificare1 = document.querySelector("#verificare1");
+      let codice1 = document.querySelector("#codice1");
+      let verificare2 = document.querySelector("#verificare2");
+      let codice2 = document.querySelector("#codice2");
+      let dataText;
+      // 下拉框的选择
+      layui.form.on("select", function (data) {
+        if (data.elem[data.elem.selectedIndex].text == "手机号") {
+          phone.style.display = "block";
+          email.style.display = "none";
+        } else if (data.elem[data.elem.selectedIndex].text == "邮箱") {
+          phone.style.display = "none";
+          email.style.display = "block";
+        } else {
+          phone.style.display = "none";
+          email.style.display = "none";
+        }
+        dataText = data.elem[data.elem.selectedIndex].text;
+      });
+
+      verificare1.addEventListener("click", function () {
+        let random = Math.floor(Math.random() * 9999);
+        for (var i = random.length; i < 4; i++) {
+          random = "0" + random;
+        }
+        let code = random.toString();
+        codice1.value = code;
+        from["code"] = codice1.value;
+      });
+
+      verificare2.addEventListener("click", function () {
+        let random = Math.floor(Math.random() * 9999);
+        for (var i = random.length; i < 4; i++) {
+          random = "0" + random;
+        }
+        let code = random.toString();
+        codice2.value = code;
+        from["code"] = codice2.value;
+      });
+
+      // 获取数据
+      let btn = document.querySelector("#btn");
+      let username = document.querySelector("#username");
+      let password = document.querySelector("#password");
+
+      btn.addEventListener("click", async function () {
+        if (username.value == "") {
+          layer.msg("请输入用户名");
+        } else if (password.value == "") {
+          layer.msg("请输入密码");
+        } else if (dataText == "手机号" && codice1.value == "") {
+          layer.msg("请输入验证码");
+        } else if (dataText == "邮箱" && codice2.value == "") {
+          layer.msg("请输入验证码");
+        } else if (confirmPasssword.value != password.value) {
+          layer.msg("两次密码输入不一致");
+        } else {
+          if (dataText == "手机号") {
+            code = codice1.value;
+          } else if (dataText == "邮箱") {
+            code = codice2.value;
+          }
+          from["code"] = code;
+          from["email"] = "";
+          from["username"] = username.value;
+          from["password"] = password.value;
+          from["phone"] = "";
+
+          /* let form2
+        form2 = JSON.stringify(form)  */
+
+          /* {
+          code: code,
+          email: '',
+          username: username.value,
+          password: password.value,
+          phone: ''
+        } */
+          let { data: res } = await axios.post(
+            BaseUrl + "/api/user/forget_password",
+            from,
+            {
+              headers: {
+                "x-auth-token": token,
+                "Content-Type": "application/json",
+              },
+            }
+          );
+          if (res.result) {
+            layer.msg("密码修改成功");
+            setTimeout(function () {
+              window.location.replace("../index.html");
+            }, 1000);
+          } else if (res.error.message) {
+            layer.msg(res.error.message);
+          }
+        }
+      });
+    });
+  </script>
+</html>

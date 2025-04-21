@@ -1,0 +1,503 @@
+<!-- 框架页面 -->
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"/>
+    <meta http-equiv="Pragma" content="no-cache"/>
+    <meta http-equiv="Expires" content="0"/>
+    <title>智慧社区综合管理系统</title>
+    <link rel="stylesheet" href="../layui/css/layui.css">
+    <link rel="stylesheet" href="../css/diy.css">
+</head>
+
+<body class="body">
+<div class="layui-layout layui-layout-admin">
+    <div class="layui-header">
+        <div class="layui-logo layui-hide-xs layui-bg-black" id="echars">
+            <a href="./Home.html" target="main_self_frame" style="color: white;">
+                <i class="layui-icon layui-icon-home"></i>主页 </a>
+        </div>
+        <!-- 头部区域（可配合layui 已有的水平导航） -->
+        <ul class="layui-nav layui-layout-container">
+            <!-- 移动端显示 -->
+            <li class="layui-nav-item layui-show-xs-inline-block layui-hide-sm" lay-header-event="menuLeft">
+                <i class="layui-icon layui-icon-spread-left"></i>
+            </li>
+            <li class="home-h1">
+                <h1>欢迎使用智慧社区综合管理系统</h1>
+            </li>
+        </ul>
+
+        <ul class="layui-nav layui-layout-right" id="hader-right">
+            <li class="layui-nav-item" id="userInfo" style="display: block;">
+
+                <a href="./info.html" target="main_self_frame">个人信息</a></dd>
+                <a href="./change_password.html" target="main_self_frame">修改密码</a></dd>
+
+            </li>
+
+            <li class="layui-nav-item layui-hide layui-show-md-inline-block" style="display:none">
+
+                <div class="color-picker">
+                    <button id="color-input" style="cursor: pointer;">主题</button>
+                    <!-- <input  type="text" value="#000000"> -->
+                    <div class="color-palette">
+                        <ul>
+                            <li class="slides-color"></li>
+                            <li class="top-color"></li>
+                            <li class="body-color"></li>
+                        </ul>
+                    </div>
+                </div>
+            </li>
+                    </ul>
+
+
+        <ul class="layui-nav layui-layout-left">
+        </ul>
+
+    </div>
+
+    <div class="layui-side layui-bg-black">
+        <div class="layui-side-scroll">
+            <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+            <ul class="layui-nav layui-nav-tree" lay-filter="test2" id="uls">
+
+
+
+                <li class="layui-nav-item" id="site" style="display: none;">
+                        <a class="" href="javascript:;">公共管理</a>
+                        <dl class="layui-nav-child">
+                            <dd><a id="slides" href="./slides/table.html" target="main_self_frame">轮播图</a></dd>
+                            <dd><a id="notice" href="./notice/table.html" target="main_self_frame">公告信息</a></dd>
+                                                                                                                                                                    </dl>
+                    </li>
+                
+                <li class="layui-nav-item" id="userManagement" style="display: none;">
+                    <a href="javascript:;">用户管理</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="./user/table.html" target="main_self_frame" id="user">管理员</a></dd>
+                        <dd style="display: none" id="community_users">
+                            <a href="./community_users/table.html" target="main_self_frame">社区用户</a>
+                                </dd>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    </dl>
+                </li>
+
+
+                <li class="layui-nav-item" id="forum_content" style="display: none;">
+                            <a href="javascript:;">论坛管理</a>
+                            <dl class="layui-nav-child">
+                                <dd><a href="./forum/table.html" target="main_self_frame" id="forum"
+                                       style="display: none">论坛</a></dd>
+                                <dd><a href="./forum_type/table.html" target="main_self_frame" id="forum_type"
+                                       style="display: none">论坛分类</a></dd>
+                            </dl>
+                        </li>
+                <li class="layui-nav-item" id="article_content" style="display: none;">
+                            <a href="javascript:;">资讯管理</a>
+                            <dl class="layui-nav-child">
+                                <dd><a href="./article/table.html" target="main_self_frame" id="article"
+                                       style="display: none">文章</a>
+                                </dd>
+                                <dd><a href="./article_type/table.html" target="main_self_frame" id="article_type"
+                                       style="display: none">
+                                    文章分类</a></dd>
+                            </dl>
+                        </li>
+                                    
+                
+                
+
+                
+            </ul>
+        </div>
+    </div>
+
+    <div class="layui-body">
+                <!-- 内容主体区域 -->
+        <iframe name="main_self_frame" frameborder="0" id="demoAdmin" src="./Home.html"
+                style="width: 100%; height: 100%; border-radius: 2px;"></iframe>
+    </div>
+</div>
+
+<script src="../layui/layui.js"></script>
+<script src="../js/index.js"></script>
+<script src="../js/base.js"></script>
+<script src="../js/axios.min.js"></script>
+<script>
+
+    var BaseUrl = baseUrl()
+    let personInfo = JSON.parse(sessionStorage.personInfo)
+    let user_group = personInfo.user_group
+
+                let site = document.querySelector('#site')
+                    async function get_list() {
+
+        // 更多管理请求
+
+        let {data: ren} = await axios.get(BaseUrl + '/api/auth/get_list', {
+            params: {
+                user_group: personInfo.user_group
+            }
+        })
+        var permissions = ren.result.list
+        let list_data = JSON.stringify(permissions)
+        sessionStorage.setItem('list_data', [list_data])
+
+        var tables = ren.result.list;
+                    page_title('/article/table', 'article', tables)
+            page_title('/article_type/table', 'article_type', tables)
+        
+        function $get_power(path) {
+            var list_data = JSON.parse(sessionStorage.list_data)
+            var list = list_data;
+            var obj;
+            for (var i = 0; i < list.length; i++) {
+                var o = list[i];
+                if (o.path === path) {
+                    obj = o;
+                    break;
+                }
+            }
+            return obj;
+        }
+
+        /**
+         * 用户组是否有这个权限
+         * @param {Array} user_group 权限组
+         */
+        function $check_group(user_group) {
+            var list = tables;
+            var bl = false;
+            for (var i = 0; i < user_group.length; i++) {
+                bl = $check_action(user_group[i]);
+                if (bl == true) {
+                    break;
+                }
+            }
+            return bl;
+        }
+
+
+        function $check_action(path1, action = "get") {
+            var o = $get_power(path1);
+            if (o && o[action] != 0 && o[action] != false) {
+                return true;
+            }
+            return false;
+        }
+
+        var lt = [];
+        for (var i = 0; i < tables.length; i++) {
+            var o = tables[i];
+            if (o.path.indexOf("/table") !== -1) {
+                let list = ["exam", "article", "article_type" , "comment", "forum", "forum_type","notice"];
+                                                                            list.push("community_users");
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                if (list.indexOf(o.table_name) === -1) {
+                    if ($check_action(o.path)) {
+                        lt.push(o);
+                    }
+                }
+            }
+        }
+
+        let uls = document.querySelector('#uls')
+
+        for (var i = 0; i <= lt.length - 1; i++) {
+
+
+            let li = document.createElement('li')
+            li.className = 'layui-nav-item'
+            li.id = 'more'
+            let a = document.createElement('a')
+            li.appendChild(a);
+            a.innerHTML = lt[i].page_title
+            a.href = "." + lt[i].path + ".html"
+            a.setAttribute("target", 'main_self_frame')
+            uls.appendChild(li)
+
+        }
+
+        let userManagement = document.querySelector('#userManagement')
+        let user = document.querySelector('#user')
+
+                let more = document.querySelectorAll('#more')
+
+        
+        if (personInfo.user_group == '管理员') {
+                            site.style.display = 'block'
+            
+            userManagement.style.display = 'block'
+            
+            
+            
+                            forum_content.style.display = 'block'
+            
+                            article_content.style.display = 'block'
+            
+                        more.forEach((item) => {
+                item.style.display = 'block'
+            })
+        } else {
+                                                more.forEach((item) => {
+                item.style.display = 'block'
+            })
+        }
+        if(user_group == '管理员' || $check_group(['/user/table','/user_group/table','/auth/table'                            ,'/community_users/table'
+                                                                                                                                                                                                                                                        ])){
+            userManagement.style.display = 'block'
+
+                    }
+        if(user_group !== '管理员'){
+            user.style.display = "none"
+
+                    }
+                                    let community_users = document.querySelector('#community_users')
+                if(user_group == '管理员' || $check_action('/community_users/table')){
+                        community_users.style.display = "block"
+                }else {
+                        community_users.style.display = "none"
+                }
+                                                                                                                                                                                                                                                
+        // 权限判断
+        /**
+         * 获取路径对应操作权限 鉴权
+         * @param {String} action 操作名
+         */
+        function $check_action(path1, action = "get") {
+            var o = $get_power(path1);
+            if (o && o[action] != 0 && o[action] != false) {
+                return true;
+            }
+            return false;
+        }
+
+        /**
+         * 获取页面标题
+         * @param {String} path 路由路径
+         */
+        function $page_title(path) {
+            var o = $get_power(path);
+            if (o) {
+                return o.page_title || o.mod_name;
+            }
+            return "";
+        }
+        
+                                                        let forum = document.querySelector("#forum")
+                    let forum_type = document.querySelector("#forum_type")
+                    if (user_group == "管理员" || $check_action('/forum/table')) {
+                        forum.style.display = "block"
+                        if ($page_title('/forum/table')) {
+                            forum.innerHTML = $page_title('/forum/table')
+                        }
+                    }
+                    if (user_group == "管理员" || $check_action('/forum_type/table')) {
+                        forum_type.style.display = "block"
+                        if ($page_title('/forum_type/table')) {
+                            forum_type.innerHTML = $page_title('/forum_type/table')
+                        }
+                    }
+                                                    let article = document.querySelector("#article")
+                    let article_type = document.querySelector("#article_type")
+                    if (user_group == "管理员" || $check_action('/article/table')) {
+                        article.style.display = "block"
+                        if ($page_title('/article/table')) {
+                            article.innerHTML = $page_title('/article/table')
+                        }
+                    }
+                    if (user_group == "管理员" || $check_action('/article_type/table')) {
+                        article_type.style.display = "block"
+                        if ($page_title('/article_type/table')) {
+                            article_type.innerHTML = $page_title('/article_type/table')
+                        }
+                    }
+                                                    
+    
+
+        
+        /**
+         * 获取权限
+         * @param {String} path 路由路径
+         */
+        function $get_power(path) {
+            var list_data = JSON.parse(sessionStorage.list_data)
+            var list = list_data;
+            var obj;
+            for (var i = 0; i < list.length; i++) {
+                var o = list[i];
+                if (o.path === path) {
+                    obj = o;
+                    break;
+                }
+            }
+            return obj;
+        }
+
+        var path1
+
+        function getpath() {
+            var list_data = JSON.parse(sessionStorage.list_data)
+            for (var i = 0; i < list_data.length; i++) {
+                var o = list_data[i];
+                if (o.path === "/order/table") {
+
+                    path1 = o.path
+                    $get_power(o.path)
+                }
+                if (o.path === "/goods_type/table") {
+
+                    path1 = o.path
+                    $get_power(o.path)
+                }
+                                if (o.path === "/logistics_delivery/table") {
+
+                    path1 = o.path
+                    $get_power(o.path)
+                }
+                                
+            }
+        }
+
+        getpath()
+
+        layui.element.render('nav', 'test2')
+        return lt
+    }
+
+    setTimeout(() => {
+        let li = document.createElement('li')
+        li.className = 'layui-nav-item'
+        li.id = 'quit'
+        let a = document.createElement('a')
+        a.innerHTML = '退出'
+        a.style.cursor = "pointer"
+
+        li.appendChild(a);
+        uls.appendChild(li)
+
+        layui.element.render('nav', 'test2')
+    }, 200)
+
+    layui.use(['element', 'layer', 'util'], function () {
+        var element = layui.element
+                , layer = layui.layer
+                , util = layui.util
+                , $ = layui.$;
+
+        element.on("nav(test2)", function () {
+            if ($(this).context.innerHTML == '退出') {
+                let {data: res} = axios.get(BaseUrl + '/api/user/quit',{
+                    headers: {
+                        "x-auth-token": sessionStorage.token
+                    }
+                })
+                window.location.replace("../index.html")
+                sessionStorage.clear()
+            }
+        });
+    });
+
+    get_list()
+
+    let websiteHomePage = document.querySelector('#websiteHomePage')
+    if (websiteHomePage){
+        websiteHomePage.onclick = function () {
+            if (sessionStorage && sessionStorage.token){
+                location.href = window.location.origin+window.location.pathname.replace("/admin/dist","/home/dist")+"?token="+encodeURIComponent(sessionStorage.token);
+            }else {
+                location.href = window.location.origin+window.location.pathname.replace("/admin/dist","/home/dist")
+            }
+        }
+    }
+</script>
+<script>
+    // 获取元素
+    let colorPalette =  $(".color-palette")
+    let colorInput = $("#color-input")
+    // 目标元素
+    let slides = $(".layui-bg-black")
+    let slides_s = $(".layui-side-scroll")
+    let slide = $(".layui-nav-tree")
+    let hader = $(".layui-header")
+    let bodycolor = $(".layui-body")
+
+    let slides_color = $(".slides-color")
+    let top_color = $(".top-color")
+    let body_color = $(".body-color")
+
+
+    // 创建颜色数组
+
+    const colors = [
+
+        "#c0ebd7",
+        "#f2be45",
+        "#bddd22",
+        "#424c50",
+        "#065279",
+        "#cca4e3",
+    ];
+    const colort = [
+
+        "#e0f0e9",
+        "#ffc64b",
+        "#c9dd22",
+        "#50616d",
+        "#177cb0",
+        "#b0a4e3",
+
+    ]
+    const colorb = [
+
+        "#e0eee8",
+        "#ffc773",
+        "#bce672",
+        "#758a99",
+        "#1685a9",
+        "#edd1d8",
+
+    ]
+    // 遍历颜色数组，渲染颜色方块
+
+    // 监听input的点击事件，显示/隐藏颜色板
+    colorInput.addEventListener("click", () => {
+        colorPalette.style.display = colorPalette.style.display === "none" ? "block" : "none"
+    });
+
+    /*
+    colors数组类型,
+    目标dom元素colorval，colorval2，colorval3
+
+    */
+    const createColorElements = (colors, colorval, targetElement, styleProp ,colorval2,colorval3) => {
+        colors.forEach(color => {
+            const colorElement = document.createElement("div");
+            colorElement.className = "color";
+            colorElement.style.backgroundColor = color;
+            colorElement.addEventListener("click", () => {
+                colorInput.value = color;
+                colorval.style.backgroundColor = colorInput.value;
+                colorval2.style.backgroundColor = colorInput.value;
+                colorval3.style.backgroundColor = colorInput.value;
+                colorPalette.style.display = "none";
+            });
+            targetElement.appendChild(colorElement);
+        });
+    };
+    //侧边栏颜色调用
+    createColorElements(colors,slide,slides_color,colorInput,slides_s,slides);
+    //导航栏颜色调用
+    createColorElements(colort,hader,top_color,colorInput);
+    //内容主题颜色调用
+    createColorElements(colorb,bodycolor,body_color,colorInput);
+
+
+
+</script>
+    </body>
+
+</html>

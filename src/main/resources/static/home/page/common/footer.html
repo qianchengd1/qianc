@@ -1,0 +1,20 @@
+<footer class="color-F00">
+      <div class="footer_wrap">
+            <div class="footer_2_7_2">
+            　　© Copyright buildnox2024 . All right reserved.
+            </div>
+            <div class="footer_2_7_1">
+            <p id="link_list_box">
+            友情链接:
+            <script id="links" type="text/html">
+                  {{# layui.each(d.list, function(index, item){ }}
+                  <a href="{{=item.url}}">
+                   <img src="{{=BaseUrl}}{{=item.img}}" />
+                  <span>{{=item.name}} |</span>
+                  </a>
+                  {{# }); }} {{# if(d.list.length === 0){ }} 无 {{# } }}
+            </script>
+            </p>
+            </div>
+      </div>
+</footer>

@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title></title>
+    <link href="../../layui/css/layui.css" rel="stylesheet"/>
+    <link href="../../css/diy.css" rel="stylesheet"/>
+    <style>
+        body {
+            font: 16px/28px "Microsoft yahei";
+        }
+
+        .description {
+            margin-bottom: 1rem;
+            color: #292828;
+        }
+
+        .article_content img {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+
+<body>
+<div class="container">
+<script type="text/javascript" src="../../js/header.js"></script>
+<div class="article_detail" id="website_announcement_detail_box"></div>
+<div class="article_detail" id="t_detail">
+    <div class="source_time">
+        时间:　
+        <span id="create_time" class="forum_create_time"></span>
+    </div>
+    <!-- <hr>水平分割线 -->
+    <hr/>
+    <div class="label_text">
+        <div class="operation_interface">
+            <div class="operation_interface_left">
+                <span class="hits_sum">点击数：<span id="hits_sum"></span></span>
+                <span class="praise_len_sum">点赞数：<span id="praise_len_sum"></span></span>
+            </div>
+            <div class="operation_interface_right">
+                <button class="layui-btn layui-btn-sm layui-btn-primary" id="add_praise">
+                    <i class="layui-icon layui-icon-heart layui-font-12" id="detail_praise"></i>
+                    <span>点赞</span>
+                </button>
+            </div>
+        </div>
+    </div>
+            <div class="description" id="title_description"></div>
+                <div class="description" id="publisher_description"></div>
+                <div class="description" id="release_time_description"></div>
+                        <div class="description" id="lower_multi_test_description"></div>
+    </div>
+<div class="article_detail comment_editor" id="t_comment_list">
+    <p class="comment_editor_title">评论区</p>
+    <div class="comment_editor" id="t_comment"></div>
+    <!-- 分页器--开始-->
+    <div id="cont" class="layui-row layui-col-space30"></div>
+    <div id="pageSum"></div>
+    <!-- 分页器--结束 -->
+    <form
+            class="layui-form"
+            action=""
+            lay-filter="addCommentForm"
+            id="addCommentForm"
+    >
+        <p class="replyToSb">
+            对<span id="replyToSbName">XX</span>回复
+            <button
+                    class="layui-btn layui-btn-sm layui-btn-primary"
+                    id="resetReplySb"
+            >
+                重置回复人
+            </button>
+        </p>
+        <div class="layui-form-item">
+        <textarea
+                class="layui-textarea"
+                id="demo"
+                placeholder="请输入内容"
+                style="display: none"
+                name="demo"
+                autocomplete="off"
+        ></textarea>
+        </div>
+        <div class="layui-form-item publish_comment">
+            <button
+                    type="button"
+                    class="layui-btn"
+                    data-type="text"
+                    id="fileNotifySubmit"
+            >
+                发 表
+            </button>
+        </div>
+    </form>
+</div>
+</div>
+ </div>
+<script type="text/javascript" src="../../js/footer.js"></script>
+</body>
+<script src="../../js/base.js"></script>
+<script src="../../js/jquery.2.1.1.min.js"></script>
+<script src="../../layui/layui.js"></script>
+<script src="../../js/axios.min.js"></script>
+<script src="../../js/permissionSet.js"></script>
+<script src="../../js/common.js"></script>
+
+<!--富文本编辑器-->
+<script>
+    layui.use(["layedit", "form", "laypage", "jquery"], function () {
+        var layedit = layui.layedit,
+                laypage = layui.laypage,
+                $ = layui.jquery;
+        // 获取地址栏参数
+        let website_announcement_id = $getUrlParams().website_announcement_id;
+
+        let avatar;
+         if (token) {
+            user_id = JSON.parse(sessionStorage.personInfo).user_id;
+            avatar = JSON.parse(sessionStorage.personInfo).avatar;
+            nickname = JSON.parse(sessionStorage.personInfo).nickname;
+        }
+       
+        // 详情区域显示与否
+        check_action("/website_announcement/details", "get", "website_announcement_detail_box");
+
+
+        // 获取网站公告详情
+        let website_announcement_detail = {};
+
+        async function get_website_announcement_detail() {
+            let { data: res } = await axios.get(
+                    BaseUrl + "/api/website_announcement/get_obj?website_announcement_id=" + website_announcement_id
+            );
+            if (res.result && res.result.obj) {
+                website_announcement_detail = res.result.obj;
+                
+                $("#create_time").html( toTime(website_announcement_detail['create_time'],"yyyy-MM-dd hh:mm:ss"))
+                $("#hits_sum").html(website_announcement_detail['hits']);
+                $("#praise_len_sum").html(website_announcement_detail['praise_len']);
+                    $("#title_description").html(标题+":"+website_announcement_detail['title']);
+                        $("#publisher_description").html(发布人+":"+website_announcement_detail['publisher']);
+                        $("#release_time_description").html(发布时间+":"+website_announcement_detail['release_time']);
+                                $("#lower_multi_test_description").html(下多测试+":"+website_announcement_detail['lower_multi_test']);
+                    await get_obj_after(res);
+            }
+        }
+        get_website_announcement_detail();
+
+        // 评论区显示与否
+        check_action("/comment/list", "get", "t_comment_list");
+        let form_comment = {
+            content: "",
+            source_table: "website_announcement",
+            source_field: "website_announcement_id",
+            source_id: 0,
+            reply_to_id: 0,
+        };
+
+
+        let list_comment_list = [];
+        let pages = 1;
+        let count_pages = 0;
+
+        /**
+         * 获取评论
+         * @param { Object } obj 文章对象
+         * @param { Number } page 分页数
+         * @param { Number } size 评论显示条数
+         */
+        async function get_comment(page = 1, size = 5) {
+            let { data: res } = await axios.get(BaseUrl + `/api/comment/get_list`, {
+                params: {
+                    source_table: "website_announcement",
+                    source_field: "website_announcement_id",
+                    source_id: website_announcement_id,
+                    page,
+                    size,
+                    reply_to_id: "0",
+                    orderby: "create_time desc",
+                },
+            });
+            if (res.result) {
+                var list_comment = res.result.list;
+                list_comment.map((o) => {
+                    o.list_reply = [];
+                });
+                add_reply(list_comment);
+
+                count_pages = res.result.count;
+                // 分页---总页数低于页码总数
+                laypage.render({
+                    elem: "pageSum",
+                    curr: pages,
+                    count: Number(count_pages), //数据总数
+                    limit: 5,
+                    layout: ["prev", "page", "next"],
+                    jump: function (obj, first) {
+                        // 首次不执行
+                        if (!first) {
+                            // 点击其他页码跳转
+                            pages = obj.curr;
+                            get_comment(obj.curr);
+                        }
+                    },
+                });
+            }
+        }
+
+        /**
+         * @param { Array } list 评论列表
+         * 添加回复到评论列表
+         */
+        async function add_reply(list) {
+            list_comment_list = list;
+            for (let idx = 0; idx < list.length; idx++) {
+                const obj = list[idx];
+                let { data: res } = await axios.get(
+                        BaseUrl + `/api/comment/get_list`,
+                        {
+                            params: {
+                                source_table: "website_announcement",
+                                source_field: "website_announcement_id",
+                                source_id: website_announcement_id,
+                                orderby: "create_time desc",
+                                reply_to_id: obj.comment_id,
+                            },
+                        }
+                );
+                if (res.result) {
+                    list_comment_list[idx].list_reply = list;
+                    obj.list_reply = res.result.list;
+                }
+            }
+            //  渲染评论列表
+            let t_comment = document.getElementById("t_comment");
+            t_comment.innerHTML = "";
+            var objecthtmls = "";
+            for (let idx = 0; idx < list_comment_list.length; idx++) {
+                const item = list_comment_list[idx];
+                let childItem = item.list_reply;
+                objecthtmls += `<div class="comment_area">
+                  <div class="comment_area_wrap">
+                    <div class="comment_area_left">
+                      <img src="${BaseUrl}${item.avatar}" />
+                    </div>
+                    <div class="comment_area_right">
+                      <p class="title">
+                        <span>${item.nickname}</span>
+                        <span class="time">${item.create_time}</span>
+                      </p>
+                      <p class="record">
+                        <span>${item.content}</span>
+                        <button class="layui-btn layui-btn-sm layui-btn-primary"  id='responden' comment_id='${item.comment_id}'>
+                          回复
+                        </button>
+                      </p>
+                    </div>
+                  </div>`;
+                // console.log(childItem.length)
+                if (childItem.length) {
+                    for (let idxChild = 0; idxChild < childItem.length; idxChild++) {
+                        let childItemObj = childItem[idxChild];
+                        objecthtmls += `<div class="comment_area_child comment_area_wrap">
+                      <div class="comment_area_left">
+                        <img src="${BaseUrl}${childItemObj.avatar}" />
+                      </div>
+                      <div class="comment_area_right">
+                        <p class="title">
+                          <span>${childItemObj.nickname}</span>
+                          <span class="time">${childItemObj.create_time}</span>
+                        </p>
+                        <p class="record">
+                          <span>${childItemObj.content}</span>
+                        </p>
+                      </div>
+                    </div>`;
+                    }
+                }
+            }
+            t_comment.innerHTML = objecthtmls;
+        }
+        // 获取回复人
+        $("#t_comment").on("click", "#responden", function () {
+            var comment_id = $(this).attr("comment_id");
+            console.log(comment_id);
+            let replyToSbName = document.getElementById("replyToSbName");
+            form_comment.reply_to_id = comment_id;
+            var reply_to_id = form_comment.reply_to_id;
+            list_comment_list.map((o) => {
+                if (o.comment_id == reply_to_id) {
+                    console.log(o.nickname);
+                    replyToSbName.innerHTML = o.nickname;
+                }
+            });
+        });
+        setTimeout(() => {
+            get_comment();
+        }, 1000);
+        /**
+         * 获取对象之后
+         * @param {Object} json 结果对象
+         */
+        async function get_obj_after(json) {
+            let obj = json.result.obj;
+                await add_hits(obj)
+                await get_comment();
+                form_comment.source_id = obj.website_announcement_id;
+                get_praise();
+        };
+        // 添加访问量
+        async function add_hits(obj) {
+            let {data: res} = await axios.post(
+                    BaseUrl + "/api/website_announcement/set?website_announcement_id="+obj.website_announcement_id,
+                    {hits: parseInt(obj.hits) + 1}
+            );
+            if (res) {
+                hits = parseInt(obj.hits) + 1;
+            }
+        }
+        let check_praised = false; // 是否已点赞
+        // 获取点赞
+        async function get_praise() {
+            let { data: res } = await axios.get(BaseUrl + `/api/praise/count`, {
+                params: {
+                    source_table: "website_announcement",
+                    source_field: "website_announcement_id",
+                    source_id: website_announcement_id,
+                    user_id: user_id,
+                },
+            });
+            if (res.result || res.result === 0) {
+                check_praised = res.result ? true : false;
+                if (check_praised) {
+                    $("#detail_praise")
+                            .removeClass("layui-icon-heart")
+                            .addClass("layui-icon-heart-fill");
+                } else {
+                    $("#detail_praise")
+                            .removeClass("layui-icon-heart-fill")
+                            .addClass("layui-icon-heart");
+                }
+                console.log("点赞状态：", check_praised);
+            } else if (res.error) {
+                layer.msg(res.error.message);
+                console.error(res.error);
+            }
+        }
+        // 添加点赞
+        $("#add_praise").click(function () {
+            add_praise_opt();
+        });
+        // 添加点赞
+        async function add_praise_opt() {
+            if (!user_id) {
+                window.top.location.replace("../../login.html");
+                return;
+            }
+            var body = {
+                source_table: "website_announcement",
+                source_field: "website_announcement_id",
+                source_id: website_announcement_id,
+                user_id: user_id,
+            };
+            let praise_len = parseInt(website_announcement_detail.praise_len);
+            if (!check_praised) {
+                check_praised = true;
+                let { data: res } = await axios.post(
+                        BaseUrl + `/api/praise/add`,
+                        body
+                );
+                if (res.result) {
+                    praise_len += 1;
+                    let praise_len_new = praise_len;
+                    let { data: res } = await axios.post(
+                            BaseUrl + "/api/website_announcement/set?website_announcement_id="+website_announcement_id,
+                            {"praise_len":praise_len_new}
+                    );
+                    if (res.result) {
+                        $("#detail_praise")
+                                .removeClass("layui-icon-heart")
+                                .addClass("layui-icon-heart-fill");
+                        console.log("添加点赞数状态：", res.result);
+                    } else if (res.error) {
+                        console.error(res.error);
+                    }
+                    layer.msg("点赞成功");
+                } else if (res.error) {
+                    $("#detail_praise")
+                            .removeClass("layui-icon-heart-fill")
+                            .addClass("layui-icon-heart");
+
+                    layer.msg(res.error.message);
+                    console.error(res.error);
+                }
+            } else {
+                check_praised = false;
+                let { data: res } = await axios.get(BaseUrl + `/api/praise/del`, {
+                    params: {
+                        source_table: "website_announcement",
+                        source_field: "website_announcement_id",
+                        source_id: website_announcement_id,
+                        user_id,
+                    },
+                });
+                if (res.result) {
+                    praise_len -= 1;
+                    let praise_len_new = praise_len;
+                    let { data: praiseAdd } = await axios.post(
+                            BaseUrl + "/api/website_announcement/set?website_announcement_id="+website_announcement_id,
+                            {"praise_len":praise_len_new}
+                    );
+                    if (praiseAdd.result) {
+                        console.log("取消点赞数状态：", praiseAdd.result);
+                    } else if (praiseAdd.error) {
+                        console.error(praiseAdd.error);
+                    }
+                    layer.msg("取消点赞");
+                } else if (res.error) {
+                    layer.msg(res.error.message);
+                    console.error(res.error);
+                }
+            }
+        }
+        layui.layedit.set({
+            uploadImage: {
+                url: BaseUrl + "/api/comment/upload", //接口url
+                type: "post", //默认post
+            },
+        });
+
+
+        var demo = layui.layedit.build("demo", {
+            tool: [
+                "strong", //加粗
+                "italic", //斜体
+                "underline", //下划线
+                "del", //删除/Del线
+                "|", //分割线
+                "left", //左对齐
+                "center", //居中对齐
+                "right", //右对齐
+                "link", //超链接
+                "unlink", //清除链接
+                //"face", //表情
+                //"image", //插入图片
+                //"help", //帮助
+            ],
+        });
+        layedit.sync(demo);
+
+        let postUrl;
+        /**
+         * 发表评论
+         */
+        async function publish() {
+            if (!user_id) {
+                window.top.location.replace("../../login.html");
+                return;
+            }
+            form_comment.source_id = website_announcement_id;
+            form_comment["content"] = layui.layedit.getContent(demo);
+            var form = form_comment;
+            form = Object.assign(form, {
+                user_id: user_id,
+                avatar: avatar,
+                nickname: nickname,
+            });
+            if (!form.content) {
+                layer.msg("输入内容不能为空");
+                return;
+            }
+            var post_url = postUrl;
+            if (!post_url) {
+                post_url = "/api/comment/add";
+            }
+            let { data: res } = await axios.post(BaseUrl + post_url, form, {
+                headers: {
+                    "x-auth-token": token,
+                    "Content-Type": "application/json",
+                },
+            });
+            let returnContent = "";
+            if (res.result) {
+                //layedit.setContent(demo, returnContent);
+                window.location.reload();
+                $("#addCommentForm")[0].reset();
+                layui.form.render();
+                form_comment.content = "";
+            } else if (res.error) {
+                layer.msg(res.error.message);
+            }
+        }
+        $("#fileNotifySubmit").on("click", function () {
+            // layedit.sync(demo);
+            publish();
+        });
+    });
+</script>
+</html>

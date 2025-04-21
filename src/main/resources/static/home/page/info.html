@@ -1,0 +1,203 @@
+<!-- 个人信息 -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title></title>
+  <link rel="stylesheet" href="../layui/css/layui.css">
+  <link rel="stylesheet" href="../css/diy.css">
+  
+<style>
+  #demo1 {
+    width: 100px;
+    height: 100px;
+  }
+</style>
+
+</head>
+
+<body>
+  <div class="container">
+    <script type="text/javascript" src="../js/header.js"></script>
+    <div class="list_title"><p class="list_title_text">我的账户</p></div>
+  <article class="sign_in">
+    <div class="warp userInfo">
+      <div class="layui-container">
+        <div class="layui-row">
+          <form class="layui-form" action="">
+            <!-- 上传图片开始 -->
+            <div class="layui-form-item">
+              <div class="layui-upload">
+                <label class="layui-form-label">头像</label>
+                <div class="layui-upload-list layui-input-block">
+                  <img class="layui-upload-img" id="demo1">
+                  <p id="demoText"></p>
+                  </div>
+                <div style="width: 95px;" class="layui-upload-list layui-input-block">
+                  <div class="layui-progress layui-progress-big" lay-showpercent="yes" lay-filter="demo">
+                    <div class="layui-progress-bar" lay-percent=""></div>
+                  </div>
+                </div>
+              </div>
+              <div style="margin-top: 10px;"></div>
+            </div>
+            <!-- 上传图片结束 -->
+            <div class="layui-form-item">
+              <label class="layui-form-label">昵称</label>
+              <div class="layui-input-block">
+                <input type="text" name="title" lay-verify="title" autocomplete="off" placeholder="" class="layui-input"
+                  id="nickname">
+              </div>
+            </div>
+          </form>
+          <div class="account-btn-container">
+            <button type="button" class="layui-btn"  id='sign_out_btn' onclick='sign_out_btn()'>退出登录</button>
+            <a type="button"  href='../../change_password.html' class="layui-btn"  >修改密码</a>
+            <button type="button" class="layui-btn" id="submit">确认</button>
+            <button type="button" class="layui-btn" id="test1">上传图片</button>
+          
+          </div>
+        </div>
+      </div>
+    </div>
+  </article>
+</div>
+  <script type="text/javascript" src="../js/footer.js"></script>
+  </body>
+
+  <script src="../js/base.js"></script>
+  <script src="../js/jquery.2.1.1.min.js"></script>
+  <script src="../layui/layui.js"></script>
+  <script src="../js/axios.min.js"></script>
+  <script src="../js/permissionSet.js"></script>
+  <script src="../js/common.js"></script>
+<script>
+  var BaseUrl = baseUrl()
+  layui.use(['upload', 'element', 'layer'], function () {
+    var $ = layui.jquery
+      , upload = layui.upload
+      , element = layui.element
+      , layer = layui.layer;
+
+    let from = {
+      avatar: "",
+      nickname: "",
+      user_id: 1,
+    }
+   
+    // 拿到本地存储的token
+    let token = sessionStorage.token
+   
+    //常规使用 - 普通图片上传
+    //常规使用 - 普通图片上传
+    var uploadInst = upload.render({
+      elem: '#test1'
+      , url: BaseUrl+'/api/user/upload' //此处用的是第三方的 http 请求演示，实际使用时改成您自己的上传接口即可。
+      , headers: {
+        'x-auth-token': token
+      }
+      , before: function (obj) {
+        //预读本地文件示例，不支持ie8
+        obj.preview(function (index, file, result) {
+          $('#demo1').attr('src', result); //图片链接（base64）
+        });
+
+        element.progress('demo', '0%'); //进度条复位
+        layer.msg('上传中', { icon: 16, time: 0 });
+      }
+      , done: function (res) {
+        //如果上传失败
+        if (res.code > 0) {
+          return layer.msg('上传失败');
+        }
+        //上传成功的一些操作
+        //……
+        from.avatar = res.result.url
+        console.log(res.result.url)
+        $('#demoText').html(''); //置空上传失败的状态
+      }
+      , error: function () {
+        //演示失败状态，并实现重传
+        var demoText = $('#demoText');
+        demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-xs demo-reload">重试</a>');
+        demoText.find('.demo-reload').on('click', function () {
+          uploadInst.upload();
+        });
+      }
+      //进度条
+      , progress: function (n, elem, e) {
+        element.progress('demo', n + '%'); //可配合 layui 进度条元素使用
+        if (n == 100) {
+          layer.msg('上传完毕', { icon: 1 });
+        }
+      }
+    });
+    let obj = JSON.parse(sessionStorage.getItem('personInfo'))
+    if(obj){
+      from.avatar = obj.avatar
+      from.nickname = obj.nickname
+    }
+   
+
+   console.log(from)
+    let demo1 = document.querySelector('#demo1')
+    demo1.src = BaseUrl + obj.avatar
+    let nickname = document.querySelector('#nickname')
+    nickname.value=obj.nickname
+
+    let submit = document.querySelector('#submit')
+
+    /*
+    avatar: '/api/upload/bug.jpg',
+          email: '3527960549@qq.com',
+          nickname: "admin",
+          phone: '15170844121',
+          user_id: 1,
+          username: 'admin'
+    */
+
+    // 测试确认/Confirm
+    submit.onclick = async function () {
+      from.nickname = nickname.value
+      from.user_id = obj.user_id
+
+
+      let { data: res } = await axios.post(BaseUrl+'/api/user/set?user_id=' + obj.user_id, from, {
+        headers: {
+          'x-auth-token': token,
+          'Content-Type': 'application/json'
+        }
+      })
+      if (from.avatar == obj.avatar && res.result == 1) {
+        layer.msg('确认/Confirm成功');
+        setTimeout(function () {
+          window.history.go(-1)
+        }, 1000)
+      } else if (from.avatar !== obj.avatar && res.result == 1) {
+        layer.msg('确认/Confirm成功,头像已更新，请退出重进后查看')
+        setTimeout(function () {
+          window.history.go(-1)
+        }, 2000)
+      }
+    }
+  
+  })
+ // 退出登录
+ 
+  function sign_out_btn(){
+    sign_out()
+  }
+  async function sign_out(url) {
+    let { data: ren } = await axios.get(BaseUrl + "/api/user/quit", {
+      params: {},
+    });
+    sessionStorage.clear();
+    window.location.replace('../index.html');
+  };
+
+</script>
+
+</html>

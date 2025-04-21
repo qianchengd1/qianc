@@ -1,0 +1,22 @@
+<div class="layui-col-md3 layui-col-sm3">
+    <div class="hot-goods-box">
+      <a href="javascript:;">
+        <img src="../img/1-sy_03.png" />
+      </a>
+      <a href="javascript:;">
+        <div class="cmdlist-text">
+          <p class="info">11111  <i class="layui-icon layui-icon-cart cartIcon" ></i></p>
+          <div class="price">
+            <b>￥11</b>
+            <p>
+              ¥
+              <del>130</del>
+            </p>
+            <span class="flow">
+              <i class="layui-icon layui-icon-rate"></i>
+              433
+            </span>
+          </div>
+        </div>
+      </a>
+    </div>

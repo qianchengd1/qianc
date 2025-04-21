@@ -1,0 +1,12 @@
+.layui-logo{
+    width: 235px !important;
+}
+.layui-side li{
+    width: 235px !important;
+}
+.layui-layout-body, .layui-side, .layui-side-scroll {
+    padding-right: 35px;
+}
+.layui-laypage-count::before{
+    content: '合计';
+}

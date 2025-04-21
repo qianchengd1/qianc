@@ -1,0 +1,164 @@
+* {
+    margin: 0;
+    padding: 0;
+   
+    /* 头部 */
+  }
+  html,body{
+    height:100%;
+    background-color: #fff!important;
+  }
+  .header {
+    width: 990px;
+    height: 60px;
+    margin: 0 auto;
+    padding: 10px 0;
+    background-color: #fff;
+  }
+  .header .register {
+    vertical-align: middle;
+    margin-right: 20px;
+  }
+  .header .register-title {
+    display: inline-block;
+    font-size: 24px;
+    color: #333;
+  }
+  /* 头部下边 */
+  .header_top {
+    background-color: #fff;
+  }
+  .header_top p {
+    line-height: 40px;
+    text-align: center;
+    margin: 0 auto;
+    font-size: 12px;
+    color: #999999;
+  }
+  .header_top p img {
+    vertical-align: middle;
+    font-size: 12px;
+    margin-right: 5px;
+    margin-top: -4px;
+  }
+  .header_top p a {
+    color: black;
+  }
+  .header_top p a:hover {
+    border-bottom: 1px solid black;
+  }
+
+  /* 整个内容   注册页 */
+  .content {
+    padding-top:40px;
+    height:calc(100% - 100px);
+    background: url(../../img/body_bg.jpg); 
+    background-repeat:none;
+    background-size: 100% 100%;
+   background-origin: padding-box;
+   background-clip: border-box;
+  }
+  .content .contion {
+    width: 990px;
+    margin: 0 auto;
+    /* background-color: #fff; */
+    
+  }
+  .content .contion .register {
+    width: 80%;
+
+    margin: 0 auto;
+    text-align: center;
+    background-color: white;
+  }
+  .content .contion .register .register_header {
+    width: 100%;
+    line-height: 55px;
+    text-align: center;
+    /* background-color: #fff8f0; */
+    text-decoration: none;
+    color: gray;
+    font-size: 22px;
+    /* border-bottom: 1px solid #f4f4f4; */
+  }
+  .content .contion .register .register_a::after {
+    clear: both;
+  }
+  .content .contion .register .register_a:hover {
+    color: red;
+  }
+  .content .contion .register .register_content {
+    display: flex;
+    width: 70%;
+    /* height: 38px; */
+    /* line-height: 38px; */
+    text-align: center;
+    margin: 0 auto;
+    margin-top: 30px;
+  }
+  .content .contion .register .register_content:nth-of-type(1) {
+    margin-bottom: -10px;
+  }
+  .content .contion .register .register_content>i {
+    /* display: inline-block; */
+    font-size: 14px;
+    height: 38px;
+    line-height: 38px;
+    width: 20%;
+    float: left;
+    color: gray;
+    font-style: normal;
+  }
+  .content .contion .register .register_content input {
+    border: 1px solid #999999;
+    box-sizing: border-box;
+    flex: 1;
+    height: 38px;
+    line-height: 38px;
+    padding-left: 10px;
+    outline: none;
+  }
+  .content .contion .register .register_content .select {
+    border: 1px solid #999999;
+    box-sizing: border-box;
+    flex: 1;
+    height: 38px;
+    line-height: 38px;
+    padding-left: 0;
+    outline: none;
+  }
+  .content .contion .register_btn {
+    width: 70%;
+    margin: 0 auto;
+    text-align: center;
+    padding: 20px 0;
+  }
+
+  .register_content .upload-content {
+    height: auto;
+  }
+  .register_content .enclosure {
+  }
+  /* footter样式--开始 */
+  footer {
+    width:100%;
+    margin: auto;
+    clear: both;
+    border-top: 1px solid rgb(223, 219, 219);
+
+    background-color: #f1f1f1;
+    color: #000;
+    text-align: center;
+    font-size: 16px;
+    line-height: 50px;
+  }
+
+  .footer_2_7_2 {
+    clear: both;
+  }
+  .footer_2_7_1 img {
+    width: 60px;
+    height: 30px;
+  }
+
+  /* footer样式结束 */

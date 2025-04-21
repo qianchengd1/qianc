@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title></title>
+    <link href="../../layui/css/layui.css" rel="stylesheet" />
+    <link href="../../css/diy.css" rel="stylesheet" />
+    <style>
+      body {
+        background-color: #f2f2f2;
+      }
+      .list-info-left p {
+        line-height: 15px;
+        font-size: 12px;
+        color: #999;
+      }
+      .list-info-child {
+        clear: both;
+        border-top: 1px dashed gray;
+        padding: 20px 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="payDetail">
+      <div class="list_title"><p class="list_title_text">支付详情</p></div>
+      <div class="layui-fluid layadmin-cmdlist-fluid">
+        <div class="payType paySumTitle">
+          总支付金额：￥<span id="payPriceSum"></span>
+        </div>
+        <div class="layui-tab payType">
+          <ul class="layui-tab-title">
+            <li class="layui-this">微信</li>
+            <li>支付宝</li>
+            <li>网银</li>
+          </ul>
+          <div class="layui-tab-content payTypeContent">
+            <div class="layui-tab-item layui-show">
+              <img src="../../img/wx.png" />
+            </div>
+            <div class="layui-tab-item">
+              <img src="../../img/aplipay.png" />
+            </div>
+            <div class="layui-tab-item">
+              <form class="layui-form layui-form-pane" action="">
+                <div class="layui-form-item">
+                  <label class="layui-form-label">网银账号：</label>
+                  <div class="layui-input-inline">
+                    <input
+                      type="text"
+                      name="account"
+                      placeholder="请输入网银账号"
+                      autocomplete="off"
+                      class="layui-input"
+                    />
+                  </div>
+                </div>
+                <div class="layui-form-item">
+                  <label class="layui-form-label">支付密码：</label>
+                  <div class="layui-input-inline">
+                    <input
+                      type="password"
+                      name="password"
+                      autocomplete="off"
+                      class="layui-input"
+                      placeholder="请输入支付密码（6位数字）"
+                    />
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+        <div id="goPay">
+          <button id="goPaybtn" type="button" class="layui-btn layui-bg-red">
+            支付
+          </button>
+        </div>
+      </div>
+    </div>
+  </body>
+  <script src="../../js/axios.min.js"></script>
+  <script src="../../js/jquery.2.1.1.min.js"></script>
+  <script src="../../layui/layui.js"></script>
+  <script src="../../js/base.js"></script>
+  <script src="../../js/permissionSet.js"></script>
+
+  <script>
+    var BaseUrl = baseUrl();
+    layui.use(["laypage", "layer", "dropdown", "jquery", "form"], function () {
+      var laypage = layui.laypage,
+        layer = layui.layer;
+      form = layui.form;
+      var dropdown = layui.dropdown;
+      var $ = layui.jquery;
+
+      let personInfo = JSON.parse(sessionStorage.personInfo);
+      let user_group = personInfo.user_group;
+      let user_id = personInfo.user_id;
+      // 商城中心
+      //#if($model.filter.message)
+      // check_action('/cart/edit', "add", "forumAdd");
+      let btnMessageAdd = $check_action("/order/edit", "add");
+      if (btnMessageAdd) {
+      } else {
+      }
+      // check_action("/order/list", "get", "messageList");
+      //let message = $check_action("/order/list", "get");
+      //if (message) {
+      //}
+      var laytpl = layui.laytpl;
+      let list_arr = [];
+      // 获取list数据
+      // message/forum/cart/order
+      var getTpl = null;
+      let order_number = $getUrlParams().order_number;
+      let sum_price = $getUrlParams().sum_price;
+      let remark = $getUrlParams().remark;
+      $("#payPriceSum").text(sum_price);
+      async function update_goods_inventory(o) {
+        let { data: json } = await axios.get(BaseUrl + "/api/goods/get_obj", {
+          params: { goods_id: o.goods_id },
+        });
+        if (json.result && json.result.obj) {
+          let inventory = { inventory: json.result.obj.inventory - o.num };
+          let { data: res } = await axios.post(
+            BaseUrl + "/api/goods/set?goods_id=" + o.goods_id,
+            inventory
+          );
+          // let { data: res } = await axios.post(BaseUrl + `/api/goods/set?goods_id=${o.goods_id}`,inventory);
+          if (
+            res.result &&
+            json.result.obj.source_table &&
+            json.result.obj.source_field &&
+            json.result.obj.source_id
+          ) {
+            let inventory_sub = { cart_inventory: inventory.inventory };
+            let { data: res_sub } = await axios.post(
+              BaseUrl +
+                "/api/" +
+                json.result.obj.source_table +
+                "/set?" +
+                json.result.obj.source_field +
+                "=" +
+                json.result.obj.source_id,
+              inventory_sub
+            );
+            // let { data: res_sub } = await axios.post(BaseUrl + `/api/${json.result.obj.source_table}/set?${json.result.obj.source_field}=${json.result.obj.source_id}`, inventory_sub);
+            if (res_sub) {
+            }
+          }
+        }
+      }
+      $("#goPaybtn").click(function () {
+        pay();
+      });
+
+      async function pay() {
+        let { data: res } = await axios.post(
+          BaseUrl + `/api/order/set?order_number=${order_number}`,
+          {
+            state: "已付款",
+            remark: remark
+          }
+        );
+        if (res.result) {
+          console.log(res.result);
+          let { data: json } = await axios.get(
+            BaseUrl + "/api/order/get_list",
+            {
+              params: {
+                order_number: order_number,
+              },
+            }
+          );
+          if (json.result && json.result.list) {
+            console.log(json.result);
+            //修改数量
+            for (let i = 0; i < json.result.list.length; i++) {
+              update_goods_inventory(json.result.list[i]);
+            }
+          }
+        }
+        setTimeout(function() {
+      layer.msg("支付成功");
+        window.location.replace("../order/list.html?state=已付款");
+     }, 900)
+       
+      }
+    });
+  </script>
+</html>

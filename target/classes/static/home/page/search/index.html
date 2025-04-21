@@ -1,0 +1,671 @@
+<!--
+* @Description:全局搜索列表
+-->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>智慧社区综合管理系统</title>
+    <link href="../../layui/css/layui.css" rel="stylesheet" />
+    <link href="../../css/diy.css" rel="stylesheet" />
+  </head>
+
+  <body>
+    <div class="container">
+      <div class="page_search search_index">  
+          <div class="title">搜索结果</div>
+            <div id='search_wrap'></div>
+            <!-- 商品搜索结果
+            <list_result_search
+            :list="result_goods"
+            title="商城中心"
+            source_table="goods"
+            ></list_result_search>
+             -->
+          </div>
+      </div>
+</body>
+  <script src="../../js/axios.min.js"></script>
+  <script src="../../js/jquery.2.1.1.min.js"></script>
+  <script src="../../layui/layui.js"></script>
+  <script src="../../js/base.js"></script>
+  <script src="../../js/permissionSet.js"></script>
+  <script>
+  var BaseUrl = baseUrl();
+      // 获取地址栏参数
+      let wordTxet = $getUrlParams().word;
+      $("#search_wrap").empty();
+      // 填充参数
+      $('#search_val').val(wordTxet)
+      //渲染数据
+                  let result_article=[]
+                   let result_forum=[]
+                                                          let result_community_users_user_name=[]
+                                                                                                                                                                                                let result_project_classification_project_type=[]
+                                                                                let result_service_center_entry_name=[]
+                                                              let result_service_center_project_type=[]
+                                                                                                                                                                                                                            let result_appointment_information_entry_name=[]
+                                                                                                                                                                                                                                                                                                                                            let result_service_evaluation_appointment_number=[]
+                                                                                                                                                                              let result_service_evaluation_evaluation_level=[]
+                                                                                                                                        let result_community_activities_activity_name=[]
+                                                              let result_community_activities_activity_type=[]
+                                                                                                                                                                                                                                                        let result_activity_classification_activity_type=[]
+                                                                                                            let result_registration_information_activity_name=[]
+                                                                                                                                                                                                                                                                                                                                            let result_community_notifications_user_name=[]
+                                                                                                                                                                    let result_repair_service_repair_items=[]
+                                                                                                                      let result_repair_service_user_name=[]
+                                                                                                                                                                                                let result_complaint_feedback_title_name=[]
+                                                              let result_complaint_feedback_feedback_type=[]
+                                                                                                                                                                                                let result_volunteer_application_user_name=[]
+                                                                                          let result_volunteer_application_application_date=[]
+                                                                                /**
+	 * 获取文章
+	 */
+      get_article()
+      async function get_article() {
+        let { data: json } =await axios.get(BaseUrl + "/api/article/get_list?like=0",
+            { params: { page: 1, size: 10, title: wordTxet } }
+          );
+          if (json.result) {
+            result_article = json.result.list;
+            list_add_article_html();
+          }
+      }
+      // 列表--数据渲染
+      function list_add_article_html() {
+        var objecthtmls =''
+        objecthtmls +="<div class='list_result_search'><div class='title_type'>新闻资讯</div>"
+         if( result_article.length){
+          objecthtmls +="<div class='list_result'>"
+          for (var i = 0; i < result_article.length; i++) {
+            var item =result_article[i];
+            var index =i+1;
+            objecthtmls += "<div class='list_result_search'><a  href='../article/detail.html?article_id="+item.article_id+"' class='item'>"
+            objecthtmls += "<div class='title'>"+index+" ."+item.title+"</div></a></div>"
+          }
+        }else{
+          objecthtmls += "<div class='no_result'>没有找到新闻资讯相关内容</div></div>"
+        }
+        $("#search_wrap").append(objecthtmls);
+      }
+                  /**
+	 * 获取论坛
+	 */
+      get_forum()
+      async function get_forum() {
+        let { data: json } =await axios.get(BaseUrl + "/api/forum/get_list?like=0",
+            { params: { page: 1, size: 10, title: wordTxet } }
+          );
+          if (json.result) {
+            result_forum = json.result.list;
+            list_add_forum_html();
+          }
+      }
+      // 列表--数据渲染
+      function list_add_forum_html() {
+        var objecthtmls =''
+        objecthtmls +="<div class='list_result_search'><div class='title_type'>交流论坛</div>"
+         if( result_forum.length){
+          objecthtmls +="<div class='list_result'>"
+          for (var i = 0; i < result_forum.length; i++) {
+            var item =result_forum[i];
+            var index =i+1;
+            objecthtmls += "<div class='list_result_search'> <a  href='../forum/detail.html?forum_id="+item.forum_id+"' class='item'>"
+            objecthtmls += "<div class='title'>"+index+" ."+item.title+"</div></a></div>"
+          }
+        }else{
+          objecthtmls += "<div class='no_result'>没有找到交流论坛相关内容</div></div>"
+        }
+        $("#search_wrap").append(objecthtmls);
+      }
+      			            get_community_users_user_name()
+            async function get_community_users_user_name() {
+                let url = "/api/community_users/get_list?like=0";
+                                let { data: json } =await axios.get(BaseUrl + url,
+                    { params: { page: 1, size: 10, "user_name": wordTxet } }
+                );
+                if (json.result) {
+                    result_community_users_user_name = json.result.list;
+                    if($check_action('/community_users/list', 'get')){
+                     list_add_community_users_user_name_html();
+                    }
+                   
+                }
+            }
+             function list_add_community_users_user_name_html() {
+                var objecthtmls =''
+                objecthtmls +="<div class='list_result_search'><div class='title_type'>社区用户用户姓名</div>"
+                if( result_community_users_user_name.length){
+                objecthtmls +="<div class='list_result'>"
+                for (var i = 0; i < result_community_users_user_name.length; i++) {
+                    var item =result_community_users_user_name[i];
+                    var index =i+1;
+                    objecthtmls += "<div class='list_result_search'><a  href='../community_users/detail.html?community_users_id="+item['community_users_id']+"' class='item'>"
+                    objecthtmls += "<div class='title'>"+index+" ."+item.user_name+"</div></a></div>"
+                }
+                }else{
+                objecthtmls += "<div class='no_result'>没有找到社区用户用户姓名相关内容</div></div>"
+                }
+                $("#search_wrap").append(objecthtmls);
+            }
+																		            get_project_classification_project_type()
+            async function get_project_classification_project_type() {
+                let url = "/api/project_classification/get_list?like=0";
+                                let { data: json } =await axios.get(BaseUrl + url,
+                    { params: { page: 1, size: 10, "project_type": wordTxet } }
+                );
+                if (json.result) {
+                    result_project_classification_project_type = json.result.list;
+                    if($check_action('/project_classification/list', 'get')){
+                     list_add_project_classification_project_type_html();
+                    }
+                   
+                }
+            }
+             function list_add_project_classification_project_type_html() {
+                var objecthtmls =''
+                objecthtmls +="<div class='list_result_search'><div class='title_type'>项目分类项目类型</div>"
+                if( result_project_classification_project_type.length){
+                objecthtmls +="<div class='list_result'>"
+                for (var i = 0; i < result_project_classification_project_type.length; i++) {
+                    var item =result_project_classification_project_type[i];
+                    var index =i+1;
+                    objecthtmls += "<div class='list_result_search'><a  href='../project_classification/detail.html?project_classification_id="+item['project_classification_id']+"' class='item'>"
+                    objecthtmls += "<div class='title'>"+index+" ."+item.project_type+"</div></a></div>"
+                }
+                }else{
+                objecthtmls += "<div class='no_result'>没有找到项目分类项目类型相关内容</div></div>"
+                }
+                $("#search_wrap").append(objecthtmls);
+            }
+						            get_service_center_entry_name()
+            async function get_service_center_entry_name() {
+                let url = "/api/service_center/get_list?like=0";
+                                let { data: json } =await axios.get(BaseUrl + url,
+                    { params: { page: 1, size: 10, "entry_name": wordTxet } }
+                );
+                if (json.result) {
+                    result_service_center_entry_name = json.result.list;
+                    if($check_action('/service_center/list', 'get')){
+                     list_add_service_center_entry_name_html();
+                    }
+                   
+                }
+            }
+             function list_add_service_center_entry_name_html() {
+                var objecthtmls =''
+                objecthtmls +="<div class='list_result_search'><div class='title_type'>服务中心项目名称</div>"
+                if( result_service_center_entry_name.length){
+                objecthtmls +="<div class='list_result'>"
+                for (var i = 0; i < result_service_center_entry_name.length; i++) {
+                    var item =result_service_center_entry_name[i];
+                    var index =i+1;
+                    objecthtmls += "<div class='list_result_search'><a  href='../service_center/detail.html?service_center_id="+item['service_center_id']+"' class='item'>"
+                    objecthtmls += "<div class='title'>"+index+" ."+item.entry_name+"</div></a></div>"
+                }
+                }else{
+                objecthtmls += "<div class='no_result'>没有找到服务中心项目名称相关内容</div></div>"
+                }
+                $("#search_wrap").append(objecthtmls);
+            }
+					            get_service_center_project_type()
+            async function get_service_center_project_type() {
+                let url = "/api/service_center/get_list?like=0";
+                                let { data: json } =await axios.get(BaseUrl + url,
+                    { params: { page: 1, size: 10, "project_type": wordTxet } }
+                );
+                if (json.result) {
+                    result_service_center_project_type = json.result.list;
+                    if($check_action('/service_center/list', 'get')){
+                     list_add_service_center_project_type_html();
+                    }
+                   
+                }
+            }
+             function list_add_service_center_project_type_html() {
+                var objecthtmls =''
+                objecthtmls +="<div class='list_result_search'><div class='title_type'>服务中心项目类型</div>"
+                if( result_service_center_project_type.length){
+                objecthtmls +="<div class='list_result'>"
+                for (var i = 0; i < result_service_center_project_type.length; i++) {
+                    var item =result_service_center_project_type[i];
+                    var index =i+1;
+                    objecthtmls += "<div class='list_result_search'><a  href='../service_center/detail.html?service_center_id="+item['service_center_id']+"' class='item'>"
+                    objecthtmls += "<div class='title'>"+index+" ."+item.project_type+"</div></a></div>"
+                }
+                }else{
+                objecthtmls += "<div class='no_result'>没有找到服务中心项目类型相关内容</div></div>"
+                }
+                $("#search_wrap").append(objecthtmls);
+            }
+																					            get_appointment_information_entry_name()
+            async function get_appointment_information_entry_name() {
+                let url = "/api/appointment_information/get_list?like=0";
+                                 url = url+"&examine_state=已通过";
+                                let { data: json } =await axios.get(BaseUrl + url,
+                    { params: { page: 1, size: 10, "entry_name": wordTxet } }
+                );
+                if (json.result) {
+                    result_appointment_information_entry_name = json.result.list;
+                    if($check_action('/appointment_information/list', 'get')){
+                     list_add_appointment_information_entry_name_html();
+                    }
+                   
+                }
+            }
+             function list_add_appointment_information_entry_name_html() {
+                var objecthtmls =''
+                objecthtmls +="<div class='list_result_search'><div class='title_type'>预约信息项目名称</div>"
+                if( result_appointment_information_entry_name.length){
+                objecthtmls +="<div class='list_result'>"
+                for (var i = 0; i < result_appointment_information_entry_name.length; i++) {
+                    var item =result_appointment_information_entry_name[i];
+                    var index =i+1;
+                    objecthtmls += "<div class='list_result_search'><a  href='../appointment_information/detail.html?appointment_information_id="+item['appointment_information_id']+"' class='item'>"
+                    objecthtmls += "<div class='title'>"+index+" ."+item.entry_name+"</div></a></div>"
+                }
+                }else{
+                objecthtmls += "<div class='no_result'>没有找到预约信息项目名称相关内容</div></div>"
+                }
+                $("#search_wrap").append(objecthtmls);
+            }
+																																	            get_service_evaluation_appointment_number()
+            async function get_service_evaluation_appointment_number() {
+                let url = "/api/service_evaluation/get_list?like=0";
+                                let { data: json } =await axios.get(BaseUrl + url,
+                    { params: { page: 1, size: 10, "appointment_number": wordTxet } }
+                );
+                if (json.result) {
+                    result_service_evaluation_appointment_number = json.result.list;
+                    if($check_action('/service_evaluation/list', 'get')){
+                     list_add_service_evaluation_appointment_number_html();
+                    }
+                   
+                }
+            }
+             function list_add_service_evaluation_appointment_number_html() {
+                var objecthtmls =''
+                objecthtmls +="<div class='list_result_search'><div class='title_type'>服务评价预约编号</div>"
+                if( result_service_evaluation_appointment_number.length){
+                objecthtmls +="<div class='list_result'>"
+                for (var i = 0; i < result_service_evaluation_appointment_number.length; i++) {
+                    var item =result_service_evaluation_appointment_number[i];
+                    var index =i+1;
+                    objecthtmls += "<div class='list_result_search'><a  href='../service_evaluation/detail.html?service_evaluation_id="+item['service_evaluation_id']+"' class='item'>"
+                    objecthtmls += "<div class='title'>"+index+" ."+item.appointment_number+"</div></a></div>"
+                }
+                }else{
+                objecthtmls += "<div class='no_result'>没有找到服务评价预约编号相关内容</div></div>"
+                }
+                $("#search_wrap").append(objecthtmls);
+            }
+																	            get_service_evaluation_evaluation_level()
+            async function get_service_evaluation_evaluation_level() {
+                let url = "/api/service_evaluation/get_list?like=0";
+                                let { data: json } =await axios.get(BaseUrl + url,
+                    { params: { page: 1, size: 10, "evaluation_level": wordTxet } }
+                );
+                if (json.result) {
+                    result_service_evaluation_evaluation_level = json.result.list;
+                    if($check_action('/service_evaluation/list', 'get')){
+                     list_add_service_evaluation_evaluation_level_html();
+                    }
+                   
+                }
+            }
+             function list_add_service_evaluation_evaluation_level_html() {
+                var objecthtmls =''
+                objecthtmls +="<div class='list_result_search'><div class='title_type'>服务评价评价等级</div>"
+                if( result_service_evaluation_evaluation_level.length){
+                objecthtmls +="<div class='list_result'>"
+                for (var i = 0; i < result_service_evaluation_evaluation_level.length; i++) {
+                    var item =result_service_evaluation_evaluation_level[i];
+                    var index =i+1;
+                    objecthtmls += "<div class='list_result_search'><a  href='../service_evaluation/detail.html?service_evaluation_id="+item['service_evaluation_id']+"' class='item'>"
+                    objecthtmls += "<div class='title'>"+index+" ."+item.evaluation_level+"</div></a></div>"
+                }
+                }else{
+                objecthtmls += "<div class='no_result'>没有找到服务评价评价等级相关内容</div></div>"
+                }
+                $("#search_wrap").append(objecthtmls);
+            }
+												            get_community_activities_activity_name()
+            async function get_community_activities_activity_name() {
+                let url = "/api/community_activities/get_list?like=0";
+                                let { data: json } =await axios.get(BaseUrl + url,
+                    { params: { page: 1, size: 10, "activity_name": wordTxet } }
+                );
+                if (json.result) {
+                    result_community_activities_activity_name = json.result.list;
+                    if($check_action('/community_activities/list', 'get')){
+                     list_add_community_activities_activity_name_html();
+                    }
+                   
+                }
+            }
+             function list_add_community_activities_activity_name_html() {
+                var objecthtmls =''
+                objecthtmls +="<div class='list_result_search'><div class='title_type'>社区活动活动名称</div>"
+                if( result_community_activities_activity_name.length){
+                objecthtmls +="<div class='list_result'>"
+                for (var i = 0; i < result_community_activities_activity_name.length; i++) {
+                    var item =result_community_activities_activity_name[i];
+                    var index =i+1;
+                    objecthtmls += "<div class='list_result_search'><a  href='../community_activities/detail.html?community_activities_id="+item['community_activities_id']+"' class='item'>"
+                    objecthtmls += "<div class='title'>"+index+" ."+item.activity_name+"</div></a></div>"
+                }
+                }else{
+                objecthtmls += "<div class='no_result'>没有找到社区活动活动名称相关内容</div></div>"
+                }
+                $("#search_wrap").append(objecthtmls);
+            }
+					            get_community_activities_activity_type()
+            async function get_community_activities_activity_type() {
+                let url = "/api/community_activities/get_list?like=0";
+                                let { data: json } =await axios.get(BaseUrl + url,
+                    { params: { page: 1, size: 10, "activity_type": wordTxet } }
+                );
+                if (json.result) {
+                    result_community_activities_activity_type = json.result.list;
+                    if($check_action('/community_activities/list', 'get')){
+                     list_add_community_activities_activity_type_html();
+                    }
+                   
+                }
+            }
+             function list_add_community_activities_activity_type_html() {
+                var objecthtmls =''
+                objecthtmls +="<div class='list_result_search'><div class='title_type'>社区活动活动类型</div>"
+                if( result_community_activities_activity_type.length){
+                objecthtmls +="<div class='list_result'>"
+                for (var i = 0; i < result_community_activities_activity_type.length; i++) {
+                    var item =result_community_activities_activity_type[i];
+                    var index =i+1;
+                    objecthtmls += "<div class='list_result_search'><a  href='../community_activities/detail.html?community_activities_id="+item['community_activities_id']+"' class='item'>"
+                    objecthtmls += "<div class='title'>"+index+" ."+item.activity_type+"</div></a></div>"
+                }
+                }else{
+                objecthtmls += "<div class='no_result'>没有找到社区活动活动类型相关内容</div></div>"
+                }
+                $("#search_wrap").append(objecthtmls);
+            }
+																								            get_activity_classification_activity_type()
+            async function get_activity_classification_activity_type() {
+                let url = "/api/activity_classification/get_list?like=0";
+                                let { data: json } =await axios.get(BaseUrl + url,
+                    { params: { page: 1, size: 10, "activity_type": wordTxet } }
+                );
+                if (json.result) {
+                    result_activity_classification_activity_type = json.result.list;
+                    if($check_action('/activity_classification/list', 'get')){
+                     list_add_activity_classification_activity_type_html();
+                    }
+                   
+                }
+            }
+             function list_add_activity_classification_activity_type_html() {
+                var objecthtmls =''
+                objecthtmls +="<div class='list_result_search'><div class='title_type'>活动分类活动类型</div>"
+                if( result_activity_classification_activity_type.length){
+                objecthtmls +="<div class='list_result'>"
+                for (var i = 0; i < result_activity_classification_activity_type.length; i++) {
+                    var item =result_activity_classification_activity_type[i];
+                    var index =i+1;
+                    objecthtmls += "<div class='list_result_search'><a  href='../activity_classification/detail.html?activity_classification_id="+item['activity_classification_id']+"' class='item'>"
+                    objecthtmls += "<div class='title'>"+index+" ."+item.activity_type+"</div></a></div>"
+                }
+                }else{
+                objecthtmls += "<div class='no_result'>没有找到活动分类活动类型相关内容</div></div>"
+                }
+                $("#search_wrap").append(objecthtmls);
+            }
+									            get_registration_information_activity_name()
+            async function get_registration_information_activity_name() {
+                let url = "/api/registration_information/get_list?like=0";
+                                let { data: json } =await axios.get(BaseUrl + url,
+                    { params: { page: 1, size: 10, "activity_name": wordTxet } }
+                );
+                if (json.result) {
+                    result_registration_information_activity_name = json.result.list;
+                    if($check_action('/registration_information/list', 'get')){
+                     list_add_registration_information_activity_name_html();
+                    }
+                   
+                }
+            }
+             function list_add_registration_information_activity_name_html() {
+                var objecthtmls =''
+                objecthtmls +="<div class='list_result_search'><div class='title_type'>报名信息活动名称</div>"
+                if( result_registration_information_activity_name.length){
+                objecthtmls +="<div class='list_result'>"
+                for (var i = 0; i < result_registration_information_activity_name.length; i++) {
+                    var item =result_registration_information_activity_name[i];
+                    var index =i+1;
+                    objecthtmls += "<div class='list_result_search'><a  href='../registration_information/detail.html?registration_information_id="+item['registration_information_id']+"' class='item'>"
+                    objecthtmls += "<div class='title'>"+index+" ."+item.activity_name+"</div></a></div>"
+                }
+                }else{
+                objecthtmls += "<div class='no_result'>没有找到报名信息活动名称相关内容</div></div>"
+                }
+                $("#search_wrap").append(objecthtmls);
+            }
+																																	            get_community_notifications_user_name()
+            async function get_community_notifications_user_name() {
+                let url = "/api/community_notifications/get_list?like=0";
+                                let { data: json } =await axios.get(BaseUrl + url,
+                    { params: { page: 1, size: 10, "user_name": wordTxet } }
+                );
+                if (json.result) {
+                    result_community_notifications_user_name = json.result.list;
+                    if($check_action('/community_notifications/list', 'get')){
+                     list_add_community_notifications_user_name_html();
+                    }
+                   
+                }
+            }
+             function list_add_community_notifications_user_name_html() {
+                var objecthtmls =''
+                objecthtmls +="<div class='list_result_search'><div class='title_type'>社区通知用户姓名</div>"
+                if( result_community_notifications_user_name.length){
+                objecthtmls +="<div class='list_result'>"
+                for (var i = 0; i < result_community_notifications_user_name.length; i++) {
+                    var item =result_community_notifications_user_name[i];
+                    var index =i+1;
+                    objecthtmls += "<div class='list_result_search'><a  href='../community_notifications/detail.html?community_notifications_id="+item['community_notifications_id']+"' class='item'>"
+                    objecthtmls += "<div class='title'>"+index+" ."+item.user_name+"</div></a></div>"
+                }
+                }else{
+                objecthtmls += "<div class='no_result'>没有找到社区通知用户姓名相关内容</div></div>"
+                }
+                $("#search_wrap").append(objecthtmls);
+            }
+															            get_repair_service_repair_items()
+            async function get_repair_service_repair_items() {
+                let url = "/api/repair_service/get_list?like=0";
+                                 url = url+"&examine_state=已通过";
+                                let { data: json } =await axios.get(BaseUrl + url,
+                    { params: { page: 1, size: 10, "repair_items": wordTxet } }
+                );
+                if (json.result) {
+                    result_repair_service_repair_items = json.result.list;
+                    if($check_action('/repair_service/list', 'get')){
+                     list_add_repair_service_repair_items_html();
+                    }
+                   
+                }
+            }
+             function list_add_repair_service_repair_items_html() {
+                var objecthtmls =''
+                objecthtmls +="<div class='list_result_search'><div class='title_type'>报修服务报修物品</div>"
+                if( result_repair_service_repair_items.length){
+                objecthtmls +="<div class='list_result'>"
+                for (var i = 0; i < result_repair_service_repair_items.length; i++) {
+                    var item =result_repair_service_repair_items[i];
+                    var index =i+1;
+                    objecthtmls += "<div class='list_result_search'><a  href='../repair_service/detail.html?repair_service_id="+item['repair_service_id']+"' class='item'>"
+                    objecthtmls += "<div class='title'>"+index+" ."+item.repair_items+"</div></a></div>"
+                }
+                }else{
+                objecthtmls += "<div class='no_result'>没有找到报修服务报修物品相关内容</div></div>"
+                }
+                $("#search_wrap").append(objecthtmls);
+            }
+											            get_repair_service_user_name()
+            async function get_repair_service_user_name() {
+                let url = "/api/repair_service/get_list?like=0";
+                                 url = url+"&examine_state=已通过";
+                                let { data: json } =await axios.get(BaseUrl + url,
+                    { params: { page: 1, size: 10, "user_name": wordTxet } }
+                );
+                if (json.result) {
+                    result_repair_service_user_name = json.result.list;
+                    if($check_action('/repair_service/list', 'get')){
+                     list_add_repair_service_user_name_html();
+                    }
+                   
+                }
+            }
+             function list_add_repair_service_user_name_html() {
+                var objecthtmls =''
+                objecthtmls +="<div class='list_result_search'><div class='title_type'>报修服务用户姓名</div>"
+                if( result_repair_service_user_name.length){
+                objecthtmls +="<div class='list_result'>"
+                for (var i = 0; i < result_repair_service_user_name.length; i++) {
+                    var item =result_repair_service_user_name[i];
+                    var index =i+1;
+                    objecthtmls += "<div class='list_result_search'><a  href='../repair_service/detail.html?repair_service_id="+item['repair_service_id']+"' class='item'>"
+                    objecthtmls += "<div class='title'>"+index+" ."+item.user_name+"</div></a></div>"
+                }
+                }else{
+                objecthtmls += "<div class='no_result'>没有找到报修服务用户姓名相关内容</div></div>"
+                }
+                $("#search_wrap").append(objecthtmls);
+            }
+																		            get_complaint_feedback_title_name()
+            async function get_complaint_feedback_title_name() {
+                let url = "/api/complaint_feedback/get_list?like=0";
+                                 url = url+"&examine_state=已通过";
+                                let { data: json } =await axios.get(BaseUrl + url,
+                    { params: { page: 1, size: 10, "title_name": wordTxet } }
+                );
+                if (json.result) {
+                    result_complaint_feedback_title_name = json.result.list;
+                    if($check_action('/complaint_feedback/list', 'get')){
+                     list_add_complaint_feedback_title_name_html();
+                    }
+                   
+                }
+            }
+             function list_add_complaint_feedback_title_name_html() {
+                var objecthtmls =''
+                objecthtmls +="<div class='list_result_search'><div class='title_type'>投诉反馈标题名称</div>"
+                if( result_complaint_feedback_title_name.length){
+                objecthtmls +="<div class='list_result'>"
+                for (var i = 0; i < result_complaint_feedback_title_name.length; i++) {
+                    var item =result_complaint_feedback_title_name[i];
+                    var index =i+1;
+                    objecthtmls += "<div class='list_result_search'><a  href='../complaint_feedback/detail.html?complaint_feedback_id="+item['complaint_feedback_id']+"' class='item'>"
+                    objecthtmls += "<div class='title'>"+index+" ."+item.title_name+"</div></a></div>"
+                }
+                }else{
+                objecthtmls += "<div class='no_result'>没有找到投诉反馈标题名称相关内容</div></div>"
+                }
+                $("#search_wrap").append(objecthtmls);
+            }
+					            get_complaint_feedback_feedback_type()
+            async function get_complaint_feedback_feedback_type() {
+                let url = "/api/complaint_feedback/get_list?like=0";
+                                 url = url+"&examine_state=已通过";
+                                let { data: json } =await axios.get(BaseUrl + url,
+                    { params: { page: 1, size: 10, "feedback_type": wordTxet } }
+                );
+                if (json.result) {
+                    result_complaint_feedback_feedback_type = json.result.list;
+                    if($check_action('/complaint_feedback/list', 'get')){
+                     list_add_complaint_feedback_feedback_type_html();
+                    }
+                   
+                }
+            }
+             function list_add_complaint_feedback_feedback_type_html() {
+                var objecthtmls =''
+                objecthtmls +="<div class='list_result_search'><div class='title_type'>投诉反馈反馈类型</div>"
+                if( result_complaint_feedback_feedback_type.length){
+                objecthtmls +="<div class='list_result'>"
+                for (var i = 0; i < result_complaint_feedback_feedback_type.length; i++) {
+                    var item =result_complaint_feedback_feedback_type[i];
+                    var index =i+1;
+                    objecthtmls += "<div class='list_result_search'><a  href='../complaint_feedback/detail.html?complaint_feedback_id="+item['complaint_feedback_id']+"' class='item'>"
+                    objecthtmls += "<div class='title'>"+index+" ."+item.feedback_type+"</div></a></div>"
+                }
+                }else{
+                objecthtmls += "<div class='no_result'>没有找到投诉反馈反馈类型相关内容</div></div>"
+                }
+                $("#search_wrap").append(objecthtmls);
+            }
+																		            get_volunteer_application_user_name()
+            async function get_volunteer_application_user_name() {
+                let url = "/api/volunteer_application/get_list?like=0";
+                                 url = url+"&examine_state=已通过";
+                                let { data: json } =await axios.get(BaseUrl + url,
+                    { params: { page: 1, size: 10, "user_name": wordTxet } }
+                );
+                if (json.result) {
+                    result_volunteer_application_user_name = json.result.list;
+                    if($check_action('/volunteer_application/list', 'get')){
+                     list_add_volunteer_application_user_name_html();
+                    }
+                   
+                }
+            }
+             function list_add_volunteer_application_user_name_html() {
+                var objecthtmls =''
+                objecthtmls +="<div class='list_result_search'><div class='title_type'>志愿者申请用户姓名</div>"
+                if( result_volunteer_application_user_name.length){
+                objecthtmls +="<div class='list_result'>"
+                for (var i = 0; i < result_volunteer_application_user_name.length; i++) {
+                    var item =result_volunteer_application_user_name[i];
+                    var index =i+1;
+                    objecthtmls += "<div class='list_result_search'><a  href='../volunteer_application/detail.html?volunteer_application_id="+item['volunteer_application_id']+"' class='item'>"
+                    objecthtmls += "<div class='title'>"+index+" ."+item.user_name+"</div></a></div>"
+                }
+                }else{
+                objecthtmls += "<div class='no_result'>没有找到志愿者申请用户姓名相关内容</div></div>"
+                }
+                $("#search_wrap").append(objecthtmls);
+            }
+								            get_volunteer_application_application_date()
+            async function get_volunteer_application_application_date() {
+                let url = "/api/volunteer_application/get_list?like=0";
+                                 url = url+"&examine_state=已通过";
+                                let { data: json } =await axios.get(BaseUrl + url,
+                    { params: { page: 1, size: 10, "application_date": wordTxet } }
+                );
+                if (json.result) {
+                    result_volunteer_application_application_date = json.result.list;
+                    if($check_action('/volunteer_application/list', 'get')){
+                     list_add_volunteer_application_application_date_html();
+                    }
+                   
+                }
+            }
+             function list_add_volunteer_application_application_date_html() {
+                var objecthtmls =''
+                objecthtmls +="<div class='list_result_search'><div class='title_type'>志愿者申请申请日期</div>"
+                if( result_volunteer_application_application_date.length){
+                objecthtmls +="<div class='list_result'>"
+                for (var i = 0; i < result_volunteer_application_application_date.length; i++) {
+                    var item =result_volunteer_application_application_date[i];
+                    var index =i+1;
+                    objecthtmls += "<div class='list_result_search'><a  href='../volunteer_application/detail.html?volunteer_application_id="+item['volunteer_application_id']+"' class='item'>"
+                    objecthtmls += "<div class='title'>"+index+" ."+item.application_date+"</div></a></div>"
+                }
+                }else{
+                objecthtmls += "<div class='no_result'>没有找到志愿者申请申请日期相关内容</div></div>"
+                }
+                $("#search_wrap").append(objecthtmls);
+            }
+						  </script>
+</html>

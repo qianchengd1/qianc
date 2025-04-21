@@ -1,0 +1,102 @@
+<!--
+ * @Author: zq
+ * @Date: 2023-12-15 13:56:53
+ * @LastEditTime: 2023-12-15 15:24:09
+ * @LastEditors: zq
+ * @Description: 
+-->
+<div class="header_box">
+  <div class="header">
+    <div class="guide">
+      <ul class="layui-nav nav—style">
+        <div class="layui-nav-bug" id="t_menu_list">
+          <li class="layui-nav-item" id="loggedIn">
+            <a class="nav-more" id="loginName"></a>
+            <dl class="layui-nav-child">
+              <dd><a href="../../page/user/info.html">我的账号</a></dd>
+              <dd><a href="../../page/user_center/index.html">个人中心</a></dd>
+              <dd><a id="sign_out_btn">退出</a></dd>
+            </dl>
+          </li>
+          <li class="layui-nav-item" id="notLoggedIn">
+            <a href="../../login.html">你好，请登录</a>
+          </li>
+          <li class="layui-nav-item" id="notRegister">
+            <a href="../../register.html" style="color: red">免费注册</a>
+          </li>
+          <span>|</span>
+          <li class="layui-nav-item" id="index">
+            <a href="../../index.html" id="index_text">首页</a>
+          </li>
+          <span>|</span>
+          <li class="layui-nav-item nav-item" id="forum">
+            <a href="../../page/forum/list.html" id="forum_text">交流论坛</a>
+          </li>
+          <span class="nav-item-forum">|</span>
+          <li class="layui-nav-item nav-item" id="exam">
+            <a href="../../page/exam/list.html" id="exam_text">在线考试</a>
+          </li>
+          <span class="nav-item-exam">|</span>
+          <li class="layui-nav-item nav-item" id="subject_exam">
+            <a href="../../page/subject_exam/list.html" id="subject_exam_text"
+              >考试管理</a
+            >
+          </li>
+          <span class="nav-item-subject_exam">|</span>
+          <li class="layui-nav-item nav-item" id="notice">
+            <a href="../../page/notice/list.html" id="notice_text">关于我们</a>
+          </li>
+          <span class="nav-item-notice">|</span>
+          <li class="layui-nav-item nav-item" id="article">
+            <a href="../../page/article/list.html" id="article_text"
+              >新闻通知</a
+            >
+          </li>
+          <span class="nav-item-article">|</span>
+          <li class="layui-nav-item nav-item" id="message">
+            <a href="../../page/message/list.html" id="message_text"
+              >测试留言板</a
+            >
+          </li>
+          <span class="nav-item-message">|</span>
+          <li class="layui-nav-item nav-item"  id="web">
+            <a href="../../page/web/index.html">测试</a>
+          </li>
+          <span class="nav-item-web">|</span>
+          <li class="layui-nav-item nav-item" id="goods">
+            <a href="../../page/goods/list.html" id="goods_text">商城中心</a>
+          </li>
+          <span class="nav-item-goods">|</span>
+          <li class="layui-nav-item nav-item-goods">
+            <a class="nav-more">商城管理</a>
+            <dl class="layui-nav-child">
+              <dd><a href="../../page/cart/list.html">我的购物车</a></dd>
+              <dd><a href="../../page/order/list.html">我的订单</a></dd>
+              <dd><a href="../../page/user/address.html">我的地址</a></dd>
+            </dl>
+          </li>
+          <span class="nav-item-goods">|</span>
+        </div>
+      </ul>
+    </div>
+  </div>
+</div>
+<div class="banner">
+  <div class="banner_box">
+    <div class="logo">
+      <span class="logo_text"></span>
+      <img src="../../img/logo-201305-b.png" class="logo_img" />
+    </div>
+    <div class="searchbox">
+      <input
+        id="search_val"
+        class="search_input"
+        type="text"
+        name="searchcontext"
+      />
+      <button type="button" class="layui-btn" id="global_search_btn">
+        <i class="layui-icon layui-icon-search"></i> 搜索
+      </button>
+    </div>
+  </div>
+</div>

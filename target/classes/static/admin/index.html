@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en" class="login">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>登录/Login</title>
+    <link rel="stylesheet" href="./layui/css/layui.css">
+    <link rel="stylesheet" href="./css/diy.css">
+    <script src="./js/axios.min.js"></script>
+	<script src="./js/base.js"></script>
+	<script type="text/javascript">
+		var BaseUrl = baseUrl()
+		
+	</script>
+</head>
+
+<style>
+        </style>
+
+<body>
+<article class="">
+        <div class="warp">
+        <div class="layui-container">
+            <div class="layui-row">
+
+            <div class="empty-box">
+                <div class="Left-empty-box"><span></span><span></span></div>
+                <div class="Right-empty-box"><span></span><span></span></div>
+            </div>
+                 <div class="login-form-box">
+                        <div class="form-box">
+                            <div class="home-h1">
+
+                                <h1>智慧社区综合管理系统</h1>
+                                <span> </span>
+                            </div>
+                        <form class="layui-form" action="">
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">账号</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="title" lay-verify="title" autocomplete="off"
+                                   placeholder="请输入账号"
+                                   class="layui-input" id="account">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">密码</label>
+                                <div class="layui-input-block">
+                                    <input type="password" name="password" placeholder="请输入密码" autocomplete="off"
+                                   class="layui-input"
+                                   id="password">
+                                </div>
+                            </div>
+                                                             <div class='test-v' style="display:flex;">
+                                    <label class="layui-form-label">验证</label>
+                                    <div class="layui-input-block">
+                                     <input type="text" placeholder="不区分大小写" id="val"
+                                     style=" color: black; font-size:15px; margin-right: 30px; margin-left: -15px;"/>
+                                    <canvas id="canvas" width="100" height="43" onclick="dj()" style="border: 1px solid #ccc;
+                                    border-radius: 5px; background-color: aliceblue;"></canvas>
+                                    </div>
+                                </div>
+                                                        
+                </form>
+                <div class="layui-btn-container">
+                    <div class="login-button login-btn">
+                        <a type="button" class="layui-btn layui-btn-normal" id="login">登录</a>
+                    </div>
+                                            <div class="retrieve-button login-btn">
+                            <a href="./page/forgot.html" type="button" class="layui-btn layui-btn-normal">密码找回</a>
+                    </div>
+                </div>
+
+                </div>
+
+                
+
+                </div>
+
+                </div>
+        </div>
+    </div>
+	</article>
+</body>
+<script src="./layui/layui.js" charset="utf-8"></script>
+            <script src="./js/verification.js"></script>
+        		<script src="./js/jsencrypt.min.js"></script>
+	<script>
+    let btn = document.getElementById("login");
+    let account = document.getElementById("account");
+    let password = document.getElementById("password");
+	    
+    var tokenReg = new RegExp('(^|&)' + "token" + '=([^&]*)(&|$)', 'i');
+
+    var tokenValue = window.location.search.substr(1).match(tokenReg);
+
+    if (tokenValue != null) {
+        let token = unescape(tokenValue[2]);
+        tokenLogin(token);
+    }
+
+    async function tokenLogin(token){
+        const {data: res} = await axios.get(BaseUrl + '/api/user/state',{
+            headers: {
+                "x-auth-token": token
+            }
+        })
+        if (res && res.result && res.result.obj){
+            let obj = JSON.stringify(res.result.obj)
+            sessionStorage.setItem('personInfo', [obj])
+            sessionStorage.setItem('token', res.result.obj.token)
+            window.location.replace("./page/frime.html")
+        }else {
+            if (sessionStorage.personInfo){
+                let personInfo = JSON.parse(sessionStorage.personInfo)
+                if(personInfo){
+                    window.location.replace("./page/frime.html");
+                }
+            }
+        }
+    }
+
+    // 登录/Login
+    let info
+			btn.onclick = async function () {
+			if (account.value === '') {
+				layer.msg('请输入账号');
+			} else if (password.value === '') {
+				layer.msg('请输入密码');
+			}
+												else if (sublim() !== true) {
+				}
+											else {
+								const encryptor = new JSEncrypt()
+				encryptor.setPublicKey("MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC+mEDzYLbKNB9rbOuvGgwdBUpPaHryRGarxBQppkOzlj+ouep8MMq1Xg7NBkjLOV2vnn4E5AVvX0XVOmBg8W5eNQ1uS1HCG2fie8BpXGgl1pWj/HYIrA2d/U7xxvMO8UMhAGfMdaGrPrGdZTr95pzL/q+VJZOcqSAgux/YEdu11wIDAQAB");
+				let encryptPass = encryptor.encrypt(password.value)
+								const {data: res} = await axios.post(BaseUrl + '/api/user/login?', {
+					"username": account.value,
+									"password": encryptPass,
+								},{
+					headers: {
+						"Content-Type": "application/json"
+					}
+				})
+				info = res.result;
+				if (info != undefined) {
+					let obj = JSON.stringify(res.result.obj)
+					sessionStorage.setItem('personInfo', [obj])
+					sessionStorage.setItem('token', res.result.obj.token)
+					window.location.replace("./page/frime.html")
+				} else if (res.error.message) {
+					layer.msg(res.error.message);
+					account.value = ''
+					password.value = ''
+				}
+			}
+		}
+        // async function keyboard(event) {
+    //     let keycode = event.keyCode;
+    //     if (keycode == 13) {
+    //         const {data: res} = await axios.post(BaseUrl + '/api/user/login?', {
+    //             "username": account.value,
+    //             "password": password.value
+    //         },{
+    //             headers: {
+    //                 "Content-Type": "application/json"
+    //             }
+    //         })
+    //         info = res.result;
+    //         if (info != undefined) {
+    //             let obj = res.result.obj;
+    //             sessionStorage.setItem('personInfo', [obj])
+    //             sessionStorage.setItem('token', res.result.obj.token)
+    //             window.location.replace("./page/frime.html");
+    //         } else if (res.error.message) {
+    //             layer.msg(res.error.message);
+    //             account.value = ''
+    //             password.value = ''
+    //         }
+    //     }
+    // }
+
+    //参数1：表示事件，keydown:键盘向下按；参数2：表示触发的事件处理函数
+    // document.addEventListener("keydown", keyboard);
+
+    // 注册/Register
+        
+    // 弹出层
+    layui.use('layer', function () {
+        var layer = layui.layer;
+    });
+</script>
+
+</html>

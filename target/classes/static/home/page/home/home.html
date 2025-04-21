@@ -1,0 +1,341 @@
+<!--
+ * @Description:首页模板
+-->
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>智慧社区综合管理系统</title>
+    <meta name="renderer" content="webkit" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, maximum-scale=1"
+    />
+    <link rel="stylesheet" href="../../layui/css/layui.css" media="all" />
+    <link rel="stylesheet" href="../../css/diy.css" media="all" />
+    <style type="text/css">
+               </style>
+  </head>
+
+  <body>
+        <!--动态菜单-->
+        <div class="loop">
+          <div class="categries">
+            <ul id="dynamic_menu_list">
+            </ul>
+          </div>
+          <!-- 右侧轮播 -->
+          <div class="runimage">
+            <div class="layui-carousel" id="test1">
+              <div carousel-item id="rotation_list"></div>
+            </div>
+          </div>
+        </div>
+                <!--列表list-->
+                   <!-- <i class="layui-icon layui-icon-heart"></i>
+                            {{=item.sales}}-->
+                          <div id="article_s" class="channels_list">
+            <div class="channelsB">
+              <h3 class="floorhd_tit"> 新闻资讯</h3>
+              <a class="floorhd_tit_more" href="../../page/article/list.html?pageName=新闻资讯"
+                >更多<i class="layui-icon layui-icon-next"></i
+              ></a>
+            </div>
+            <div class="shelves">
+              <div class="layui-row layui-col-space15" id="hot_articles_list">
+                <script id="articles_list" type="text/html">
+                  {{# layui.each(d.list, function(index, item){ }}
+                   <div class="layui-col-md4 layui-col-sm4">
+                      <div class="hot-goods-box">
+                  
+                        <a href="../../page/article/detail.html?article_id={{=item.article_id}}">
+                        <img src="{{=fullUrl(BaseUrl, item.img)}}" />
+                        </a>
+                      <a href="../../page/article/detail.html?article_id={{=item.article_id}}" class="cmdlist-dic">
+                        {{=item.title}}
+                      </a>
+
+                      <p class="info Like_opt">
+                        <span>
+                          <i class="layui-icon  layui-icon-praise cartIcon"></i
+                          >{{=item.praise_len||'0'}}</span
+                        >
+                        <a class="info_right"
+                          ><i class="layui-icon layui-icon-group"></i
+                          >{{=item.hits}}</a
+                        >
+                      </p>
+                      <p class="info_time">{{=item.create_time}}</p>
+                    </div>
+                  </div>
+                  
+                  {{# }); }} {{# if(d.list.length === 0){ }} 无数据 {{# } }}
+                </script>
+              </div>
+            </div>
+          </div>
+            
+                                                                <!-- 热门小说/公告/图书 -->
+          <!--列表list-->
+          <div id="service_center_list_wrap" class="channels_list_wrap channels_list">
+            <div class="channelsB">
+              <h3 class="floorhd_tit">服务中心</h3>
+              <a class="floorhd_tit_more" href="../../page/service_center/list.html?pageName=服务中心"
+                >更多
+                <i class="layui-icon layui-icon-next"></i>
+              </a>
+            </div>
+            <div class="shelves">
+             <!--t_list_box-->
+              <div
+                class="layui-row layui-col-space15 t_list_wrap"
+                id="service_center_list_box"
+              >
+              
+                                                     
+              </div>
+            </div>
+          </div>
+                                                                                                                                                                                            
+   
+         </body>
+  <script src="../../js/axios.min.js"></script>
+  <script src="../../layui/layui.js"></script>
+  <script src="../../js/jquery.2.1.1.min.js"></script>
+  <script src="../../js/base.js"></script>
+  <script src="../../js/permissionSet.js"></script>
+  <script type="text/javascript">
+    var BaseUrl = baseUrl();
+    let token = sessionStorage.token;
+    let user_group = "";
+    let nickname = "";
+    let user_id = null;
+    
+    // 查看登录与否
+    if (sessionStorage.token != undefined) {
+     
+      user_group = JSON.parse(sessionStorage.personInfo).user_group;
+      user_id = JSON.parse(sessionStorage.personInfo).user_id;
+      nickname = JSON.parse(sessionStorage.personInfo).nickname;
+      
+    } else {
+      user_group = "游客";
+      user_id = null;
+    }
+    let rotationList = []; // 轮播图
+        let articlesList = []; // 商城咨询
+               // 其它list（除了商品/新闻）
+                                          let list_service_center= []
+                                                                                                                // 获取分类
+    function initClassification(arr,name,id){
+      let spanhtmls=''
+      for (var i = 0; i < arr.length; i++) {
+        var item = arr[i];
+        spanhtmls+="<span class='categries_title'><a href='../../page/"+id+"/list.html?type_name="+item.name+"&pageName="+name+"' class='categries_name'>"+item.name+"</a></span>/"          
+      }
+      var objecthtmls ="<li >"+name+"<span class='categries_symbol'>"+spanhtmls+"</span></li>"
+      $("#dynamic_menu_list").append(objecthtmls) 
+    }
+    // 退出登录
+    async function sign_out(url) {
+      let { data: ren } = await axios.get(BaseUrl + "/api/user/quit", {
+        params: {},
+      });
+      sessionStorage.clear();
+      if (url) {
+        window.location.replace(url);
+      } else {
+        window.location.reload();
+      }
+    };
+     // 个人中心
+    function to_admin(url) {
+     window.location.replace(
+       url
+      );
+    };
+    // 检索页面
+    function global_search_btn(url) {
+       window.location.replace('../../page/search/index.html' + "?word=" + search_val.value);
+    }
+        // 首页页面模块权限/数据请求
+    async function get_list() {
+      // 更多管理请求
+      let { data: ren } = await axios.get(BaseUrl + "/api/auth/get_list", {
+        params: {
+          user_group: user_group,
+        },
+      });
+      var permissions = ren.result.list;
+      let list_data = JSON.stringify(permissions);
+      sessionStorage.setItem("list_data", [list_data]);
+       var tables = ren.result.list;
+      
+      
+            check_action("/forum/list", "get", "forum");
+      async function get_forum_type_list() {
+           let { data: res } = await axios.get(
+                  BaseUrl + "/api/forum_type/get_list",
+                  {}
+          );
+          if (res.result && res.result.list) {
+           initClassification(res.result.list,'交流论坛',"forum")
+        }
+        }
+        get_forum_type_list()
+        
+                            }
+    
+    // 获取轮播图
+    async function get_rotationList() {
+      let { data: res } = await axios.get(BaseUrl + "/api/slides/get_list", {
+        params: {},
+      });
+      rotationList = res.result.list;
+      init("rotation_list");
+    }
+    // 获取list数据（除goods和新闻）
+    	        	        	             async function get_service_center_list() {
+          let url = "/api/service_center/get_list";
+                                        
+           let param = {
+                                                    page: 1,
+             size: 12,
+           }
+
+           
+           let { data: res_service_center } = await axios.get(
+              BaseUrl + url,
+              {params: param});
+            if (res_service_center.result) {
+              list_service_center=res_service_center.result
+              init("service_center_list_box");
+            }
+         }
+          	        	        	        	        	        	        	        	        	                  // 获取文章/商城咨询
+      async function get_article_type_list() {
+             let { data: res } = await axios.get(
+                     BaseUrl + "/api/article_type/get_list",
+                     {}
+             );
+             if (res.result && res.result.list) {
+               let text='新闻资讯'|| $page_title("/article/list")
+              initClassification(res.result.list,text,'article')  
+           }
+          }
+           get_article_type_list()
+      async function get_article_List() {
+        let { data: res_article } = await axios.get(BaseUrl + "/api/article/get_list", {
+          params: {
+            page: 1,
+            size: 6,
+          },
+        });
+        if (res_article.result) {
+         for (var k = 0, length = res_article.result.list.length; k < length; k++) {
+            console.log(res_article.result.list[k].create_time);
+            let time=$toTime(res_article.result.list[k].create_time,"yyyy-MM-dd")
+            console.log(time);
+            res_article.result.list[k].create_time=time
+           }
+          articlesList = res_article.result;
+          init("hot_articles_list");
+        }
+      }
+        // 获取商城中心
+        // 初始化页面-渲染数据
+    function init(text) {
+      layui.use(["laytpl", "carousel", "jquery"], function () {
+        var carousel = layui.carousel;
+        var $ = layui.jquery;
+        var laytpl = layui.laytpl;
+
+                                                                                 if (text == "service_center_list_box") {
+         function get_service_center_tpl_list(pagesNum, arr) {
+              let service_centerList = document.getElementById("service_center_list_box");
+                    // 列表--数据渲染
+                  service_centerList.innerHTML='';
+                   var objecthtmls =''
+                    for (var i = 0; i < list_service_center.list.length; i++) {
+                        var item = list_service_center.list[i];
+                        objecthtmls += "<div class='layui-col-md4 layui-col-sm4 t_list'>"
+                          +"<a class='href_a' data_href='./page/service_center/detail.html?service_center_id="+item['service_center_id']+"' >"
+                                +"<div class='t_box announcement_list_box'>"
+                                 +"<div class='t_img t_box_right'>"
+                                  	                                                                                                                +"<img src='"+fullUrl(BaseUrl,item['cover_photo'])+"' />"
+                                                                                                                                               +"</div>"
+                                  +"<div class='t_box_left'>" 
+                                  	                                                                                                               +"<p class='t_title'>项目名称:"+item['entry_name']+"</p>"
+                                         
+                                                                            
+                                                                      	                                                                                                               +"<p class='t_title'>项目类型:"+item['project_type']+"</p>"
+                                         
+                                                                            
+                                                                      	                                                                    	                                                                                                      +"</div>"   
+                                 
+                                   
+                                +"</div>"
+                                 +"</a>"
+                            +"</div>";
+                        //src 为你的图片地址
+                       
+                    }
+                     service_centerList.innerHTML=objecthtmls;
+          
+          }
+          get_service_center_tpl_list()
+           
+        }
+          $("#service_center_list_box").on("click",".href_a",function() {
+            var data_href = $(this).attr("data_href");
+            window.parent.$("#home-iframe-id").attr("src", data_href);
+          });
+                                                                                                                                                                                                      // 商城咨询数据渲染
+          if (text == "hot_articles_list") {
+            var article_list_Tpl = articles_list.innerHTML
+              hotArticlesList = document.getElementById("hot_articles_list");
+            laytpl(article_list_Tpl).render(articlesList, function (html) {
+              //渲染视图
+              hotArticlesList.innerHTML = html;
+            });
+          }
+                // 轮播图
+        if (text == "rotation_list") {
+          $("#rotation_list").empty();
+          for (var i = 0; i < rotationList.length; i++) {
+            var item = rotationList[i];
+            //src 为你的图片地址
+            $("#rotation_list").append(
+               "<div><img src=" + fullUrl(BaseUrl, item.img) + "></div>"
+            );
+          }
+          carousel.render({
+            elem: "#test1",
+            width: "100%", //设置容器宽度
+            height: "435px",
+            arrow: "always", //始终显示箭头
+            interval: 3000,
+          });
+        }
+      });
+    }
+
+    window.onload = function () {
+      // 不需要验证模块权限
+      get_rotationList();
+      get_list();// 首页页面模块权限/数据请求
+                    get_article_List();
+                                                      let service_center_flag = $check_action("/service_center/list", "get");
+         if(service_center_flag){
+           get_service_center_list();
+         }else{
+           $('#service_center_list_wrap').css('display', 'none')
+         }
+         
+                                                                                                                                        // 商城中心
+            
+       }
+      
+  </script>
+</html>

@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>智慧社区综合管理系统</title>
+    <link href="../../layui/css/layui.css" rel="stylesheet"/>
+    <link href="../../css/diy.css" rel="stylesheet"/>
+    <style>
+     #list_title_text_t{
+        min-height: 32px;
+      }
+          </style>
+</head>
+<body>
+<div class="container">
+ <div class='diy_list_form'>
+ <div class="list_title"><p class="list_title_text" id="list_title_text_t"></p></div>
+    <form class="layui-form diy_list_form_search">
+        <div class="layui-row diy_list_search">
+            <div class="layui-col-md1">
+                <p class="diy_list_search_title">关键字搜索:</p>
+            </div>
+           
+             <div class="layui-col-md2">
+        <div class="layui-form-item">
+            <input
+                    type="text"
+                    name="user_name"
+                    placeholder="用户姓名搜索"
+                    autocomplete="off"
+                    class="layui-input"
+                    id="user_name"
+            />
+        </div>
+    </div>
+                 <div class="layui-col-md2">
+        <div class="layui-form-item">
+            <input
+                    type="text"
+                    name="application_date"
+                    placeholder="申请日期搜索"
+                    autocomplete="off"
+                    class="layui-input"
+                    id="application_date"
+            />
+        </div>
+    </div>
+                                                                    
+            <div class="layui-col-md2">
+                <button
+                        type="button"
+                        class="layui-btn layui-btn-sm layui-btn-danger"
+                        id="searchGo"
+                >
+                    <i class="layui-icon layui-icon-search"></i>
+                </button>
+                <button
+                        type="button"
+                        class="layui-btn layui-btn-sm layui-btn-danger"
+                         id="clearForm"
+                >
+                    重置
+                </button>
+            </div>
+        </div>
+        <div class="diy_list_filter">
+          下拉搜索：
+            <div class="layui-form-item">
+                <button
+                        class="layui-btn demo-dropdown-base layui-btn-danger"
+                        id="sort_list_box"
+                >
+                    <span>排序</span>
+                    <i class="layui-icon layui-icon-down layui-font-12"></i>
+                </button>
+            </div>
+        </div>
+
+    </form>
+    <div class="layui-fluid layadmin-cmdlist-fluid">
+        <div class="layui-row layui-col-space15 t_list_wrap" id="volunteer_application_list_box">
+        </div>
+        <!-- 分页器--开始-->
+        <div id="cont" class="layui-row layui-col-space30"></div>
+        <div id="pageSum"></div>
+        <!-- 分页器--结束 -->
+    </div>
+    </div>
+</div>
+</div></body>
+<script src="../../js/base.js"></script>
+<script src="../../js/jquery.2.1.1.min.js"></script>
+<script src="../../layui/layui.js"></script>
+<script src="../../js/axios.min.js"></script>
+<script src="../../js/sdk.js"></script>
+<script src="../../js/permissionSet.js"></script>
+
+
+<script>
+ var BaseUrl = baseUrl()
+  let pageName = $getUrlParams().pageName;
+      if(pageName){
+        $("#list_title_text_t").text(pageName);
+      }else{
+        let text=parent.document.getElementById("home-iframe-id").contentWindow.location.href
+        $("#list_title_text_t").text(text);
+      }
+    check_action("/volunteer_application/list", "get", "volunteer_application_list_box");
+
+        layui.use(["laypage", "layer", "dropdown", "jquery","slider"], function () {
+            var laypage = layui.laypage,
+                    layer = layui.layer;
+            var dropdown = layui.dropdown;
+            var $ = layui.jquery;
+            var slider = layui.slider;
+
+           
+            let pages = 1;
+            let list_arr = [];
+            let type_arr = [];
+            let sort_list = [{
+                title: "创建时间从高到低",
+                value: "create_time desc",
+                // },
+                // {
+                //     title: "创建时间从低到高",
+                //     value: "create_time asc",
+                // },
+                // {
+                //     title: "更新时间从高到低",
+                //     value: "update_time desc",
+                // },
+                // {
+                //     title: "更新时间从低到高",
+                //     value: "update_time asc",
+                // },
+                //         {
+                //     title: "用户姓名正序",
+                //     value: "user_name asc",
+                // },
+                // {
+                //     title: "用户姓名倒序",
+                //     value: "user_name desc",
+                // },
+                //             {
+                //     title: "申请日期正序",
+                //     value: "application_date asc",
+                // },
+                // {
+                //     title: "申请日期倒序",
+                //     value: "application_date desc",
+                // },
+                //     ];
+                                     // 用户列表
+                let  list_user_community_users=[];
+                /**
+			 * 获取社区用户用户列表
+			 */
+			async function get_list_user_community_users() {
+				let { data: json } = await axios.get(
+                       BaseUrl + "/api/user/get_list?user_group=社区用户"
+                    );
+                if(json.result && json.result.list){
+					list_user_community_users = json.result.list;
+				}
+				else if(json.error){
+					console.error(json.error);
+				}
+			}
+           get_list_user_community_users()
+                                                                                                            function get_user_info(name,id){
+            var obj = null;
+                                                if (name == 'community_users'){
+                        obj =list_user_community_users.getObj({"user_id":id});
+                    }
+                                                                                                                                                        var ret = "";
+            if(obj){
+                ret = obj.nickname+"-"+obj.username;
+            }
+            return ret;
+		}
+            // 获取list数据
+            async function get_tpl_list(pagesNum, arr) {
+               var url="/api/volunteer_application/get_list"
+                              let params1 = {
+                    page: pagesNum,
+                    size: 12,
+                                                            examine_state: "已通过", // 审核状态
+                                                        };
+                let params;
+                if (arr) {
+                    params = Object.assign({}, params1, arr);
+                } else {
+                    params = params1;
+                }
+                const paramsList = removeEmptyValues(params)
+               
+    
+                let {data: res} = await axios.get(
+                        BaseUrl +url,
+                        {
+                            params: paramsList,
+                        }
+                );
+                if (res.result && res.result.list) {
+                                let volunteer_application_list_box = document.getElementById("volunteer_application_list_box");
+                    list_arr = res.result;
+                    // 列表--数据渲染
+                   volunteer_application_list_box.innerHTML='';
+                   var objecthtmls =''
+                    for (var i = 0; i < list_arr.list.length; i++) {
+                        var item = list_arr.list[i];
+                        objecthtmls += "<div class='layui-col-md4 layui-col-sm4 t_list'>"
+                          +"<a href='./detail.html?volunteer_application_id="+item['volunteer_application_id']+"'>"
+                                +"<div class='t_box announcement_list_box'>"
+                                 +"<div class='t_img t_box_right'>"
+                                  	                                                                    	                                                                    	                                                                    	                                                                    	                                                                                                       +"</div>"
+                                  +"<div class='t_box_left'>" 
+                                  	                                                                    	                                                                    	                                                                    	                                                                    	                                                                                                      +"</div>"   
+                                 
+                                   
+                                +"</div>"
+                                 +"</a>"
+                            +"</div>";
+                        //src 为你的图片地址
+                       
+                    }
+                     volunteer_application_list_box.innerHTML=objecthtmls;
+                    // 分页---总页数低于页码总数
+                    laypage.render({
+                        elem: "pageSum",
+                        curr: pages,
+                        count: Number(list_arr.count), //数据总数
+                        limit: 12,
+                        layout: ["prev", "page", "next"],
+                        jump: function (obj, first) {
+                            // 首次不执行
+                            if (!first) {
+                                // 点击其他页码跳转
+                                pages = obj.curr;
+                                get_tpl_list(obj.curr, {});
+                                // layer.msg("第 " + obj.curr + " 页");
+                            }
+                        },
+                    });
+                }
+            }
+
+            get_tpl_list(1);
+
+                                                        let query = {};
+            let clearForm = document.getElementById("clearForm");
+            clearForm.addEventListener('click', function () {
+                                                                                    query['user_name'] = ''
+                            user_name.value = ''
+                                                                                                    query['application_date'] = ''
+                            application_date.value = ''
+                                                                     get_tpl_list(1, query);
+            })
+                    let user_name = document.getElementById("user_name");
+            user_name.addEventListener('blur', function () {
+                const value = user_name.value;
+                if (value.length) {
+                    query['user_name'] = value
+                }
+            })
+                        let application_date = document.getElementById("application_date");
+            application_date.addEventListener('blur', function () {
+                const value = application_date.value;
+                if (value.length) {
+                    query['application_date'] = value
+                }
+            })
+                    // 跳转搜索页面
+            searchGo.onclick = function () {
+                        if (user_name.value.length) {
+                    query['user_name'] = user_name.value
+                } else {
+                    query['user_name'] = ''
+                }
+                            if (application_date.value.length) {
+                    query['application_date'] = application_date.value
+                } else {
+                    query['application_date'] = ''
+                }
+                        get_tpl_list(1, query);
+            }
+            // 初始化页面数据
+            // 筛选--渲染数据
+
+            // 排序--渲染数据
+            dropdown.render({
+                elem: "#sort_list_box",
+                data: sort_list,
+                click: function (obj) {
+                    this.elem.find("span").text(obj.title);
+                    query["orderby"] = obj.value;
+                    get_tpl_list(1, query);
+                },
+            });
+        });
+</script>
+</html>

@@ -1,0 +1,629 @@
+<!-- 新增/Add -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <link rel="stylesheet" href="../../layui/css/layui.css">
+    <link rel="stylesheet" href="../../css/diy.css">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+    <style>
+        img {
+            width: 200px;
+        }
+    </style>
+</head>
+
+<body>
+<article class="sign_in">
+    <div class="warp">
+        <div class="layui-container">
+            <div class="layui-row">
+                <form class="layui-form" action="">
+                                                                                                                                                                                                            <div class="layui-form-item" id="title_box">
+                                            <label class="layui-form-label">标题</label>
+                                            <div class="layui-input-block">
+                                                <input type="text" name="title" lay-verify="title" autocomplete="off"
+                                                       placeholder="请输入标题"
+                                                       class="layui-input" id="title">
+                                            </div>
+                                        </div>
+                                                                                                                                                                                                                                                                <div class="layui-form-item" id="publisher_box">
+                                            <label class="layui-form-label">发布人</label>
+                                            <div class="layui-input-block">
+                                                <input type="text" name="title" lay-verify="title" autocomplete="off"
+                                                       placeholder="请输入发布人"
+                                                       class="layui-input" id="publisher">
+                                            </div>
+                                        </div>
+                                                                                                                                                                                                                        <div class="layui-form-item" id="release_time_box">
+                                        <div class="layui-inline">
+                                            <label class="layui-form-label">发布时间</label>
+                                            <div class="layui-input-inline">
+                                                <input type="text" class="layui-input" id="release_time"
+                                                       placeholder="yyyy-MM-dd">
+                                            </div>
+                                        </div>
+                                    </div>
+                                                                                                                                                                                                                            <div class="layui-form-item" id="related_attachments_box">
+                                            <label class="layui-form-label">相关附件</label>
+                                            <div class="layui-upload-drag" id="related_attachments">
+                                                <i class="layui-icon"></i>
+                                                <p>将文件拖到此处,或点击上传</p>
+                                                <div class="layui-hide">
+                                                    <hr>
+                                                    <img src="" alt="上传成功后渲染" style="max-width: 196px">
+                                                </div>
+                                            </div>
+                                        </div>
+                                                                                                                                                                                    <div class="layui-form-item">
+                                    <label class="layui-form-label">详情</label>
+                                    <div class="layui-input-block">
+                                        <textarea id="demo" style="display: none;"></textarea>
+                                    </div>
+                                </div>
+                                                                                                                                                                                            <div class="layui-form-item" id="lower_multi_test_box">
+                                            <label class="layui-form-label">下多测试</label>
+                                            <div class="layui-input-block">
+                                                <input type="text" name="title" lay-verify="title" autocomplete="off"
+                                                       placeholder="请输入下多测试"
+                                                       class="layui-input" id="lower_multi_test">
+                                            </div>
+                                        </div>
+                                                                                                                                                
+                                                
+                        
+                        
+                        
+                                                            </form>
+                <div class="layui-btn-container">
+                    <a href="#" type="button" class="layui-btn layui-btn-normal login" id="submit" >确认/Confirm</a>
+                    <a href="./list.html" target="main_self_frame" type="button"
+                       class="layui-btn layui-btn-normal login">取消/Cancel</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</article>
+</body>
+<script src="../../layui/layui.js"></script>
+<script src="../../js/base.js"></script>
+<script src="../../js/index.js"></script>
+<script>
+    var BaseUrl = baseUrl()
+    let website_announcement_id = location.search.substring(1)
+    layui.use(['upload', 'element', 'layer', 'laydate', 'layedit'], function () {
+        var $ = layui.jquery
+                , upload = layui.upload
+                , element = layui.element
+                , layer = layui.layer
+                , laydate = layui.laydate
+                , layedit = layui.layedit
+                , form = layui.form;
+
+        let url
+
+        let token = sessionStorage.token || null
+        let personInfo = JSON.parse(sessionStorage.personInfo)
+        let user_group = personInfo.user_group
+        let use_id = personInfo.user_id
+
+        function  $get_stamp() {
+            return new Date().getTime();
+        }
+
+        function  $get_rand(len) {
+            var rand = Math.random();
+            return Math.ceil(rand * 10 ** len);
+        }
+
+        
+            // 权限判断
+            /**
+             * 获取路径对应操作权限 鉴权
+             * @param {String} action 操作名
+             */
+            function $check_action(path1, action = "get") {
+                var o = $get_power(path1);
+                if (o && o[action] != 0 && o[action] != false) {
+                    return true;
+                }
+                return false;
+            }
+
+            /**
+             * 获取权限
+             * @param {String} path 路由路径
+             */
+            function $get_power(path) {
+                var list_data = JSON.parse(sessionStorage.list_data)
+                var list = list_data;
+                var obj;
+                for (var i = 0; i < list.length; i++) {
+                    var o = list[i];
+                    if (o.path === path) {
+                        obj = o;
+                        break;
+                    }
+                }
+                return obj;
+            }
+
+        let submit = document.querySelector('#submit')
+        // 提交按钮校验权限
+        // if (   user_group == "管理员" ||$check_action('/website_announcement/view', 'add') || $check_action('/website_announcement/view', 'set')) {
+        //    submit.style.display = "block"
+        // }
+        // style="display: none"
+
+        
+            let field = "website_announcement_id";
+            let url_add = "website_announcement";
+            let url_set = "website_announcement";
+            let url_get_obj = "website_announcement";
+            let url_upload = "website_announcement"
+            let query = {
+                "website_announcement_id": 0,
+            }
+
+            let form_data2 = {
+                                                        "title":  '', // 标题
+                                                                            "publisher":  '', // 发布人
+                                                                            "release_time":  '', // 发布时间
+                                                                            "related_attachments":  '', // 相关附件
+                                                                            "details":  '', // 详情
+                                                                            "lower_multi_test":  '', // 下多测试
+                                                                                                                    "website_announcement_id": 0, // ID
+                                                                                            }
+
+            layui.layedit.set({
+      uploadImage: {
+        url: BaseUrl + '/api/website_announcement/upload' //接口url
+        , type: 'post' //默认post
+      }
+    });
+
+
+            var path1
+
+            function getpath() {
+                var list_data = JSON.parse(sessionStorage.list_data)
+                for (var i = 0; i < list_data.length; i++) {
+                    var o = list_data[i];
+                    if (o.path === "/website_announcement/table") {
+                        path1 = o.path
+                            $get_power(o.path)
+                    }
+                }
+            }
+
+            getpath()
+
+            /**
+             * 注册时是否有显示或操作字段的权限
+             * @param {String} action 操作名
+             * @param {String} field 查询的字段
+             * @param {String} path 路径
+             */
+            function $check_register_field(action, field, path1) {
+                var o = $get_power(path1);
+                var auth;
+                if (o && o[action] != 0 && o[action] != false) {
+                    auth = o["field_" + action];
+                }
+                if (auth) {
+                    return auth.indexOf(field) !== -1;
+                }
+                return false;
+            }
+
+            /**
+             * 是否有显示或操作字段的权限
+             * @param {String} action 操作名
+             * @param {String} field 查询的字段
+             */
+            function $check_field(action, field) {
+                var o = $get_power("/website_announcement/view");
+                var auth;
+                if (o && o[action] != 0 && o[action] != false) {
+                    auth = o["field_" + action];
+                }
+                if (auth) {
+                    return auth.indexOf(field) !== -1;
+                }
+                return false;
+            }
+
+            /**
+             * 获取路径对应操作权限 鉴权
+             * @param {String} action 操作名
+             */
+            function $check_exam(path1, action = "get") {
+                var o = $get_power(path1);
+                if (o) {
+                    var option = JSON.parse(o.option);
+                    if (option[action])
+                        return true
+                }
+                return false;
+            }
+
+            /**
+             * 是否有审核字段的权限
+             */
+            function $check_examine() {
+                var url = window.location.href;
+                var url_ = url.split("/")
+                var pg_url = url_[url_.length - 2]
+                let path = "/"+ pg_url + "/table"
+                var o = $get_power(path);
+                if (o){
+                    var option = JSON.parse(o.option);
+                    if (option.examine)
+                        return true
+                }
+                return false;
+            }
+
+                            if (user_group === '管理员') {
+                    $("#title_box").show()
+                } else {
+                    if ($check_field('add', 'title')){
+                        $("#title_box").show()
+                    }else {
+                        $("#title_box").hide()
+                    }
+                }
+                            if (user_group === '管理员') {
+                    $("#publisher_box").show()
+                } else {
+                    if ($check_field('add', 'publisher')){
+                        $("#publisher_box").show()
+                    }else {
+                        $("#publisher_box").hide()
+                    }
+                }
+                            if (user_group === '管理员') {
+                    $("#release_time_box").show()
+                } else {
+                    if ($check_field('add', 'release_time')){
+                        $("#release_time_box").show()
+                    }else {
+                        $("#release_time_box").hide()
+                    }
+                }
+                            if (user_group === '管理员') {
+                    $("#related_attachments_box").show()
+                } else {
+                    if ($check_field('add', 'related_attachments')){
+                        $("#related_attachments_box").show()
+                    }else {
+                        $("#related_attachments_box").hide()
+                    }
+                }
+                            if (user_group === '管理员') {
+                    $("#details_box").show()
+                } else {
+                    if ($check_field('add', 'details')){
+                        $("#details_box").show()
+                    }else {
+                        $("#details_box").hide()
+                    }
+                }
+                            if (user_group === '管理员') {
+                    $("#lower_multi_test_box").show()
+                } else {
+                    if ($check_field('add', 'lower_multi_test')){
+                        $("#lower_multi_test_box").show()
+                    }else {
+                        $("#lower_multi_test_box").hide()
+                    }
+                }
+            
+                                                                                                                                                                                                                                                                                                                var demo = layedit.build('demo', {
+                        tool: [
+                            'strong' //加粗
+                            , 'italic' //斜体
+                            , 'underline' //下划线
+                            , 'del' //删除/Del线
+
+                            , '|' //分割线
+
+                            , 'left' //左对齐
+                            , 'center' //居中对齐
+                            , 'right' //右对齐
+                            , 'link' //超链接
+                            , 'unlink' //清除链接
+                            , 'face' //表情
+                            , 'image' //插入图片
+                            , 'help' //帮助
+                        ]
+                    });
+                                                                                                        
+                            
+                            
+                            
+                            
+                            
+                            
+            
+                                                                                                                                                                        upload.render({
+                            elem: '#related_attachments'
+                            , url: BaseUrl + '/api/website_announcement/upload'
+                            , headers: {
+                                'x-auth-token': token
+                            } //此处配置你自己的上传接口即可
+                            , accept: 'file' //普通文件
+                            , done: function (res) {
+                                layer.msg('上传成功');
+                                form_data2.related_attachments = res.result.url
+                            }
+                        });
+                                                                                                                                    
+                                                            
+                                                            
+                                                    laydate.render({
+                        elem: '#release_time'
+                        , type: 'datetime'
+                        , done: function (value) {
+                            console.log(value)
+                            form_data2.release_time = value
+                        }
+                    });
+                                            
+                                                            
+                                                            
+                                            
+            
+                                            
+                                                            
+                                                            
+                                                            
+                                                            
+                                                            
+                                                    
+                                                //文本
+                    let title = document.querySelector("#title")
+                        title.onkeyup = function (event) {
+                        form_data2.title = event.target.value
+                    }
+                    //文本
+                                                                                                                                //文本
+                    let publisher = document.querySelector("#publisher")
+                        publisher.onkeyup = function (event) {
+                        form_data2.publisher = event.target.value
+                    }
+                    //文本
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    var data = sessionStorage.data || ''
+            if (data !== '') {
+                var data2 = JSON.parse(data)
+                Object.keys(form_data2).forEach(key => {
+                    Object.keys(data2).forEach(dbKey => {
+                        if (key === dbKey) {
+                            $('#' + key).val(data2[key])
+                            form_data2[key] = data2[key]
+                            $('#' + key).attr('disabled', 'disabled')
+                                                            
+                                                            
+                                                            
+                                                            
+                                                            
+                                                            
+                                                    }
+                    })
+                })
+                sessionStorage.removeItem("data");
+            }
+                                                                                                                                                                                                
+
+            if (website_announcement_id !== '') {
+                async function axios_get_3() {
+                    const {data: rese} = await axios.get(BaseUrl + '/api/website_announcement/get_obj', {
+                        params: {
+                                website_announcement_id: website_announcement_id
+                        }, headers: {
+                            'x-auth-token': token
+                        }
+                    })
+
+                    let data = rese.result.obj
+                    Object.keys(form_data2).forEach((key) => {
+                        form_data2[key] = data[key];
+                        $("#"+key).val(form_data2[key])
+                    });
+
+                    
+
+                                            
+                                            
+                                            
+                                            
+                                            
+                                            
+                                                                                   if (user_group === '管理员') {
+                            $("#title_box").show()
+                        } else {
+                            if ($check_field('set', 'title') || $check_field('get', 'title')){
+                                $("#title_box").show()
+                            }else {
+                                $("#title_box").hide()
+                            }
+                        }
+                                            if (user_group === '管理员') {
+                            $("#publisher_box").show()
+                        } else {
+                            if ($check_field('set', 'publisher') || $check_field('get', 'publisher')){
+                                $("#publisher_box").show()
+                            }else {
+                                $("#publisher_box").hide()
+                            }
+                        }
+                                            if (user_group === '管理员') {
+                            $("#release_time_box").show()
+                        } else {
+                            if ($check_field('set', 'release_time') || $check_field('get', 'release_time')){
+                                $("#release_time_box").show()
+                            }else {
+                                $("#release_time_box").hide()
+                            }
+                        }
+                                            if (user_group === '管理员') {
+                            $("#related_attachments_box").show()
+                        } else {
+                            if ($check_field('set', 'related_attachments') || $check_field('get', 'related_attachments')){
+                                $("#related_attachments_box").show()
+                            }else {
+                                $("#related_attachments_box").hide()
+                            }
+                        }
+                                            if (user_group === '管理员') {
+                            $("#details_box").show()
+                        } else {
+                            if ($check_field('set', 'details') || $check_field('get', 'details')){
+                                $("#details_box").show()
+                            }else {
+                                $("#details_box").hide()
+                            }
+                        }
+                                            if (user_group === '管理员') {
+                            $("#lower_multi_test_box").show()
+                        } else {
+                            if ($check_field('set', 'lower_multi_test') || $check_field('get', 'lower_multi_test')){
+                                $("#lower_multi_test_box").show()
+                            }else {
+                                $("#lower_multi_test_box").hide()
+                            }
+                        }
+                    
+                    // Array.prototype.slice.call(document.getElementsByTagName('input')).map(i => i.disabled = true)
+                    // Array.prototype.slice.call(document.getElementsByTagName('select')).map(i => i.disabled = true)
+                    // Array.prototype.slice.call(document.getElementsByTagName('textarea')).map(i => i.disabled = true)
+                                                                        //文本
+                                title.value = form_data2.title
+                            //文本
+                                                                        
+                                                    if (user_group === '管理员' || (form_data2['website_announcement_id'] && $check_field('set', 'title')) || (!form_data2['website_announcement_id'] && $check_field('add', 'title'))) {
+                            }else {
+                                $("#title").attr("disabled", true);
+                                $("#title > input[name='file']").attr('disabled', true);
+                            }
+                                                                                                //文本
+                                publisher.value = form_data2.publisher
+                            //文本
+                                                                        
+                                                    if (user_group === '管理员' || (form_data2['website_announcement_id'] && $check_field('set', 'publisher')) || (!form_data2['website_announcement_id'] && $check_field('add', 'publisher'))) {
+                            }else {
+                                $("#publisher").attr("disabled", true);
+                                $("#publisher > input[name='file']").attr('disabled', true);
+                            }
+                                                                                                                    
+                                                    if (user_group === '管理员' || (form_data2['website_announcement_id'] && $check_field('set', 'release_time')) || (!form_data2['website_announcement_id'] && $check_field('add', 'release_time'))) {
+                            }else {
+                                $("#release_time").attr("disabled", true);
+                                $("#release_time > input[name='file']").attr('disabled', true);
+                            }
+                                                                                                                    
+                                                    if (user_group === '管理员' || (form_data2['website_announcement_id'] && $check_field('set', 'related_attachments')) || (!form_data2['website_announcement_id'] && $check_field('add', 'related_attachments'))) {
+                            }else {
+                                document.getElementById("related_attachments").disabled = true;
+                            }
+                                                                                                                    
+                                                    if (user_group === '管理员' || (form_data2['website_announcement_id'] && $check_field('set', 'details')) || (!form_data2['website_announcement_id'] && $check_field('add', 'details'))) {
+                            }else {
+                                $("#details").attr("disabled", true);
+                                $("#details > input[name='file']").attr('disabled', true);
+                            }
+                                                                                                                    
+                                                    if (user_group === '管理员' || (form_data2['website_announcement_id'] && $check_field('set', 'lower_multi_test')) || (!form_data2['website_announcement_id'] && $check_field('add', 'lower_multi_test'))) {
+                            }else {
+                                $("#lower_multi_test").attr("disabled", true);
+                                $("#lower_multi_test > input[name='file']").attr('disabled', true);
+                            }
+                                                                                                                                                                                                                                                                                                                                                                                                                    release_time.value = layui.util.toDateString(form_data2.release_time, "yyyy-MM-dd HH:mm:ss")
+                                                                                                                                                                                                                            layedit.setContent(demo, form_data2.details)
+                                                                                                                                                                layui.form.render("select");
+                }
+                axios_get_3()
+            }
+
+
+            
+            submit.onclick = async function () {
+                try {
+                                                                                                                                                    //文本
+                            form_data2.title = title.value
+                            //文本
+                                                                                                                                                                        //文本
+                            form_data2.publisher = publisher.value
+                            //文本
+                                                                                                                            form_data2.release_time = layui.util.toDateString(form_data2.release_time, "yyyy-MM-dd HH:mm:ss")
+                                                                                                                                                                                                                                                                            form_data2.details = layedit.getContent(demo)
+                                                                                                                                                                                                            } catch (err) {
+                    console.log(err)
+                }
+                                                                
+                                                
+                let customize_field = []
+                                                            customize_field.push({"field_name": "标题", "field_value": form_data2.title});
+                                                                                customize_field.push({"field_name": "发布人", "field_value": form_data2.publisher});
+                                                                                customize_field.push({
+                            "field_name": "发布时间",
+                            "field_value": form_data2.release_time,
+                            "type": "datetime"
+                        });
+                                                                                customize_field.push({
+                            "field_name": "相关附件",
+                            "field_value": form_data2.related_attachments,
+                            "type": "file"
+                        });
+                                                                                customize_field.push({"field_name": "详情", "field_value": form_data2.details});
+                                                                                customize_field.push({"field_name": "下多测试", "field_value": form_data2.lower_multi_test});
+                                    
+                
+                if (website_announcement_id == '') {
+                                        console.log("新增/Add")
+                    const {data: res} = await axios.post(BaseUrl + '/api/website_announcement/add?',
+                            form_data2, {
+                                headers: {
+                                    'x-auth-token': token,
+                                    'Content-Type': 'application/json'
+                                }
+                            })
+                                        if (res.result == 1) {
+                        layer.msg('确认/Confirm完毕');
+                        setTimeout(function () {
+                            window.location.replace("./list.html");
+                        }, 1000)
+                    }else {
+              layer.msg(res.error.message);
+            }
+                                    } else {
+                                        console.log("详情/Details")
+                    
+                    const {data: res} = await axios.post(BaseUrl + '/api/website_announcement/set?website_announcement_id=' + website_announcement_id,
+                            form_data2, {
+                                headers: {
+                                    'x-auth-token': token,
+                                    'Content-Type': 'application/json'
+                                }
+                            })
+                    if (res.result == 1) {
+                        layer.msg('确认/Confirm完毕');
+                        setTimeout(function () {
+                            window.location.replace("./list.html");
+                        }, 1000)
+                    }else {
+              layer.msg(res.error.message);
+            }
+                }
+            }
+        
+    })
+    ;
+</script>
+
+</html>

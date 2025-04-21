@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title></title>
+    <link href="../../layui/css/layui.css" rel="stylesheet" />
+    <link href="../../css/diy.css" rel="stylesheet" />
+    <script src="../../js/axios.min.js"></script>
+    <style>
+      body {
+        background-color: #f2f2f2;
+      }
+      #list_title_text_t{
+        min-height: 32px;
+      }
+     
+    </style>
+  </head>
+  <body>
+        <div  id="articleList">
+          <div class="list_title"><p class="list_title_text" id="list_title_text_t"></p></div>
+          <form class="layui-form diy_list_form_search">
+            <div class="layui-row diy_list_search">
+              <!-- <div class="layui-col-md1">
+                <p class="diy_list_search_title">关键字搜索:</p>
+              </div> -->
+              <div class="layui-col-md2">
+                <div class="layui-form-item">
+                  <input
+                    type="keywords"
+                    name="keywords"
+                    placeholder="局部搜索"
+                    autocomplete="off"
+                    class="layui-input"
+                    id="keywords"
+                  />
+                </div>
+              </div>
+              <div class="layui-col-md1">
+                <button
+                  type="button"
+                  class="layui-btn layui-btn-sm layui-btn-danger"
+                  id="searchGo"
+                >
+                  <i class="layui-icon layui-icon-search"></i>
+                </button>
+              </div>
+            </div>
+            <div class="diy_list_filter">
+              <div class="layui-form-item">
+                <button
+                  class="layui-btn demo-dropdown-base layui-btn-danger"
+                  id="article_type_list"
+                >
+                  <span id="search_text">筛选</span>
+                  <i class="layui-icon layui-icon-down layui-font-12"></i>
+                </button>
+              </div>
+
+              <div class="layui-form-item">
+                <button
+                  class="layui-btn demo-dropdown-base layui-btn-danger"
+                  id="sort_list_box"
+                >
+                  <span>排序</span>
+                  <i class="layui-icon layui-icon-down layui-font-12"></i>
+                </button>
+              </div>
+          </form>
+          <div   class='hotListWarp'>
+            <div class="layadmin-cmdlist-fluid">
+              <div class="layui-row layui-col-space15 t_list_wrap" id="t_list_box">
+                
+              </div>
+              <!-- 分页器--开始-->
+              <div id="cont" class="layui-row layui-col-space30"></div>
+              <div id="pageSum"></div>
+              <!-- 分页器--结束 -->
+            </div>
+            <div class="hot_news">
+              <h4 class='hot_news_title'>新闻热门列表</h4>
+              <!-- <p href="#" class='more'>更多></a> -->
+              <ul class='hot_news_list_ul'>
+              </ul>
+            </div>
+        </div>
+       
+      </div>
+     
+      </div>
+  </body>
+
+  <script src="../../js/jquery.2.1.1.min.js"></script>
+  <script src="../../layui/layui.js"></script>
+  <script src="../../js/base.js"></script>
+  <script src="../../js/permissionSet.js"></script>
+  <script>  
+    var BaseUrl = baseUrl()
+    let pageName = $getUrlParams().pageName;
+      if(pageName){
+        $("#list_title_text_t").text(pageName);
+      }else{
+        let text=parent.document.getElementById("home-iframe-id").contentWindow.location.href
+        $("#list_title_text_t").text(text);
+      }
+    layui.use(["laypage", "layer", "dropdown", "jquery"], function () {
+      var laypage = layui.laypage,
+        layer = layui.layer;
+      var dropdown = layui.dropdown;
+      var $ = layui.jquery;
+      let vm = {
+        img: "img",
+        tag: "tag",
+        source: "source",
+        article_id: "article_id",
+        title: "title",
+        description: "description",
+        create_time: "create_time",
+        content: "content",
+        praise_len: "praise_len",
+        hits: "hits",
+      };
+      let type_name = $getUrlParams().type_name;
+      let keywords = document.getElementById("keywords");
+      // 商城中心
+      check_action("/article/list", "get", "articleList");
+      let article = $check_action("/article/list", "get");
+      if (article) {
+        let searchText = document.getElementById("search_text");
+        searchText.innerHTML = "筛选";
+      }
+      let pages = 1;
+      var laytpl = layui.laytpl;
+      let list_arr = [];
+      let type_arr = [];
+      let hot_list_arr = [];
+      let query = {};
+      let sort_list = [
+        {
+          title: "热度从高到低",
+          value: "hits desc",
+        },
+        {
+          title: "热度从低到高",
+          value: "hits asc",
+        },
+        {
+          title: "创建时间从高到低",
+          value: "create_time desc",
+        },
+        {
+          title: "创建时间从低到高",
+          value: "create_time asc",
+        },
+      ];
+     
+      // 获取热门新闻列表
+      async function get_hot_article_list() {
+        let params = {
+          page: 1,
+          size: 8,
+          orderby:'hits desc'
+        };
+        let { data: res } = await axios.get(
+          BaseUrl + "/api/article/get_list",
+          {params:params}
+        );
+        if (res.result && res.result.list) {
+          hot_list_arr = res.result;
+          // 热门新闻列表--数据渲染
+          $(".hot_news_list_ul").empty();
+          for (var i = 0; i <hot_list_arr.list.length; i++) {
+            var item = hot_list_arr.list[i];
+            let url = "./detail.html";
+            var objecthtmls = `<li class='hot_news_list_li'>
+                      <a href="./detail.html?article_id=${item.article_id}"   class='hot_news_list_a'>
+                          <span>${i+1}</span>
+                          <span>${item.title}</span>
+                      </a>
+                  </li>`
+            $(".hot_news_list_ul").append(objecthtmls);
+          
+          }
+        }
+      }
+      
+      // 获取list数据
+      // article
+      var getTpl = null;
+      async function get_tpl_list(pagesNum, arr) {
+        let params1 = {
+          page: pagesNum,
+          size: 12,
+          orderby: 'hits desc'
+        };
+        let params;
+        if (arr) {
+          params = Object.assign({}, params1, arr);
+        } else {
+          params = params1;
+        }
+        let { data: res } = await axios.get(
+          BaseUrl + "/api/article/get_list",
+          {
+            params: params,
+          }
+        );
+        if (res.result && res.result.list) {
+          list_arr = res.result;
+          // 列表--数据渲染
+          $("#t_list_box").empty();
+          for (var i = 0; i < list_arr.list.length; i++) {
+            var item = list_arr.list[i];
+            let url = "./detail.html";
+            // var obj = JSON.stringify(item).replace(/\"/g, "'");
+            var objecthtmls = `<div class="layui-col-md3 layui-col-sm6">
+            <div class="hot-goods-box">
+            <a href="./detail.html?${vm.article_id}=${item[vm.article_id]}">
+              <img src="${fullUrl(BaseUrl, item[vm.img])}" /></a>
+            <a href="javascript:;" class="cmdlist-dic">
+              ${item.title}
+            </a><p class="info Like_opt">
+                <span>
+                  <i
+                    class="layui-icon layui-icon-praise"
+                  ></i>
+                  ${item.praise_len}</span
+                >
+                <a class="info_right"
+                  ><i class="layui-icon layui-icon-group"></i>
+                  ${item.hits}</a
+                >
+              </p>
+              <p class="info_time">${toTime(item.create_time,"yyyy-MM-dd hh:mm:ss")}</p></div></div>`;
+            //src 为你的图片地址
+            $("#t_list_box").append(objecthtmls);
+          }
+          // 分页---总页数低于页码总数
+          laypage.render({
+            elem: "pageSum",
+            curr: pages,
+            count: Number(list_arr.count), //数据总数
+            limit: 6,
+            layout: ["prev", "page", "next"],
+            jump: function (obj, first) {
+              // 首次不执行
+              if (!first) {
+                // 点击其他页码跳转
+                pages = obj.curr;
+                get_tpl_list(obj.curr, {});
+                // layer.msg("第 " + obj.curr + " 页");
+              }
+            },
+          });
+        }
+      }
+      // 获取筛选下拉
+      async function list_article_type() {
+        type_arr = [];
+        let { data: res } = await axios.get(
+          BaseUrl + "/api/article_type/get_list",
+          {
+            params: {},
+          }
+        );
+        if (res.result && res.result.list) {
+          type_arr.push({
+            title: "全部",
+            value: "0",
+          });
+          res.result.list.map((o) =>
+            type_arr.push({
+              title: o.name,
+              value: o.type_id,
+            })
+          );
+        }
+      }
+      if(type_name){
+      query['type']=type_name
+      get_tpl_list(1,query);
+     }else{
+      get_tpl_list(1)
+     }
+      list_article_type();
+      get_hot_article_list()
+  // 将一个对象拼接在url的后面:   createURL(url, linkObj)
+  function createURL(url, param) {
+    var urlLink = "";
+    $.each(param, function (item, key) {
+      var link = "&" + item + "=" + encodeURI(encodeURI(key));
+      urlLink += link;
+    });
+    urlLink = url + "?" + urlLink.substr(1);
+    return urlLink.replace(" ", "");
+  }
+  let searchGo = document.getElementById("searchGo");
+ // 跳转搜索页面
+ searchGo.onclick = function() {
+      let params = {
+        word: keywords.value,
+        search_key: "title",
+        search_type: "article",
+        search_title: "文章",
+      };
+      let url = "../search/detail.html";
+      //console.log(keywords.value);
+      var endLink = createURL(url, params);
+      //console.log(endLink);
+      window.location.replace(endLink);
+    }
+    
+      // 筛选--渲染数据
+      dropdown.render({
+        elem: "#article_type_list",
+        data: type_arr,
+        click: function (obj) {
+          this.elem.find("span").text(obj.title);
+          if (obj.title == "全部") {
+            get_tpl_list(1, {});
+          } else {
+            query["type"] = obj.title;
+            get_tpl_list(1, query);
+          }
+        },
+      });
+
+      // 排序--渲染数据
+      dropdown.render({
+        elem: "#sort_list_box",
+        data: sort_list,
+        click: function (obj) {
+          this.elem.find("span").text(obj.title);
+          query["orderby"] = obj.value;
+          get_tpl_list(1, query);
+        },
+      });
+    });
+  
+    // 添加购物车
+   async function add_cart(obj) {
+      console.log(obj);
+      var {
+        title,
+        img,
+        price,
+        price_ago,
+        num_buy: num,
+        description,
+        article_id,
+        type,
+      } = obj;
+      var body = {
+        title,
+        img,
+        price,
+        price_ago,
+        num,
+        price_count: price,
+        description,
+        article_id,
+        type,
+        user_id: JSON.parse(sessionStorage.personInfo).user_id,
+      };
+      body.num = 1;
+      let { data: res } = await axios.get(BaseUrl + "/api/cart/get_list", {
+        params: {
+          article_id: obj.article_id,
+          user_id: JSON.parse(sessionStorage.personInfo).user_id,
+        },
+      });
+      if (res.result.count) {
+        var { cart_id, num, price, price_count } = res.result.list[0];
+        num += 1;
+        price_count += price;
+        let { data: resCart } = await axios.post(
+          BaseUrl + `/api/cart/set?cart_id=${cart_id}`,
+          {
+            num,
+            price,
+            price_count,
+          }
+        );
+        if (resCart) {
+          layer.msg("已加入购物车");
+          console.log("更改值");
+        }
+      } else {
+        let { data: resCartAdd } = await axios.post(BaseUrl + `/api/cart/add`, {
+          body,
+        });
+        if (resCartAdd) {
+          layer.msg("已加入购物车");
+        }
+      }
+    }
+  </script>
+</html>

@@ -1,0 +1,537 @@
+<!-- 模板引擎 table 页面 -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>智慧社区综合管理系统</title>
+    <link rel="stylesheet" href="../../layui/css/layui.css">
+    <link rel="stylesheet" href="../../css/diy.css">
+  <style>
+        .layui-body {
+            overflow-x: scroll;
+        }
+        body{
+      background:none;
+        }
+        img {
+            width: 20px;
+            height: 20px;
+        }
+    </style>
+</head>
+
+<body>
+<div class="section">
+    <!-- 内容主体区域 -->
+    
+    <div class="manu manu-btns" style="padding: 15px;">
+        <form class="layui-form" action="">
+            <div class="form-input-box-s layui-form-item">
+                
+                                                                                                                                <div class="layui-inline">
+                            <label class="layui-form-label">用户姓名</label>
+                                                            <div class="layui-input-inline input-i block">
+                                    <input type="text" name="title" required lay-verify="required" autocomplete="off"
+                                           class="layui-input">
+                                </div>
+                                </div>
+                                                                                                                                                                    <div class="layui-inline">
+                            <label class="layui-form-label">申请日期</label>
+                                                            <div class="layui-input-inline input-i block">
+                                    <input type="text" name="title" required lay-verify="required" autocomplete="off"
+                                           class="layui-input">
+                                </div>
+                                </div>
+                                                                                                                                                </div>
+            <div class="buts  layui-form-item">
+                            <button type="button" class="layui-btn" id="inquire"><span>查询</span></button>
+                <button type="button" class="layui-btn" id="reset"><span>重置</span></button>
+                        <button type="button" class="layui-btn" id="delete" style="display: none"><span>删除</span></button>
+            <button  type="button" class="layui-btn" target="main_self_frame" id="add" style="display: none"><span>新增</span></button>
+
+                    </div>
+        </form>
+
+          
+
+        <div class="Customize-the-box">
+            <div class="circle"></div>
+            <div class="circle"></div>
+            <div class="card-inner"></div>
+        </div>
+    </div>
+  
+  
+ 
+    <p id='volunteer_application_text' class="table_name_text">数据列表</p>
+    <div class="table">
+        <table class="layui-hide" id="volunteer_application" lay-filter="volunteer_application"></table>
+
+        <script type="text/html" id="toolbarDemo">
+            <div class="layui-btn-container">
+
+                
+                                                
+                {{# if(d.detail_flag){ }}
+                <button class="layui-btn layui-btn-sm" lay-event="detail">详情</button>
+                {{# } }}
+
+                            </div>
+        </script>
+    </div>
+</div>
+</body>
+<script src="../../js/jquery.2.1.1.min.js"></script>
+<script src="../../layui/layui.js"></script>
+<script src="../../js/index.js"></script>
+<script src="../../js/base.js"></script>
+<script src="../../js/axios.min.js"></script>
+<script src="../../js/permissionSet.js"></script>
+    <script>
+
+    var BaseUrl = baseUrl()
+   let tabNameText = $getUrlParams().tabName
+    $('#volunteer_application_text').text(tabNameText+'列表')
+    layui.use(['element', 'layer', 'util'], function () {
+        var element = layui.element
+                , layer = layui.layer
+                , util = layui.util
+                , table = layui.table
+                , $ = layui.$;
+
+        let personInfo = JSON.parse(sessionStorage.personInfo)
+        let user_group = personInfo.user_group
+        let use_id = personInfo.user_id
+        let url = BaseUrl + '/api/volunteer_application/get_list?like=0'
+        let add = document.querySelector('#add')
+        let deletes = document.querySelector('#delete')
+        
+        let sqlwhere
+        let data_data = {size: 10, orderby: 'create_time desc'}
+        let detail_flag = false;
+         add.addEventListener('click', () => {
+              window.location.href = "./view.html";
+        })
+        // 获取路径权限
+        async function get_list() {
+            let {data: ren} = await axios.get(BaseUrl + '/api/auth/get_list', {
+                params: {
+                    user_group: personInfo.user_group
+                }
+            })
+        }
+
+        get_list()
+
+
+        // 权限判断
+        /**
+         * 获取路径对应操作权限 鉴权
+         * @param {String} action 操作名
+         */
+        function $check_action(path1, action = "get") {
+            var o = $get_power(path1);
+            if (o && o[action] != 0 && o[action] != false) {
+                return true;
+            }
+            return false;
+        }
+
+        if (user_group == "管理员" || $check_action('/volunteer_application/table', 'del') || $check_action('/volunteer_application/view', 'del')) {
+            deletes.style.display = "inline-block"
+        }
+        if (user_group == "管理员" || $check_action('/volunteer_application/table', 'add') || $check_action('/volunteer_application/view', 'add')) {
+            add.style.display = "inline-block"
+        }
+        if (user_group == "管理员" || $check_action('/volunteer_application/view', 'get') || $check_action('/volunteer_application/view', 'set')) {
+            detail_flag = true;
+        }
+
+        /**
+         * 获取权限
+         * @param {String} path 路由路径
+         */
+        function $get_power(path) {
+            var list_data = JSON.parse(sessionStorage.list_data)
+            var list = list_data;
+            var obj;
+            for (var i = 0; i < list.length; i++) {
+                var o = list[i];
+                if (o.path === path) {
+                    obj = o;
+                    break;
+                }
+            }
+            return obj;
+        }
+
+        var path1
+
+        function getpath() {
+            var list_data = JSON.parse(sessionStorage.list_data)
+            for (var i = 0; i < list_data.length; i++) {
+                var o = list_data[i];
+                if (o.path === "/volunteer_application/table") {
+                    console.log(o.path);
+                    path1 = o.path
+                        $get_power(o.path)
+                }
+            }
+        }
+
+        getpath()
+        /**
+         * 注册时是否有显示或操作字段的权限
+         * @param {String} action 操作名
+         * @param {String} field <span>查询</span>的字段
+         * @param {String} path 路径
+         */
+        function $check_register_field(action, field, path1) {
+            var o = $get_power(path1);
+            var auth;
+            if (o && o[action] != 0 && o[action] != false) {
+                auth = o["field_" + action];
+            }
+            if (auth) {
+                return auth.indexOf(field) !== -1;
+            }
+            return false;
+        }
+
+        /**
+         * 是否有显示或操作字段的权限
+         * @param {String} action 操作名
+         * @param {String} field <span>查询</span>的字段
+         */
+        function $check_field(action, field, path1) {
+            var o = $get_power(path1);
+            var auth;
+            if (o && o[action] != 0 && o[action] != false) {
+                auth = o["field_" + action];
+            }
+            if (auth) {
+                return auth.indexOf(field) !== -1;
+            }
+            return false;
+        }
+
+        /**
+         * 是否有显示或操作支付的权限
+         * @param {String} path 路径
+         */
+        function $check_pay(path) {
+            let o = $get_power(path);
+            if (o){
+                let option = JSON.parse(o.option);
+                if (option.pay)
+                    return true
+            }
+            return false;
+        }
+
+        /**
+         * 获取路径对应操作权限 鉴权
+         * @param {String} action 操作名
+         */
+        function $check_exam(path1, action = "get") {
+            var o = $get_power(path1);
+            if (o) {
+                var option = JSON.parse(o.option);
+                if (option[action])
+                    return true
+            }
+            return false;
+        }
+
+        function $check_option(path,op) {
+            var o = $get_power(path);
+            if (o){
+                var option = JSON.parse(o.option);
+                if (option[op])
+                    return true
+            }
+            return false;
+        }
+
+                    if (user_group != "管理员") {
+                                    sqlwhere = "(";
+                                                                        if (user_group == "社区用户") {
+                                sqlwhere += "community_users = " + use_id + " or ";
+                            }
+                                                                                                                                                                                                                                                if (sqlwhere.length > 1) {
+                        sqlwhere = sqlwhere.substr(0, sqlwhere.length - 4);
+                        sqlwhere += ")";
+                        data_data = {size: 10, orderby: 'create_time desc', sqlwhere: sqlwhere}
+                    }else {
+                        sqlwhere = null
+                    }
+                            }
+        
+        let token = sessionStorage.token || null
+    table.render({
+        elem: '#volunteer_application'
+        , toolbar: true
+        ,id: 'volunteer_application'
+        , url: url
+        , headers: {
+            'x-auth-token': token,
+            'Content-Type': 'application/json'
+        }
+        , page: {
+            layout: ['limit', 'count', 'prev', 'page', 'next', 'skip']
+            //,curr: 5
+            , groups: 1
+            , first: false
+            , last: false
+        }
+        , cols: [[
+                    {type: 'checkbox'}
+                        
+                                    , {
+                field: 'community_users', width: 100, title: '社区用户', sort: true
+                                                                                                                                                                    , templet:
+
+                            function (d) {
+                                let nickname = ""
+                                let username = ""
+                                $.ajax({
+                                    url: BaseUrl + "/api/user/get_list",
+                                    type: "get",
+                                    async: false,
+                                    data: {
+                                        user_group: "社区用户"
+                                    },
+                                    success: function (data) {
+                                        if (data && typeof data === 'string'){
+                                            data = JSON.parse(data);
+                                        }
+                                        if (data.result) {
+                                            for (let index = 0; index < data.result.list.length; index++) {
+                                                if (d.community_users === data.result.list[index].user_id) {
+                                                    nickname = data.result.list[index].nickname
+                                                    username = data.result.list[index].username
+                                                }
+                                            }
+                                        }
+                                    }
+                                });
+                                return '<span>' + username + '-' + nickname + '</span>'
+                            }
+                
+            }
+                                                , {
+                field: 'user_name', width: 100, title: '用户姓名', sort: true
+                                                                                                                                                
+            }
+                                                , {
+                field: 'attachment_information', width: 100, title: '附件信息', sort: true
+                                                                                                    , templet: function (d) {
+                        return "<div><a href=" + fullUrl(BaseUrl,d.attachment_information) + " target='_blank'> 点击下载</a></div > "
+                    }
+                                                                                
+            }
+                                                , {
+                field: 'application_date', width: 100, title: '申请日期', sort: true
+                                                                    , templet: "<div>{{layui.util.toDateString(d.application_date, 'yyyy-MM-dd')}}</div>"
+                                                                                                                
+            }
+                                                , {
+                field: 'application_remarks', width: 100, title: '申请备注', sort: true
+                                                                                                                                                
+            }
+                    
+                    ,
+            {
+                field: 'examine_state', title
+        :
+            '审核状态', sort
+        :
+            true, width
+        :
+            100
+        }
+        
+        
+                
+    ,
+        {
+            field: 'create_time',
+                    width
+        :
+            100,
+                    title
+        :
+            '新增时间',
+                    sort
+        :
+            true,
+                    templet
+        :
+            "<div>{{layui.util.toDateString(d.create_time, 'yyyy-MM-dd HH:mm:ss')}}</div>"
+        }
+    ,
+        {
+            field: 'update_time',
+                    width
+        :
+            100,
+                    title
+        :
+            '更新时间',
+                    sort
+        :
+            true,
+                    templet
+        :
+            "<div>{{layui.util.toDateString(d.update_time, 'yyyy-MM-dd HH:mm:ss')}}</div>"
+        }
+                
+        
+        
+        
+                ,
+            {
+                field: 'operate',
+                        title
+            :
+                '操作',
+                        sort
+            :
+                true,
+             width
+            :
+                300,
+                        fixed
+            :
+                'right',
+                        toolbar
+            :
+                "#toolbarDemo"
+            }
+            ]]
+
+    ,
+        done: function (res, curr, count) { // 表格渲染完成之后的回调
+            if (res.count == null) { // 无数据时直接返回了
+                return;
+            }
+
+                                                if (user_group === '管理员' || $check_field('get', 'community_users', path1)) {
+                        // console.log("显示")
+                    } else {
+                        $("[data-field='community_users']").css('display', 'none');
+                    }
+                                                                if (user_group === '管理员' || $check_field('get', 'user_name', path1)) {
+                        // console.log("显示")
+                    } else {
+                        $("[data-field='user_name']").css('display', 'none');
+                    }
+                                                                if (user_group === '管理员' || $check_field('get', 'attachment_information', path1)) {
+                        // console.log("显示")
+                    } else {
+                        $("[data-field='attachment_information']").css('display', 'none');
+                    }
+                                                                if (user_group === '管理员' || $check_field('get', 'application_date', path1)) {
+                        // console.log("显示")
+                    } else {
+                        $("[data-field='application_date']").css('display', 'none');
+                    }
+                                                                if (user_group === '管理员' || $check_field('get', 'application_remarks', path1)) {
+                        // console.log("显示")
+                    } else {
+                        $("[data-field='application_remarks']").css('display', 'none');
+                    }
+                            
+            
+            
+            
+                        // 重新渲染
+        }
+    ,
+        page: true,
+                request
+    :
+        {
+            limitName: 'size'
+        }
+    ,
+        response: {
+            statusName: 'code', //规定返回/Back的状态码字段为code
+                    statusCode
+        :
+            100 //规定成功的状态码为100
+        }
+    ,
+        parseData: function (res) {
+
+            
+            if (user_group == "管理员" || $check_pay('/volunteer_application/table')) {
+                for (var i = 0; i < res.result.list.length; i++) {
+                    res.result.list[i].check_pay = true
+                }
+            }
+            if (user_group == "管理员" || $check_action('/volunteer_application/view', 'set') || $check_action('/volunteer_application/view', 'get')) {
+                for (var i = 0; i < res.result.list.length; i++) {
+                    res.result.list[i].detail_flag = detail_flag
+                }
+            }
+            return {
+                "code": 100,
+                "msg": "",
+                "count": res.result.count,
+                "data": res.result.list
+            }
+        }
+    ,
+        where: data_data
+    })
+        ;
+
+
+        table.on('tool(volunteer_application)', function (obj) {
+            var data = obj.data;
+        if (obj.event === 'detail')
+        {
+
+                           window.location.href = "./view.html?" + data.volunteer_application_id;
+                  //layopen_dateil("./view.html?" + data.volunteer_application_id)
+                    }
+            
+            
+
+                                            });
+
+        //下拉框
+
+        
+                                                                                                                                                                                                                                                                                    
+        // 请求参数：
+        let request = {
+            like: 0, size: 10, page: 1,
+                                                                                                                'user_name': '',
+                                                                                                                                        'application_date': '',
+                                                                                    }
+
+        if (user_group != "管理员") {
+            request['orderby'] = 'create_time desc'
+            if (sqlwhere){
+                request['sqlwhere'] = sqlwhere
+            }
+        }
+
+        // <span>重置</span>/Reset参数
+        let resetName = data_data
+
+        // 下拉框的<span>重置</span>/Reset参数
+        let resetSelect = []
+        //下拉框<span>重置</span>/Reset参数
+        fun('volunteer_application', BaseUrl + '/api/volunteer_application/del', 'volunteer_application_id', request, resetName, resetSelect        )
+
+
+              
+    })
+</script>
+
+</html>

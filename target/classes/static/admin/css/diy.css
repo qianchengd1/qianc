@@ -1,0 +1,1330 @@
+.layui-logo{
+    width: 201px !important;
+}
+.layui-side li{
+    /* width: 235px !important; */
+}
+/* .layui-layout-body, .layui-side, .layui-side-scroll {
+    padding-right: 35px;
+} */
+.layui-laypage-count::before{
+    content: '合计';
+}
+
+
+
+:root {
+    --main-color: #ff0000;
+    --secondary-color: #00ff00;
+    --form-color:#171313;
+    --login-input-color:#ffffff;
+    --border-radius:15px;
+    --radius-left: 10px 0px 0px 10px;
+    --radius-right:  0px 10px 10px 0px;
+    --title-h1:#ffffff;
+    --frime-hader-color:#d8d8e2; /* 首页头部颜色 */
+    --frime-side-scroll:#938f8f; /* 侧边栏颜色*/
+    --frime-content-color:#cbd8bd; /*内容体颜色*/
+    --form-box-lable:#535353;
+    --input-bg-color:#e3f9fd;
+    --input-color:#323233;
+    --haeder-color: #cbd8bd;
+    --iframe-color: #cbd8bd;
+    --login-vm-color:#c6e1d5;
+    }
+
+
+.layui-bg-black{
+    background-color: #0F2E52  !important;
+	border:none;
+}
+
+.layui-nav {
+    background-color: #ffffff00 !important;
+}
+.layui-bg-black a{
+	color:#eee !important;
+}
+    
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* 登录界面样式 */
+
+ .login .layui-row{
+	 display: flex;
+	 width: 900px;
+	 margin: 10px auto;
+	
+ }
+  .login  .empty-box{
+	  width: 50%;
+	  height: 500px;
+	  background: url(../img/lg.png) no-repeat;
+	  background-size:100% 100%;
+	  background-color: #fff;
+  }
+.login .login-form-box{
+	 width: 50%;
+	   height: 500px;
+}
+.login-form-box .form-box .layui-form {
+ 
+}
+.login-form-box.login-form-box .form-box{
+  width: 100%;
+ min-height: 500px;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  background: #fff;
+  max-height: 500px;
+ 
+ 
+}
+.login-form-box .home-h1{
+	width: 100%;
+	height: 132px;
+	line-height: 92px !important;
+	 background: #fff !important;
+}
+.login-form-box .form-box .layui-form .layui-form-label{
+    width: 107px !important;
+	color: #fff;
+	display: none;
+	
+
+	
+}
+.login-form-box .form-box .layui-form .layui-form-label
+.login-form-box .form-box .layui-form .layui-form-item,.login-form-box .test-v {
+    
+/* 	border: 1px solid #bdb5b5; */
+	margin: 0px auto 50px;
+}
+
+.login-form-box .home-h1 {
+   
+   /* margin-bottom: 20px; */
+}
+:is(.forgot .login .register) h1{
+    color: #ffffff;
+}
+	.login .home-h1 h1{
+		color: #222;
+		font-weight: 600;
+	}
+.login .warp,.register .warp,.forgot .warp{
+    width: 100%;
+    background: url(../img/bg.jpg) no-repeat;
+    background-size:100% 100%;
+   height:100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.form-box .layui-btn-container .login-button{
+   /* margin: 10px 22px;
+    width: 120px;
+    height: 50px;
+    border-radius: 5px;
+    line-height: 50px; */
+	width: 348px;
+/* 	background-color: #00ff00; */
+	
+}
+.layui-btn-container .layui-btn-sm{
+	background-color: #4597fc !important;
+	border: none;
+}
+.form-box .layui-btn-container .login-button a{
+	background-color: #0d6fae;
+	margin-bottom: 0px !important;
+}
+.login-btn a{
+    width: inherit;
+}
+
+.register .warp{
+	  
+}
+
+.register-form-box .layui-form-item label{
+    color: var(--form-box-lable);
+    width: 145px !important;
+    margin-right: 10px;
+    flex-basis: 27%;
+    padding: 9px !important;
+}
+.layui-input-block{
+    width: 72%;
+}
+
+
+.login .layui-input-block{
+    width: 102%;
+}
+
+
+
+/* 验证 */
+/*  */
+.login-form-box .test-v input{
+	height: 38px;
+	background-color: #fff;
+	border: none;
+    width: 50%;
+	font-size: 14px !important;
+	border-bottom: 1px solid;
+	    margin-left: -23px !important;
+	    padding-left: 6px;
+	
+}
+.login-form-box .test-v input::placeholder{
+	color: #222 !important;
+}
+   #canvas{
+	   height: 40px;
+	   width:100px;
+	   background-color: #caced1;
+	 
+   }
+	.test-v input::after,.login-form-box .layui-form-label::after{
+		/* content: '：'; */
+	}
+	.login-form-box .layui-form-label:nth-child(1)::after{
+		content: '';
+		background: url(../img/forum_4.jpg) no-repeat;
+		background-size:100% 100%;
+		position: relative;
+		top: 0px;
+		left: 10px;
+	}
+.login-form-box .layui-input::placeholder{
+	color: #222 !important;
+} 
+.login .home-h1::before{
+	content: '欢迎登录!';
+	font-size: 22px;
+	position: absolute;
+	top: 10px;
+	left: 47%;
+}
+.forgot .forgot-box .layui-form{
+    display: flex;
+    flex-direction: column;
+}
+
+.login .register-button .layui-btn-normal,.login .retrieve-button .layui-btn-normal{
+	background-color: transparent;
+	border: none !important;
+	color: #222;
+width: 200px;
+height: 30px !important;
+font-size: 14px !important;
+}
+.login  .layui-form-item{
+	margin-bottom: 20px !important;
+}
+
+
+/* 注册 */
+
+.register-form-box .form-box,.register-bottom{
+    width: 100%;
+ 
+    /* flex-basis: 50%; */
+    /* border-radius: 10px; */
+	    background: #fff;
+		padding-top: 20px;
+}
+
+.register-form-box {
+    width: 50%;
+    margin: 0 auto;
+}
+.register-form-box .form-box,.forgot-form-box{
+  width: 100%;
+/*  min-height: 600px; */
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+  align-items: center;
+  background: #fff;
+  flex-wrap: wrap;
+}
+.register-form-box .layui-form-item{
+	width: 40%;
+}
+.register h1 {
+    text-align: center;
+	color: #fff !important;
+}
+.register .diy_sf{
+	
+	background: #fff;
+	width: 100%;
+
+}
+
+.register-form-box .layui-form{
+    display: flex;
+  
+    flex-wrap: wrap;
+    padding-top:3%;
+}
+.register-bottom .layui-form-label::after{
+	content: '：';
+}
+.register .register-box{
+	background-color: #fff !important;
+}
+.register .layui-form-item{
+
+	background-color: #fff;
+}
+.register .layui-form-item .layui-input-block{
+		border-bottom: 1px solid  #bdb5b5;
+}
+.register .layui-input-block input::placeholder{
+	color: #fff;
+}
+/* 忘记密码 */
+.retrieve-form-box .form-box{
+    height: 500px;
+    width: 100%;
+}
+.forgot-form-box {
+    width: 50%;
+    height:500px;
+    box-sizing: border-box;
+    margin: 0 auto;
+   
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    position: relative;
+	
+}
+
+.forgot-form-box .forgot-h1{
+   margin-bottom: 50px;
+}
+
+.register-bottom,.diy_sf {
+    /* transform: translateX(-8rem); */
+}
+
+.form-input-box-s ,.form-input-box-t,.form-input-box-t .layui-form-item {
+
+display: flex;
+    flex-direction: column;
+}
+
+.forgot-form-box .layui-form-item,.layui-form-item{
+
+    display: flex;
+ /*   margin-bottom: 35px; */
+}
+
+
+.forgot .layui-input-block{
+	border-bottom: 1px solid #222;
+}
+
+
+.sign_in .warp-forgot .layui-form {
+    flex-direction: row;
+	display: flex;
+	flex-wrap: wrap
+
+}
+.forgot-form-box .layui-form>.layui-form-item{
+	 width: 45%;
+}
+.forgot-btn-box{
+	margin-top: 50px;
+}
+/* 头部 */
+.layui-layout-admin .layui-header{
+   
+	background-color:#1574C2 ;
+	
+	
+}
+.layui-header .home-h1{
+	color: #fff;
+	    position: relative;
+	    left: -70%;
+		font-size: 22px;
+}
+
+.layui-header #userInfo a{
+    color:#fff !important;
+	border-right: 1px solid #fff;
+	height: 30px;
+	line-height: 30px;
+	margin-top: 20px;
+}
+
+.layui-header .layui-logo{
+	background-color: #0F2E52 !important;
+	width: 13% !important;
+}
+/* 侧边栏 */
+  .layui-nav-tree{
+  background-color:  #0F2E52 !important;
+   width: 100% !important;
+  }
+  .layui-nav-tree .layui-nav-item{
+	  background-color:  #0F2E52 !important;
+	   width: 100% !important;
+	   position: relative;
+  }
+  .layui-nav-tree .layui-nav-item>a{
+	  padding-left: 45px;
+  }
+  .layui-nav-tree .layui-nav-item:nth-child(2n+1)>a::before{
+	  content: '';
+  background: url(../img/b1.png)  no-repeat;
+  background-size:100% 100%;
+  position:absolute;
+  left: 10px;
+  top: 20px;
+  width: 20px;
+  height: 20px;
+  }
+  .layui-nav-tree .layui-nav-item:nth-child(2n)>a::before{
+  	  content: '';
+  background: url(../img/b2.png)  no-repeat;
+  background-size:100% 100%;
+  position:absolute;
+  left: 10px;
+  top: 20px;
+  width: 20px;
+  height: 20px;
+  }
+  .layui-nav-tree .layui-nav-item:nth-child(3n)>a::before{
+  	  content: '';
+  background: url(../img/b3.png)  no-repeat;
+  background-size:100% 100%;
+  position:absolute;
+  left: 10px;
+  top: 20px;
+  width: 20px;
+  height: 20px;
+  }
+  .layui-nav-tree .layui-nav-item:nth-child(5n)>a::before{
+  	  content: '';
+  background: url(../img/b4.png)  no-repeat;
+  background-size:100% 100%;
+  position:absolute;
+  left: 10px;
+  top: 20px;
+  width: 20px;
+  height: 20px;
+  }
+  .layui-nav-tree  .layui-nav-child dd a::before{
+content: '';
+  background: url(../img/b6.png)  no-repeat;
+  background-size:100% 100%;
+  position:absolute;
+  left: 60px;
+  top: 10px;
+  width: 20px;
+  height: 20px;
+  }
+    .layui-nav-tree  .layui-nav-child dd a{
+		font-size: 15px !important;
+	}
+  #uls .layui-nav-item>a {
+     background-color:  #0F2E52 !important;
+      width: 100% !important;
+      color: #eee !important;
+     
+      text-align: left;
+     margin-bottom: 10px;
+     height: 50px;
+     line-height: 50px;
+       padding-right: 30px;
+  
+  }
+  
+ul.layui-nav.layui-layout-container {
+    width: 600px;
+    margin: 0 auto;
+}
+
+.home-h1 {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.register h1,.forgot h1{
+   color:#86afdf;
+   font-size: 22px;
+   margin-top: 50px;
+}
+
+.layui-layout-admin .home-h1 h1{
+	  font-size: 22px;
+}
+
+.form-box .layui-btn-container{
+    display: flex;
+    justify-content: center;
+   /* transform: translateY(85px); */
+    align-items: center;
+      flex-direction: row;
+          flex-wrap: wrap;
+
+	
+}
+
+
+.layui-side-scroll {
+width: 100% !important;}
+
+/* 滑块 */
+.Slider-box {
+    /* display: none !important; */
+    background: var(--login-vm-color);
+    border-radius: var(--radius-right);
+    width: 100%;
+    height: 600px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* 后台首页 */
+
+.frime-header{
+    background: var(--frime-hader-color) ;
+}
+
+.frime-scroll{
+    background: var(--frime-side-scroll) ;
+}
+
+/* 内容主体区域 */
+
+.layui-layout-admin .layui-body{
+    background: #fff;
+    top: 108px !important;
+   left: 13.5% !important;
+   border: 1px solid #efecec;
+   padding: 0px 20px;
+}
+.section1 {
+	overflow: hidden !important; 
+}
+.section1  .buts{
+    display: flex;
+	width: 100% !important;
+	border: 1px solid #eee;
+	padding: 10px;
+}
+.Echarts-box .box{
+	border: 1px solid #222;
+}
+/* 侧边栏 */
+
+ul#uls {
+   /* display: flex;
+    position: fixed !important;
+    background: #6e6868 !important;
+    height: 48px; */
+}
+
+.layui-layout-admin .layui-side {
+    top: 0px;
+    width: 13%;
+  
+	min-height: 94vh;
+    position: relative;
+    /* overflow-x: hidden; */
+}
+.layui-nav-itemed>.layui-nav-child{
+	background-color: transparent !important;
+	margin-bottom: 10px;
+}
+.layui-nav-itemed>.layui-nav-child dd{
+		margin-bottom: 10px;
+		background-color: transparent;
+		border-bottom: 1px dashed #535353;
+		text-align: center;}
+
+
+.layui-layout-admin .layui-header{
+	position: relative !important;
+}
+
+
+
+.layui-form-item{
+    width: 80%;
+	margin: 0px auto 15px;
+}
+.manu .layui-form-item{
+    width: 100%;
+	margin: 0px auto 5px;
+	display: flex;
+	flex-direction: row !important;
+	   
+	    flex-wrap: wrap;
+}
+.manu .layui-form-item .layui-form-label{
+	width: 100px !important;
+}
+.login .layui-form-item{
+	width: 100%;
+	border-bottom: 1px solid;
+}
+.input-box {
+    margin-top:30px;
+display: flex;
+}
+.form-input-box .layui-form-item{
+display: flex;
+}
+
+/* .layui-input{
+    width: 300px;
+} */
+
+.empty-box{}
+
+
+.layui-container{
+    width: inherit;
+}
+
+/* .layui-btn-container {
+    position: fixed;
+    bottom: 0;
+    display: flex;
+    justify-content: space-between;
+    width: 98%;
+} */
+/* 改过 */
+
+
+#verificare1{
+	height: 35px !important;
+}
+div#resume_box{
+    display: flex;
+    flex-direction: column;
+}
+
+button#resume {
+    width: 30%;
+}
+
+.layui-layout-container {
+    top: 20%;
+}
+
+ul#hader-right {
+    display: flex;
+}
+
+li#userInfo {
+    display: flex !important;
+}
+
+
+
+/* tbale 栏 */
+.layui-table img{
+    width: min(90%,100px);
+    height: min(80%);
+}
+.layui-table tr{
+    height: auto;
+    
+}
+
+.layui-table tr:nth-child(even){
+    height: auto;
+    background: #fff;
+}
+.layui-table-cell{
+    height: auto !important;
+}
+.layui-table-cell div{
+    
+    height: auto !important;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+   flex-wrap: nowrap;
+   
+}
+
+.layui-table-cell.laytable-cell-1-0-0.laytable-cell-checkbox {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.layui-table-cell {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.section1 .layui-table-cell{
+	height:60px !important;
+}
+
+.layui-nav-tree .layui-nav-more{
+    right: 33px;
+}
+
+
+@media screen and (min-width: 1px) and (max-width: 1340px) {
+    /* 在屏幕宽度在769px和1024px之间时应用的样式 */
+    ul#uls {
+        width: 79% !important;
+        
+    }
+    #uls li a{
+        font-size: 13px !important;
+    }
+    .layui-nav-tree .layui-nav-more{
+        right: 5px;
+    }
+    .home-h1 h1, .register h1, .forgot h1{
+        font-size: 19px;
+    }
+
+    .Echarts-box{
+        flex-wrap: wrap;
+    }
+    .layui-btn-normal span, #hader-right a{
+        font-size: 13px !important;
+    }
+    
+  }
+  @media screen and (min-width: 1340px) and (max-width: 1540px) {
+    /* 在屏幕宽度大于等于1025px时应用的样式 */
+    ul#uls {
+        width: 85% !important;
+        
+    }
+    #uls li a{
+        font-size: 16px !important;
+    }
+
+    .layui-nav-tree .layui-nav-more{
+        right: 8px;
+    }
+    
+  }
+  @media screen and (max-width: 1555px) {
+    /* 在屏幕宽度大于等于1025px时应用的样式 */
+    ul#uls {
+        width: 100% !important;
+        
+    }
+  
+  }
+/* -------------------------------------------------------------------------- */
+
+/* 按钮 */
+.layui-btn-normal {
+    --bg: #0d6fae;
+    --hover-bg: #848b88;
+    --hover-text: #fff;
+    color: #fff;
+    border: 1px solid var(--bg);
+    border-radius: 4px;
+    padding: 0.8em 2em;
+    background: var(--bg);
+    transition: 0.2s;
+   /* display: flex !important; */
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+
+  }
+  
+
+  .layui-btn-normal:active {
+    transform: translate(0);
+    box-shadow: none;
+  }
+  
+.layui-table-cell .layui-btn-xs:nth-child(1){
+	background-color:#4597fc !important ;
+}
+.layui-table-cell .layui-btn-xs:nth-child(2){
+	background-color:#f77767 !important ;
+}
+
+ .buts :is(#daochu,#importDiv) {
+    margin-left: 10px;
+}
+  
+  .layui-btn-sm:hover {
+    color: var(--hover-text);
+    transform: translate(-0.25rem,-0.25rem);
+    background: var(--hover-bg);
+    box-shadow: 0.25rem 0.25rem var(--bg);
+  }
+  
+  .layui-btn-sm:active {
+    transform: translate(0);
+    box-shadow: none;
+  }
+
+  
+
+ 
+
+  
+  .layui-side-scroll {
+    /* position: relative; */
+    width: none !important;
+    height: none !important;
+    /* justify-content: center; */
+    /* display: flex; */
+    /* align-items: center; */
+    }
+  
+
+  #uls>.layui-nav-item{
+    position: relative;
+    height: 16%;
+  }
+
+
+  .layui-nav-itemed dd.layui-this a{
+    background-color: #e3f9fd !important;
+    color: #fff;
+  }
+
+
+    .manu {
+     display: flex;
+         justify-content: space-between;
+         align-items: flex-start;
+         flex-direction: column;
+         align-content: flex-start;
+
+    }
+
+
+
+  .section1 .manu .layui-form-item .input-box{
+	  width: 300px;
+  }
+  .Customize-the-box:hover {
+    transform: scale(1.04) rotate(1deg);
+  }
+  
+
+  .circle:nth-child(1) {
+    top: -25px;
+    left: -25px;
+  }
+  
+  .circle:nth-child(2) {
+    bottom: -25px;
+    right: -25px;
+    animation-name: move-down1;
+  }
+  
+  @keyframes move-up6 {
+    to {
+      transform: translateY(-10px);
+    }
+  }
+  
+  @keyframes move-down1 {
+    to {
+      transform: translateY(10px);
+    }
+  }
+
+
+
+  /* 弹出层 */
+
+  .warp {
+    background: #fff;
+}
+
+ .layui-container .layui-row {
+   padding-top: 21px;
+    }
+
+    
+
+  .layui-upload-list img{
+    width: 150px;
+    height: 150px;
+  }
+
+  .form-flie-box {
+    display: flex;
+   }
+
+.form-input-box {
+    display: flex;
+  
+    flex-flow: wrap;
+}
+
+.link .form-input-box{
+      justify-content: center;
+}
+
+.from-input-box-i,.from-input-box {
+    display: flex;
+   
+	    flex-direction: column;
+		width: 80%;
+
+}
+
+.from-input-box-i>.layui-form-item{
+   flex-basis: 50%;
+}
+
+
+.layui-unselect.layui-form-select {
+    width: 93%;
+}
+
+
+.from-input-box-i>.from-flie-box{
+    display: flex;
+    flex-flow: wrap;
+}
+
+
+
+
+.layui-input-block {
+    display: flex;
+}
+
+
+.manu .layui-unselect.layui-form-select{
+    width: 100%;
+}
+
+
+/* 个人信息 */
+
+.userInfo .layui-row,.change_password .layui-row{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    height: 100vh;
+}
+
+
+
+.layui-layer-page .layui-layer-content{
+    overflow: visible !important;
+
+}
+
+
+/* ------------------------ */
+
+.section1 .layui-form-label{
+   text-align: center;
+
+}
+.layui-input-block{
+    bottom: 0 !important;
+}
+.section1 .layui-input-block{
+	border: 1px solid;
+	border-radius: 0px !important;
+	/* width: 25% !important; */
+}
+
+
+  .layui-table-view .layui-table{
+     position: relative;
+    width: 100%; 
+   margin: 0;
+    }
+  
+  .input-i .layui-input {
+    width: -webkit-fill-available;
+    height: 100%;
+    border: none;
+    outline: none;
+    font-size: 0.9em;
+    caret-color: rgb(255, 81, 0);
+    background-color:  #fff
+    font-weight: 600;
+    color: var(--input-color);
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+  .layui-input{
+    background-color: #fff;
+	border: none;
+  }
+
+  input.layui-input.layui-unselect{
+    background-color:  #fff !important;
+  }
+  
+
+  .layui-unselect.layui-form-select{
+    width: inherit;
+  }
+
+  .Cancel-btn {
+    width: 97px;
+}
+
+    
+
+.forgot-box {
+    width: 700px;
+    height: 700px;
+    background: var(--login-vm-color);
+    display: flex;
+    justify-content: space-around;
+    margin: 0 auto;
+    align-items: center;
+    margin-top: 0px;
+    margin-right: auto;
+    margin-bottom: 0px;
+    margin-left: auto;
+    border-radius: 10px
+}
+
+.warp-forgot h1{
+    text-align: center;
+	margin-top: 30px ;
+}
+.forgot-form-box .layui-form-item label{
+    flex-basis: 36%;
+}
+.layui-upload{
+    padding-left: 61px;
+}
+
+    .link .layui-upload {
+        position: relative;
+ 
+    }
+
+ .tpl .layui-row {
+    display: flex;
+    justify-content: space-around;
+    flex-direction: column;
+}
+
+
+
+
+
+button {
+    display: none;
+}
+
+
+.tpl .layui-btn-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 25px;
+    margin-bottom: 25px;
+}
+
+
+.sign_in :is(.exam,.forum,.forum_type,.article_type,.user,.notice,.message,.ad,.link,.goods_type,)  .layui-form{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+
+.userInfo .form-input-box {
+    flex-direction: column;
+    justify-content: center;
+}
+
+
+
+.userInfo .form-input-box .layui-form-item {
+    display: flex;
+}
+
+.userInfo .layui-form-label{
+    text-align: center;
+}
+
+
+.userInfo .layui-form .form-box,
+.change_password .form-box{
+    background: none !important;
+}
+
+
+.layui-form-item.item-time-s .layui-inline .layui-input {
+    width: 148px;
+}
+
+.layui-btn-container {
+    display: flex;
+    justify-content: center;
+}
+
+
+
+.layui-upload  {
+    width: 50%;
+    margin-bottom: 15px;
+    position: relative;
+    left: 10%;
+}
+
+
+.Echarts-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 54px auto;
+	flex-direction: row;
+	flex-wrap: wrap;
+}
+.Echarts-box .box{
+	background-color: #fff;
+	margin-left: 30px;
+	margin-bottom: 30px;
+	width:60%;
+	padding-top: 20px;
+}
+.manu h1{
+	display: none;
+}
+.Echarts-box .box div:nth-child(1){
+	margin: 5px auto;
+	width: 80%;
+}
+a,span{
+    font-size: 16px !important;
+}
+
+.layui-textarea{
+    flex-basis: 64%;
+}
+
+/* .layui-form-select .layui-edge{
+    right: 162px !important;
+} */
+
+.layui-table td, .layui-table th{
+    font-size: 16px;
+}
+
+.from-input-box-i .layui-form-label,.from-input-box .layui-form-label {
+    font-size: 16px;
+	width: 120px !important;
+}
+.from-input-box-i .layui-input-block,.from-input-box .layui-input-block{
+	border: 1px solid #eee;
+}
+.layui-input-block{
+    margin-left: 0 !important;
+}
+
+
+.test-v {
+    justify-content: center;
+       width: 80%;
+    
+}
+
+.article .layui-upload{
+	left: 37% !important;
+}
+.article_type .form-input-box{
+    flex-direction: column;
+}
+
+.manu.exam_sybject {
+    display: flex;
+    justify-content: center;
+
+}
+
+.manu.exam_sybject .layui-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.manu.exam_sybject .centon {
+    width: min(1020px);
+    height: 100vh;
+    background: #efecec;
+    border-radius: 10px;
+    padding-top: 50px;
+    box-shadow: 2px 1px 19px 4px #262222;
+    display: flex;
+    justify-content: center;
+}
+
+.manu.exam_sybject .centon #time {
+    top: 20px !important;
+    right: 50% !IMPORTANT;
+    transform: translateX(46%);
+    position: fixed !important;
+}
+
+
+
+
+.manu.exam_sybject .layui-form .layui-form-item{
+    display: flex;
+    flex-direction: column;
+}
+
+.manu.exam_sybject .buts{
+justify-content: center;
+    position: fixed;
+    bottom: 1%;
+    left: 50%;
+}
+
+
+
+.item-time-s .layui-inline{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.item-time-s .layui-inline .layui-input-inline{
+    width: 144px !important;
+}
+
+.layui-select-title {
+    position: relative;
+}
+/* 
+.layui-form-select .layui-edge {
+    right: -59px !important;
+    top: 45% !important;
+} */
+.layui-input-block.text{
+}
+
+	.layui-nav-tree .layui-nav-child dd.layui-this,
+	 .layui-nav-tree .layui-nav-child dd.layui-this a,
+	  .layui-nav-tree .layui-this, 
+	  .layui-nav-tree .layui-this>a, .layui-nav-tree .layui-this>a:hover{
+		background-color:transparent !important;
+		color: #86afdf !important;
+		font-size: 18px;
+		font-weight: 600;
+	}
+	#uls .layui-nav-item.layui-this>a{
+		color: #86afdf !important;
+	}
+
+	#layui-table-page1{
+		text-align: center;
+	}
+	.layui-laypage .layui-laypage-curr .layui-laypage-em{
+		background-color:#86afdf !important;
+	}
+	.section1 h1{
+		display: none;
+	}
+	.layui-table-tool{
+		background-color: #f4f4f4;
+	}
+	.layui-table-header{
+		background-color:#f0faff !important;
+	}
+	#importDiv .layui-btn{
+		line-height: 17px !important;
+	}
+	.layui-layer-iframe{
+		width: 81%  !important;
+		    height: 89%  !important;
+		    position: fixed;
+		    top: 33.5px  !important;
+		    left: 277.5px;
+	}
+	.form-input-box .layui-input-block{
+		border: 1px solid #eee;
+		line-height: 36px;
+		padding-left: 20px;
+		font-size: 14px;
+	}
+	.form-input-box .layui-form-label{
+		width: 120px !important;
+	}
+	.forgot  .layui-form-label{
+	width: 100px;}
+	.userInfo .layui-form,.change_password .layui-form{
+		width: 80%;
+	}
+	.userInfo .form-input-box,.change_password .form-box{
+		width: 100%;
+	}
+	.userInfo .layui-upload {
+		left: 32% !important;
+		margin-top: 30px;}
+		.change_password .layui-form-label{
+			width: 100px !important;
+		}
+		.change_password .layui-input-block{
+			border: 1px solid #eee;
+		}
+		.layui-upload .layui-btn{
+			background-color:#0d6fae !important ;
+		}
+#inquire{
+	background-color: #4597fc;
+	border: none;
+
+}
+#reset{
+	background-color: #e3a545;
+	border: none;
+}
+#delete{
+	background-color: #f77767;
+	border: none;
+}
+.layui-btn{
+	line-height: 17px !important;
+}
+.exam .form-input-box {
+	flex-direction: column;
+}
+.exam .layui-form-item {
+	    flex-direction: column !important;
+	    flex-wrap: wrap;
+}
+.exam .from-input-box .layui-form-item {
+	 flex-direction: row !important;
+}

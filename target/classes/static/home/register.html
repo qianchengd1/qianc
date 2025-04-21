@@ -1,0 +1,1001 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>智慧社区综合管理系统</title>
+    <link rel="stylesheet" href="./layui/css/layui.css" media="all" />
+    <link rel="stylesheet" href="./css/register.css" media="all" />
+  <link rel="stylesheet" href="./css/diy.css" />
+  </head>
+  <body class="register">
+   <div class="header headerRL">
+      <img class="logo" src="./img/logo-201305-b.png" />
+      <span class="register-title">欢迎注册</span>
+    </div>
+    <div class="content">
+      <div class="contion">
+        <div class="register">
+          <p class="register_header">注册信息</p>
+          <form action="#" class="layui-form">
+            <div class="register_content layui-form-item">
+              <i>账号</i>
+              <input
+                type="text"
+                name="title"
+                lay-verify="title"
+                autocomplete="off"
+                placeholder="请输入账号"
+                class="layui-input"
+                id="username"
+              />
+            </div>
+            <div class="register_content layui-form-item">
+              <i>密码</i>
+              <input
+                type="password"
+                name="password"
+                placeholder="5-16个字符"
+                autocomplete="off"
+                class="layui-input"
+                id="password"
+              />
+            </div>
+            <div class="register_content layui-form-item">
+              <i>确认密码</i>
+              <input
+                type="password"
+                name="password"
+                placeholder="5-16个字符"
+                autocomplete="off"
+                class="layui-input"
+                id="confirm_password"
+              />
+            </div>
+            <div class="register_content layui-form-item">
+              <i>昵称</i>
+              <input
+                type="text"
+                name="title"
+                lay-verify="title"
+                autocomplete="off"
+                placeholder="请输入昵称"
+                class="layui-input"
+                id="nickname"
+              />
+            </div>
+            <div class="register_content layui-form-item">
+              <i>邮箱</i>
+              <input
+                type="email"
+                name="title"
+                lay-verify="title"
+                autocomplete="off"
+                placeholder="例:test@.com"
+                class="layui-input"
+                id="email"
+              />
+            </div>
+             <!--<div class="register_content layui-form-item">
+              <i>手机号</i>
+              <input
+                type="text"
+                name="title"
+                lay-verify="title"
+                autocomplete="off"+
+                placeholder="例:18315652656"
+                class="layui-input"
+                id="phone"
+              />
+            </div>-->
+            <div class="register_content layui-form-item">
+              <i>身份</i>
+              <select name="interest" id="user_group" lay-filter="user_group">
+                <option value=""></option>
+              </select>
+            </div>
+                                          <div
+                  id="community_users"
+                  class="test1 diy_sf"
+                  style="display: none"
+                >
+                                                                              <div class="layui-form-item register_content" id="community_users_user_name_box">
+                          <i>用户姓名</i>
+                          <input
+                            type="text"
+                            name="title"
+                            lay-verify="title"
+                            autocomplete="off"
+                            placeholder="请输入用户姓名"
+                            class="layui-input"
+                           id="community_users_user_name"
+                          />
+                        </div>
+                                                                                                                      <div class="layui-form-item register_content" id="community_users_user_age_box">
+                          <i>用户年龄</i>
+                          <input
+                            type="text"
+                            name="title"
+                            lay-verify="title"
+                            autocomplete="off"
+                            placeholder="请输入用户年龄"
+                            class="layui-input"
+                           id="community_users_user_age"
+                          />
+                        </div>
+                                                                                                                      <!-- 下随-- dropDownDiy-->
+                        <div class="register_content layui-form-item" id="community_users_user_gender_box">
+                          <i>用户性别</i>
+                          <select name="interest" id="community_users_user_gender" lay-filter="community_users_user_gender">
+                            <option value=""></option>
+                          </select>
+                        </div>
+                                                                                                                      <div class="layui-form-item register_content" id="community_users_contact_information_box">
+                          <i>联系方式</i>
+                          <input
+                            type="text"
+                            name="title"
+                            lay-verify="title"
+                            autocomplete="off"
+                            placeholder="请输入联系方式"
+                            class="layui-input"
+                           id="community_users_contact_information"
+                          />
+                        </div>
+                                                                                                                      <div class="layui-form-item register_content" id="community_users_home_address_box">
+                          <i>家庭住址</i>
+                          <input
+                            type="text"
+                            name="title"
+                            lay-verify="title"
+                            autocomplete="off"
+                            placeholder="请输入家庭住址"
+                            class="layui-input"
+                           id="community_users_home_address"
+                          />
+                        </div>
+                                                                      </div>
+                                                                                                                                                                                                                                                                                                          <div class="register_btn">
+              <a
+                type="button"
+                class="layui-btn layui-bg-red"
+                href="#"
+                id="enroll"
+                >注册/Register</a
+              >
+              <a href="./index.html" type="button" class="layui-btn"
+                >返回/Back</a
+              >
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+      <footer class="color-F00">
+      <div class="footer_2_7_2">
+        　　© Copyright buildnox2024 . All right reserved.
+      </div>
+      </div>
+    </footer>
+  </body>
+  <script src="./js/axios.min.js"></script>
+  <script src="./layui/layui.js" charset="utf-8"></script>
+  <script src="./js/index.js"></script>
+  <script src="./js/base.js"></script>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <script>
+    // layui模块导入
+    var BaseUrl = baseUrl()
+    layui.use(['element', 'layer', 'util', 'jquery'], function () {
+        var element = layui.element
+                , layer = layui.layer
+                , util = layui.util
+                , table = layui.table
+                , upload = layui.upload
+                , laydate = layui.laydate
+                , layedit = layui.layedit
+                , form = layui.form
+                , $ = layui.$;
+
+        let form1 = {
+            username: "",
+            password: "",
+            nickname: "",
+            email: "",
+           // phone: "",
+            user_group: ""
+        }
+
+        let from_data = {}
+
+        // 获取用户单选框数据
+        async function enroll_select() {
+            let choose = [];
+            const {data: res} = await axios.get(BaseUrl + '/api/user_group/get_list?register_min=2&register_max=3')
+            let info = res;
+            let chooser = info.result.list;
+            for (let i = 0; i < chooser.length; i++) {
+                // 拿到单选框的父级节点
+                var select = document.getElementById('user_group');
+                var op = document.createElement("option");
+                op.setAttribute('source_table', chooser[i].source_table)
+                op.innerHTML = chooser[i].name
+                op.value = i + 1
+                // 新增/Add节点
+                select.appendChild(op)
+                layui.form.render("select");
+            }
+        }
+
+        // enroll_select();
+
+
+        let username = document.getElementById("username")
+        let password = document.getElementById("password")
+        let nickname = document.getElementById("nickname")
+        let email = document.getElementById("email")
+        // let phone = document.getElementById("phone")
+        let enroll = document.getElementById("enroll")
+
+
+
+
+                                    let test1 = document.querySelector('.test1')
+                                                                                                                                                                                                                                                
+        let num = null
+        let source_table = null
+        let token = null
+
+        // 下拉框的显示隐藏
+       // 下拉框的显示隐藏
+        layui.form.on('select(user_group)', function (data) {
+            from_data = {}
+            let text = data.elem[data.elem.selectedIndex].text
+            form1['user_group'] = text
+            source_table = $(data.elem).find("option:selected").attr("source_table")
+            num = data.value
+            let item = document.querySelectorAll('.diy_sf')
+
+            for (let i = 0; i < item.length; i++) {
+                if (source_table === item[i].id) {
+                    item[i].style.display = 'block'
+                } else {
+                    item[i].style.display = 'none'
+                }
+            }
+
+        });
+
+        // 数据
+                                                                                                                                                                                                                                                
+                           var list_community_users_user_gender = ['男','女']
+
+                            async function community_users_user_gender(list) {
+                                var community_users_user_gender = document.querySelector("#community_users_user_gender")
+                                var op1 = document.createElement("option");
+                                op1.value = '0'
+                                community_users_user_gender.appendChild(op1)
+                                // 收集数据 长度
+                                var count
+                                // 收集数据 数组
+                                var arr = []
+                                arr = list
+                                for (var i = 0; i < arr.length; i++) {
+                                    // 创建节点
+                                    var op = document.createElement("option");
+                                    // 给节点赋值
+                                    op.innerHTML = arr[i]
+                                    op.value = arr[i]
+                                    // 新增/Add节点
+                                    community_users_user_gender.appendChild(op)
+                                    layui.form.render("select");
+                                }
+                            }
+
+                            community_users_user_gender(list_community_users_user_gender)
+                            layui.form.on('select(community_users_user_gender)', function (data) {
+                                from_data['user_gender'] = data.elem[data.elem.selectedIndex].text;
+                            })
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
+        enroll.onclick = async function () {
+            form1['username'] = username.value;
+            form1['password'] = password.value;
+            form1['nickname'] = nickname.value;
+            form1['email'] = email.value;
+            // form1['phone'] = phone.value;
+
+
+            // 正则判断
+            var email_regular = /^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/;
+            // var phone_regular = /^(13[0-9]|14[5|7]|15[0|1|2|3|4|5|6|7|8|9]|18[0|1|2|3|5|6|7|8|9])\d{8}$/;
+            // else if (phone.value && !phone_regular.test(phone.value)) {
+             //   layer.msg('请输入正确的手机号码 例：18955552312!');
+            //} 
+            // 表单验证
+            if (!username.value) {
+                layer.msg('账号不能为空');
+            } else if (username.value.length > 16 || username.value.length < 5) {
+                layer.msg('账号长度应为5到16个字符之间');
+            } else if (!password.value) {
+                layer.msg('密码不能为空');
+            } else if (password.value.length > 16 || password.value.length < 5) {
+                layer.msg('密码长度应为5到16个字符之间');
+            } else if (nickname.value && nickname.value.length > 12 || nickname.value.length < 2) {
+                layer.msg('昵称长度应为2个字符到12个字符之间');
+            } else if (email.value && !email_regular.test(email.value)) {
+                layer.msg('请输入正确的邮箱地址 例：test@test.com!');
+            } else if (password.value != confirm_password.value) {
+                layer.msg('确认密码与密码不一致！');
+            } else if (!form1.user_group) {
+                layer.msg('请选择用户组!');
+            } else if (form1.user_group) {
+               
+                                    async function submit1() {
+                                                                                                                                                               let community_users_user_name = document.querySelector('#community_users_user_name')
+                                        from_data['user_name'] = community_users_user_name.value
+                                                                                                    
+                                                                                                                                       let community_users_user_age = document.querySelector('#community_users_user_age')
+                                        from_data['user_age'] = community_users_user_age.value
+                                                                                                    
+                                                                                                                                     let community_users_user_gender = document.querySelector('#community_users_user_gender')
+                                        from_data['user_gender'] = community_users_user_gender.value   
+                                                                                                    
+                                                                                                                                       let community_users_contact_information = document.querySelector('#community_users_contact_information')
+                                        from_data['contact_information'] = community_users_contact_information.value
+                                                                                                    
+                                                                                                                                       let community_users_home_address = document.querySelector('#community_users_home_address')
+                                        from_data['home_address'] = community_users_home_address.value
+                                                                                                    
+                                                       
+                        
+                        if (form1.user_group === "社区用户") {
+                                                                                                                                                                                                                                                                                                                                                                }
+
+                        const {data: res} = await axios.post(BaseUrl + '/api/user/register',
+                                form1
+                        )
+                        if (from_data) {
+                            Object.keys(from_data).forEach(item => {
+                                if (from_data[item] === '') delete from_data[item]
+                                if (from_data[item] === null) delete from_data[item]
+                            })
+
+                            const {data: res2} = await axios.get(BaseUrl + '/api/user/get_obj', {
+                                params: {
+                                    username: form1.username,
+                                    nickname: form1.nickname,
+                                    user_group: form1.user_group
+                                }
+                            })
+
+                            let user_id = res2.result.obj.user_id
+                            from_data['user_id'] = user_id
+                            if (user_id) {
+                                const {data: resss} = await axios.post(BaseUrl + `/api/community_users/add`,
+                                        from_data, {
+                                            headers: {
+                                                'x-auth-token': token,
+                                                'Content-Type': 'application/json'
+                                            }
+                                        })
+                                if (resss.result == 1) {
+                                    layer.msg('注册/Register成功');
+                                    setTimeout(() => {
+                                        window.location.replace("./index.html");
+                                    }, 1000);
+                                }
+                            }
+                        }
+                    }
+
+                    if (form1.user_group === "社区用户") {
+                         submit1()
+                       
+                    }
+                                    async function submit2() {
+                        
+                        if (form1.user_group === "项目分类") {
+                                                                                                                }
+
+                        const {data: res} = await axios.post(BaseUrl + '/api/user/register',
+                                form1
+                        )
+                        if (from_data) {
+                            Object.keys(from_data).forEach(item => {
+                                if (from_data[item] === '') delete from_data[item]
+                                if (from_data[item] === null) delete from_data[item]
+                            })
+
+                            const {data: res2} = await axios.get(BaseUrl + '/api/user/get_obj', {
+                                params: {
+                                    username: form1.username,
+                                    nickname: form1.nickname,
+                                    user_group: form1.user_group
+                                }
+                            })
+
+                            let user_id = res2.result.obj.user_id
+                            from_data['user_id'] = user_id
+                            if (user_id) {
+                                const {data: resss} = await axios.post(BaseUrl + `/api/project_classification/add`,
+                                        from_data, {
+                                            headers: {
+                                                'x-auth-token': token,
+                                                'Content-Type': 'application/json'
+                                            }
+                                        })
+                                if (resss.result == 1) {
+                                    layer.msg('注册/Register成功');
+                                    setTimeout(() => {
+                                        window.location.replace("./index.html");
+                                    }, 1000);
+                                }
+                            }
+                        }
+                    }
+
+                    if (form1.user_group === "项目分类") {
+                         submit2()
+                       
+                    }
+                                    async function submit3() {
+                        
+                        if (form1.user_group === "服务中心") {
+                                                                                                                                                                                                                                                                                                                                                                                                                            }
+
+                        const {data: res} = await axios.post(BaseUrl + '/api/user/register',
+                                form1
+                        )
+                        if (from_data) {
+                            Object.keys(from_data).forEach(item => {
+                                if (from_data[item] === '') delete from_data[item]
+                                if (from_data[item] === null) delete from_data[item]
+                            })
+
+                            const {data: res2} = await axios.get(BaseUrl + '/api/user/get_obj', {
+                                params: {
+                                    username: form1.username,
+                                    nickname: form1.nickname,
+                                    user_group: form1.user_group
+                                }
+                            })
+
+                            let user_id = res2.result.obj.user_id
+                            from_data['user_id'] = user_id
+                            if (user_id) {
+                                const {data: resss} = await axios.post(BaseUrl + `/api/service_center/add`,
+                                        from_data, {
+                                            headers: {
+                                                'x-auth-token': token,
+                                                'Content-Type': 'application/json'
+                                            }
+                                        })
+                                if (resss.result == 1) {
+                                    layer.msg('注册/Register成功');
+                                    setTimeout(() => {
+                                        window.location.replace("./index.html");
+                                    }, 1000);
+                                }
+                            }
+                        }
+                    }
+
+                    if (form1.user_group === "服务中心") {
+                         submit3()
+                       
+                    }
+                                    async function submit4() {
+                        
+                        if (form1.user_group === "预约") {
+                                                                                                if (!from_data.appointment_number) {
+                                        layer.msg("预约编号不能为空!");
+                                    }
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            }
+
+                        const {data: res} = await axios.post(BaseUrl + '/api/user/register',
+                                form1
+                        )
+                        if (from_data) {
+                            Object.keys(from_data).forEach(item => {
+                                if (from_data[item] === '') delete from_data[item]
+                                if (from_data[item] === null) delete from_data[item]
+                            })
+
+                            const {data: res2} = await axios.get(BaseUrl + '/api/user/get_obj', {
+                                params: {
+                                    username: form1.username,
+                                    nickname: form1.nickname,
+                                    user_group: form1.user_group
+                                }
+                            })
+
+                            let user_id = res2.result.obj.user_id
+                            from_data['user_id'] = user_id
+                            if (user_id) {
+                                const {data: resss} = await axios.post(BaseUrl + `/api/appointment_information/add`,
+                                        from_data, {
+                                            headers: {
+                                                'x-auth-token': token,
+                                                'Content-Type': 'application/json'
+                                            }
+                                        })
+                                if (resss.result == 1) {
+                                    layer.msg('注册/Register成功');
+                                    setTimeout(() => {
+                                        window.location.replace("./index.html");
+                                    }, 1000);
+                                }
+                            }
+                        }
+                    }
+
+                    if (form1.user_group === "预约") {
+                         submit4()
+                       
+                    }
+                                    async function submit5() {
+                        
+                        if (form1.user_group === "服务评价") {
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        }
+
+                        const {data: res} = await axios.post(BaseUrl + '/api/user/register',
+                                form1
+                        )
+                        if (from_data) {
+                            Object.keys(from_data).forEach(item => {
+                                if (from_data[item] === '') delete from_data[item]
+                                if (from_data[item] === null) delete from_data[item]
+                            })
+
+                            const {data: res2} = await axios.get(BaseUrl + '/api/user/get_obj', {
+                                params: {
+                                    username: form1.username,
+                                    nickname: form1.nickname,
+                                    user_group: form1.user_group
+                                }
+                            })
+
+                            let user_id = res2.result.obj.user_id
+                            from_data['user_id'] = user_id
+                            if (user_id) {
+                                const {data: resss} = await axios.post(BaseUrl + `/api/service_evaluation/add`,
+                                        from_data, {
+                                            headers: {
+                                                'x-auth-token': token,
+                                                'Content-Type': 'application/json'
+                                            }
+                                        })
+                                if (resss.result == 1) {
+                                    layer.msg('注册/Register成功');
+                                    setTimeout(() => {
+                                        window.location.replace("./index.html");
+                                    }, 1000);
+                                }
+                            }
+                        }
+                    }
+
+                    if (form1.user_group === "服务评价") {
+                         submit5()
+                       
+                    }
+                                    async function submit6() {
+                        
+                        if (form1.user_group === "社区活动") {
+                                                                                                if (!from_data.activity_number) {
+                                        layer.msg("活动编号不能为空!");
+                                    }
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    }
+
+                        const {data: res} = await axios.post(BaseUrl + '/api/user/register',
+                                form1
+                        )
+                        if (from_data) {
+                            Object.keys(from_data).forEach(item => {
+                                if (from_data[item] === '') delete from_data[item]
+                                if (from_data[item] === null) delete from_data[item]
+                            })
+
+                            const {data: res2} = await axios.get(BaseUrl + '/api/user/get_obj', {
+                                params: {
+                                    username: form1.username,
+                                    nickname: form1.nickname,
+                                    user_group: form1.user_group
+                                }
+                            })
+
+                            let user_id = res2.result.obj.user_id
+                            from_data['user_id'] = user_id
+                            if (user_id) {
+                                const {data: resss} = await axios.post(BaseUrl + `/api/community_activities/add`,
+                                        from_data, {
+                                            headers: {
+                                                'x-auth-token': token,
+                                                'Content-Type': 'application/json'
+                                            }
+                                        })
+                                if (resss.result == 1) {
+                                    layer.msg('注册/Register成功');
+                                    setTimeout(() => {
+                                        window.location.replace("./index.html");
+                                    }, 1000);
+                                }
+                            }
+                        }
+                    }
+
+                    if (form1.user_group === "社区活动") {
+                         submit6()
+                       
+                    }
+                                    async function submit7() {
+                        
+                        if (form1.user_group === "活动分类") {
+                                                                                                                }
+
+                        const {data: res} = await axios.post(BaseUrl + '/api/user/register',
+                                form1
+                        )
+                        if (from_data) {
+                            Object.keys(from_data).forEach(item => {
+                                if (from_data[item] === '') delete from_data[item]
+                                if (from_data[item] === null) delete from_data[item]
+                            })
+
+                            const {data: res2} = await axios.get(BaseUrl + '/api/user/get_obj', {
+                                params: {
+                                    username: form1.username,
+                                    nickname: form1.nickname,
+                                    user_group: form1.user_group
+                                }
+                            })
+
+                            let user_id = res2.result.obj.user_id
+                            from_data['user_id'] = user_id
+                            if (user_id) {
+                                const {data: resss} = await axios.post(BaseUrl + `/api/activity_classification/add`,
+                                        from_data, {
+                                            headers: {
+                                                'x-auth-token': token,
+                                                'Content-Type': 'application/json'
+                                            }
+                                        })
+                                if (resss.result == 1) {
+                                    layer.msg('注册/Register成功');
+                                    setTimeout(() => {
+                                        window.location.replace("./index.html");
+                                    }, 1000);
+                                }
+                            }
+                        }
+                    }
+
+                    if (form1.user_group === "活动分类") {
+                         submit7()
+                       
+                    }
+                                    async function submit8() {
+                        
+                        if (form1.user_group === "报名") {
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                }
+
+                        const {data: res} = await axios.post(BaseUrl + '/api/user/register',
+                                form1
+                        )
+                        if (from_data) {
+                            Object.keys(from_data).forEach(item => {
+                                if (from_data[item] === '') delete from_data[item]
+                                if (from_data[item] === null) delete from_data[item]
+                            })
+
+                            const {data: res2} = await axios.get(BaseUrl + '/api/user/get_obj', {
+                                params: {
+                                    username: form1.username,
+                                    nickname: form1.nickname,
+                                    user_group: form1.user_group
+                                }
+                            })
+
+                            let user_id = res2.result.obj.user_id
+                            from_data['user_id'] = user_id
+                            if (user_id) {
+                                const {data: resss} = await axios.post(BaseUrl + `/api/registration_information/add`,
+                                        from_data, {
+                                            headers: {
+                                                'x-auth-token': token,
+                                                'Content-Type': 'application/json'
+                                            }
+                                        })
+                                if (resss.result == 1) {
+                                    layer.msg('注册/Register成功');
+                                    setTimeout(() => {
+                                        window.location.replace("./index.html");
+                                    }, 1000);
+                                }
+                            }
+                        }
+                    }
+
+                    if (form1.user_group === "报名") {
+                         submit8()
+                       
+                    }
+                                    async function submit9() {
+                        
+                        if (form1.user_group === "社区通知") {
+                                                                                                                                                                                                                                                                                                                                                                }
+
+                        const {data: res} = await axios.post(BaseUrl + '/api/user/register',
+                                form1
+                        )
+                        if (from_data) {
+                            Object.keys(from_data).forEach(item => {
+                                if (from_data[item] === '') delete from_data[item]
+                                if (from_data[item] === null) delete from_data[item]
+                            })
+
+                            const {data: res2} = await axios.get(BaseUrl + '/api/user/get_obj', {
+                                params: {
+                                    username: form1.username,
+                                    nickname: form1.nickname,
+                                    user_group: form1.user_group
+                                }
+                            })
+
+                            let user_id = res2.result.obj.user_id
+                            from_data['user_id'] = user_id
+                            if (user_id) {
+                                const {data: resss} = await axios.post(BaseUrl + `/api/community_notifications/add`,
+                                        from_data, {
+                                            headers: {
+                                                'x-auth-token': token,
+                                                'Content-Type': 'application/json'
+                                            }
+                                        })
+                                if (resss.result == 1) {
+                                    layer.msg('注册/Register成功');
+                                    setTimeout(() => {
+                                        window.location.replace("./index.html");
+                                    }, 1000);
+                                }
+                            }
+                        }
+                    }
+
+                    if (form1.user_group === "社区通知") {
+                         submit9()
+                       
+                    }
+                                    async function submit10() {
+                        
+                        if (form1.user_group === "报修服务") {
+                                                                                                if (!from_data.repair_number) {
+                                        layer.msg("报修编号不能为空!");
+                                    }
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    }
+
+                        const {data: res} = await axios.post(BaseUrl + '/api/user/register',
+                                form1
+                        )
+                        if (from_data) {
+                            Object.keys(from_data).forEach(item => {
+                                if (from_data[item] === '') delete from_data[item]
+                                if (from_data[item] === null) delete from_data[item]
+                            })
+
+                            const {data: res2} = await axios.get(BaseUrl + '/api/user/get_obj', {
+                                params: {
+                                    username: form1.username,
+                                    nickname: form1.nickname,
+                                    user_group: form1.user_group
+                                }
+                            })
+
+                            let user_id = res2.result.obj.user_id
+                            from_data['user_id'] = user_id
+                            if (user_id) {
+                                const {data: resss} = await axios.post(BaseUrl + `/api/repair_service/add`,
+                                        from_data, {
+                                            headers: {
+                                                'x-auth-token': token,
+                                                'Content-Type': 'application/json'
+                                            }
+                                        })
+                                if (resss.result == 1) {
+                                    layer.msg('注册/Register成功');
+                                    setTimeout(() => {
+                                        window.location.replace("./index.html");
+                                    }, 1000);
+                                }
+                            }
+                        }
+                    }
+
+                    if (form1.user_group === "报修服务") {
+                         submit10()
+                       
+                    }
+                                    async function submit11() {
+                        
+                        if (form1.user_group === "投诉反馈") {
+                                                                                                                                                                                                                                                                                                                                                                }
+
+                        const {data: res} = await axios.post(BaseUrl + '/api/user/register',
+                                form1
+                        )
+                        if (from_data) {
+                            Object.keys(from_data).forEach(item => {
+                                if (from_data[item] === '') delete from_data[item]
+                                if (from_data[item] === null) delete from_data[item]
+                            })
+
+                            const {data: res2} = await axios.get(BaseUrl + '/api/user/get_obj', {
+                                params: {
+                                    username: form1.username,
+                                    nickname: form1.nickname,
+                                    user_group: form1.user_group
+                                }
+                            })
+
+                            let user_id = res2.result.obj.user_id
+                            from_data['user_id'] = user_id
+                            if (user_id) {
+                                const {data: resss} = await axios.post(BaseUrl + `/api/complaint_feedback/add`,
+                                        from_data, {
+                                            headers: {
+                                                'x-auth-token': token,
+                                                'Content-Type': 'application/json'
+                                            }
+                                        })
+                                if (resss.result == 1) {
+                                    layer.msg('注册/Register成功');
+                                    setTimeout(() => {
+                                        window.location.replace("./index.html");
+                                    }, 1000);
+                                }
+                            }
+                        }
+                    }
+
+                    if (form1.user_group === "投诉反馈") {
+                         submit11()
+                       
+                    }
+                                    async function submit12() {
+                        
+                        if (form1.user_group === "志愿者申请") {
+                                                                                                                                                                                                                                                                                                                                                                }
+
+                        const {data: res} = await axios.post(BaseUrl + '/api/user/register',
+                                form1
+                        )
+                        if (from_data) {
+                            Object.keys(from_data).forEach(item => {
+                                if (from_data[item] === '') delete from_data[item]
+                                if (from_data[item] === null) delete from_data[item]
+                            })
+
+                            const {data: res2} = await axios.get(BaseUrl + '/api/user/get_obj', {
+                                params: {
+                                    username: form1.username,
+                                    nickname: form1.nickname,
+                                    user_group: form1.user_group
+                                }
+                            })
+
+                            let user_id = res2.result.obj.user_id
+                            from_data['user_id'] = user_id
+                            if (user_id) {
+                                const {data: resss} = await axios.post(BaseUrl + `/api/volunteer_application/add`,
+                                        from_data, {
+                                            headers: {
+                                                'x-auth-token': token,
+                                                'Content-Type': 'application/json'
+                                            }
+                                        })
+                                if (resss.result == 1) {
+                                    layer.msg('注册/Register成功');
+                                    setTimeout(() => {
+                                        window.location.replace("./index.html");
+                                    }, 1000);
+                                }
+                            }
+                        }
+                    }
+
+                    if (form1.user_group === "志愿者申请") {
+                         submit12()
+                       
+                    }
+                            }
+        }
+         var list_data = []
+
+        /**
+         * 获取路径对应操作权限 鉴权
+         * @param {String} action 操作名
+         */
+        function $check_register_field(action, field , path) {
+            let o = $get_power(path);
+            let auth;
+            if (o && o[action] != 0 && o[action] != false) {
+                auth = o["field_" + action];
+            }
+            if (auth) {
+                return auth.indexOf(field) !== -1;
+            }
+            return false;
+        }
+
+        /**
+         * 获取权限
+         * @param {String} path 路由路径
+         */
+        function $get_power(path) {
+            let list = list_data;
+            let obj;
+            for (let i = 0; i < list.length; i++) {
+                let o = list[i];
+                if (o.path === path) {
+                    obj = o;
+                    break;
+                }
+            }
+            return obj;
+        }
+
+        function $get_list_data(){
+            if (!sessionStorage.personInfo){
+                $.ajax({
+                    url: BaseUrl + "/api/auth/get_list",
+                    type: "get",
+                    async: false,
+                    data: {
+                        user_group: "游客"
+                    },
+                    success: function (data) {
+                        if (typeof data === 'string'){
+                            data = JSON.parse(data)
+                        }
+                        if (data && data.result && data.result.list){
+                            list_data = data.result.list
+                            enroll_select();
+                            $check_list_data();
+                        }
+                    }
+                });
+            }else {
+                list_data = JSON.parse(sessionStorage.list_data);
+                enroll_select();
+                $check_list_data();
+            }
+
+        }
+
+        function $check_list_data(){
+                                                                    if (!$check_register_field('add','user_name','/community_users/view')){
+                        document.querySelector('#community_users_user_name_box').style.display = "none"
+                    }
+                                        if (!$check_register_field('add','user_age','/community_users/view')){
+                        document.querySelector('#community_users_user_age_box').style.display = "none"
+                    }
+                                        if (!$check_register_field('add','user_gender','/community_users/view')){
+                        document.querySelector('#community_users_user_gender_box').style.display = "none"
+                    }
+                                        if (!$check_register_field('add','contact_information','/community_users/view')){
+                        document.querySelector('#community_users_contact_information_box').style.display = "none"
+                    }
+                                        if (!$check_register_field('add','home_address','/community_users/view')){
+                        document.querySelector('#community_users_home_address_box').style.display = "none"
+                    }
+                                                                                                                                                                                                                                                                                                                                                                            }
+
+        $get_list_data()
+    })
+
+    function getRandomImg() {
+        const num = Math.ceil(Math.random() * 5) + '.png'
+        return ('../img/' + num)
+    }
+</script>
+</html>

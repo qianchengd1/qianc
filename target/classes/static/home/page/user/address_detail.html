@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title></title>
+    <link href="../../layui/css/layui.css" rel="stylesheet" />
+    <link href="../../css/diy.css" rel="stylesheet" />
+    <style>
+      body {
+        background-color: #f2f2f2;
+      }
+      .list-info-left p {
+        line-height: 15px;
+        font-size: 12px;
+        color: #999;
+      }
+      .list-info-child {
+        clear: both;
+        border-top: 1px dashed gray;
+        padding: 20px 0;
+      }
+    </style>
+  </head>
+  <body>
+  <div id="payDetail">
+        <div class="list_title"><p class="list_title_text">收货地址详情</p></div>
+        <div class="layui-fluid layadmin-cmdlist-fluid">
+          <div class="address_content_form">
+            <form class="layui-form" action="">
+              <div class="layui-form-item address_content">
+                <p>收货人:</p>
+                  <input type="text" name="name" id='name'  placeholder="请输入收货人" autocomplete="off" class="layui-input">
+              </div>
+              <div class="layui-form-item address_content">
+                <p>手机号：</p>
+                  <input type="text" name="phone"  id='phone' autocomplete="off" class="layui-input" placeholder="请输入手机号">
+              </div>
+              <div class="layui-form-item address_content">
+                <p>详细地址：</p>
+                    <textarea name="address"  id='address' required lay-verify="required" placeholder="请输入详细地址" class="layui-textarea"></textarea>
+              </div>
+            </form>
+          </div>
+          <div id='addAddress'>
+            <button id='addAddressbtn'
+            type="button"
+            class="layui-btn layui-bg-red"
+          >
+          保存
+          </button></div>
+        </div>
+      </div>
+</body>
+  <script src="../../js/axios.min.js"></script>
+  <script src="../../js/jquery.2.1.1.min.js"></script>
+  <script src="../../layui/layui.js"></script>
+  <script src="../../js/base.js"></script>
+  <script src="../../js/permissionSet.js"></script>
+
+
+  <script>
+    var BaseUrl = baseUrl();
+    layui.use([ "layer", "jquery", "form"], function () {
+      var layer = layui.layer;
+      form = layui.form;
+      var $ = layui.jquery;
+      
+      let personInfo = JSON.parse(sessionStorage.personInfo);
+      let user_group = personInfo.user_group;
+      let user_id = personInfo.user_id;
+    
+      
+      var laytpl = layui.laytpl;
+      let list_arr = [];
+    
+      let address_id=getUrlParams().address_id
+      if(address_id){
+          getAddressDetail()
+       }
+        //获取地址栏参数
+        function getUrlParams() {
+            let url = window.location.search; //获取url中"?"符后的字串
+            let paramsObj = new Object();
+            if (url.indexOf("?") != -1) {
+                let str = url.substr(1);
+                strs = str.split("&");
+                for (let i = 0; i < strs.length; i++) {
+        
+                    paramsObj[strs[i].split("=")[0]] = decodeURI(strs[i].split("=")[1]);
+        
+                }
+            }
+            return paramsObj;
+        }
+
+        // 回显详情
+        async function getAddressDetail() {
+            let { data: res } = await axios.get(BaseUrl + `/api/address/get_obj?address_id=${address_id}`,
+            {
+                'address_id':address_id
+            });
+            if(res.result){
+                let obj=res.result.obj
+                $('#address').val(obj.address)
+                $('#name').val(obj.name)
+                $('#phone').val(obj.phone)
+                
+            }
+        };
+      // 点击保存
+      $('#addAddressbtn').click(function () {
+        save_add() 
+      })
+      
+     // 保存地址
+     async function save_add() {
+       let address =$('#address').val()
+       let name = $('#name').val()
+       let phone =$('#phone').val()
+       let phone_regular = /^(13[0-9]|14[5|7]|15[0|1|2|3|4|5|6|7|8|9]|18[0|1|2|3|5|6|7|8|9])\d{8}$/;
+        if (phone && !phone_regular.test(phone)) {
+            layer.msg('请输入正确的手机号码 例：18955552312!');
+        } else{    
+        console.log(address_id)
+          if (address_id) {
+              let { data: res } = await axios.post(BaseUrl + `/api/address/set?address_id=${address_id}`,
+              {
+                  address,
+                  name,
+                  phone,
+                  user_id
+              });
+              if(res.result){
+                    layer.msg("保存成功");
+                    window.location.replace("./address.html")
+                }
+          } else {
+                let { data: res } = await axios.get(BaseUrl + "/api/address/count?user_id="+user_id, {
+                  });
+                if (res.result == 0) {
+                  let { data: res } = await axios.post(BaseUrl + `/api/address/add`,
+                  { address, name, phone, default: true, user_id });
+                  if(res.result){
+                      layer.msg("保存成功");
+                      window.location.replace("./address.html")
+                  }
+                } else {
+                  let { data: res } = await axios.post(BaseUrl + `/api/address/add`,
+                  { address, name, phone, user_id });
+                  if(res.result){
+                      layer.msg("保存成功");
+                      window.location.replace("./address.html")
+                  }
+                }
+            
+          }
+        }
+    };
+      
+  
+    });
+  </script>
+</html>

@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en" class="login">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>智慧社区综合管理系统</title>
+    <link rel="stylesheet" href="./layui/css/layui.css" />
+    <link rel="stylesheet" type="text/css" href="./css/login.css" />
+    <link rel="stylesheet" href="./css/diy.css" />
+    <script src="./js/axios.min.js"></script>
+    <script src="./js/jsencrypt.min.js"></script>
+  </head>
+  <style>
+            .login_content .numbertest {
+      width: 100px;
+    }
+      </style>
+  <body>
+     <div class="header">
+      <img class="logo" src="./img/logo-201305-b.png" /><img
+        src="./img/l-icon.png"
+      />
+     </div>
+      <div class="content">
+        <div class="contion">
+          <div class="login">
+            <p class="login_header">智慧社区综合管理系统</p>
+            <form class="layui-form" action="#">
+              <div class="login_content layui-form-item">
+                <i>账号</i>
+                <input
+                  type="text"
+                  name="title"
+                  lay-verify="title"
+                  autocomplete="off"
+                  placeholder="用户名 / 手机 / 邮箱"
+                  class="layui-input"
+                  id="account"
+                />
+              </div>
+              <div class="login_content layui-form-item">
+                <i>密码</i>
+                <input
+                  type="password"
+                  name="password"
+                  placeholder="请输入密码"
+                  autocomplete="off"
+                  class="layui-input"
+                  id="password"
+                />
+              </div>
+                             <div class="login_content">
+                <i>验证</i>
+                <input type="text" placeholder="不区分大小写" id="val" />
+                <canvas
+                  class="numbertest"
+                  id="canvas"
+                  width="100"
+                  height="43"
+                  onclick="dj()"
+                  style="
+                    border: 1px solid #ccc;
+                    border-radius: 5px;
+                    background-color: aliceblue;
+                  "
+                ></canvas>
+              </div>
+                             <div class="fpwd">
+                <a href="./page/forgot.html">忘记密码</a>
+              </div>
+              <a class="login_b" href="#" id="login"
+                >登&nbsp&nbsp&nbsp&nbsp&nbsp录</a
+              >
+            </form>
+                      </div>
+        </div>
+      </div>
+      <footer class="color-F00">
+      <div class="footer_2_7_2">
+        　　© Copyright buildnox2024 . All right reserved.
+      </div>
+    </footer>
+  </body>
+  <script src="./layui/layui.js" charset="utf-8"></script>
+    <script src="./js/base.js"></script>
+  <script src="./js/axios.min.js"></script>
+    <script src="./js/verification.js"></script>
+     <script>
+    var BaseUrl = baseUrl()
+    let btn = document.getElementById("login");
+    let account = document.getElementById("account");
+    let password = document.getElementById("password");
+        
+    // 登录/Login
+    async function $get_auth(user_group, func) {
+      // 查询权限
+      let {data: json} = await axios.get(BaseUrl + "/api/auth/get_list?user_group="+user_group, {});
+      // 清空权限
+      sessionStorage.setItem("set_auth", null);
+      // 判断查询结果
+      if (json.result && json.result.list) {
+        var auth = json.result.list;
+        // 权限缓存
+        sessionStorage.setItem("set_auth", JSON.stringify(auth));
+        // 如果有回调函数则执行回调函数
+        if (func) {
+          func();
+        }
+      } else if (json.error) {
+        layer.msg(json.error.message);
+        console.error(json.error);
+      }
+    }
+    // 登录/Login
+    let info
+    btn.onclick = async function () {
+        if (account.value === '') {
+            layer.msg('请输入账号');
+        } else if (password.value === '') {
+            layer.msg('请输入密码');
+        }
+                                    else if (sublim() !== true) {
+            }
+                                else {
+                        const encryptor = new JSEncrypt()
+            encryptor.setPublicKey("MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC+mEDzYLbKNB9rbOuvGgwdBUpPaHryRGarxBQppkOzlj+ouep8MMq1Xg7NBkjLOV2vnn4E5AVvX0XVOmBg8W5eNQ1uS1HCG2fie8BpXGgl1pWj/HYIrA2d/U7xxvMO8UMhAGfMdaGrPrGdZTr95pzL/q+VJZOcqSAgux/YEdu11wIDAQAB");
+            let encryptPass = encryptor.encrypt(password.value)
+                        const {data: res} = await axios.post(BaseUrl + '/api/user/login', {
+                username: account.value,
+                            "password": encryptPass,
+                        })
+            info = res.result;
+            if (info != undefined) {
+            	$get_auth(res.result.obj.user_group, () => {
+                    location.reload();
+                });
+                layer.msg('登录成功');
+                let obj = JSON.stringify(res.result.obj)
+                sessionStorage.setItem('personInfo', [obj])
+                sessionStorage.setItem('token', res.result.obj.token)
+                window.location.replace("./index.html")
+            } else if (res.error.message) {
+                layer.msg(res.error.message);
+                account.value = ''
+                password.value = ''
+            }
+        }
+    }
+
+    async function keyboard(event) {
+        let keycode = event.keyCode;
+        if (keycode == 13) {
+                    const encryptor = new JSEncrypt()
+            encryptor.setPublicKey("MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC+mEDzYLbKNB9rbOuvGgwdBUpPaHryRGarxBQppkOzlj+ouep8MMq1Xg7NBkjLOV2vnn4E5AVvX0XVOmBg8W5eNQ1uS1HCG2fie8BpXGgl1pWj/HYIrA2d/U7xxvMO8UMhAGfMdaGrPrGdZTr95pzL/q+VJZOcqSAgux/YEdu11wIDAQAB");
+            let encryptPass = encryptor.encrypt(password.value)
+                    const {data: res} = await axios.post(BaseUrl + '/api/user/login', {
+                username: account.value,
+                            "password": encryptPass,
+                        })
+            info = res.result;
+            if (info != undefined) {
+                let obj = res.result.obj;
+                sessionStorage.setItem('personInfo', [obj])
+                sessionStorage.setItem('token', res.result.obj.token)
+                window.location.replace("./index.html");
+            } else if (res.error.message) {
+                layer.msg(res.error.message);
+                account.value = ''
+                password.value = ''
+            }
+        }
+    }
+
+    //参数1：表示事件，keydown:键盘向下按；参数2：表示触发的事件处理函数
+    document.addEventListener("keydown", keyboard);
+
+    // 注册/Register
+        
+    // 弹出层
+    layui.use('layer', function () {
+        var layer = layui.layer;
+    });
+    if (sessionStorage && sessionStorage.personInfo){
+        let personInfo = JSON.parse(sessionStorage.personInfo)
+        if(personInfo){
+            window.location.replace("./index.html");
+        }
+    }
+  </script>
+</html>

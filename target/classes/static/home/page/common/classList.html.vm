@@ -1,0 +1,9 @@
+<div class="layui-col-md3 layui-col-sm3 category_list">
+    <div class="category_box">
+    <div class="category_title">
+        手机好物<span class="category_subtitle">优选超值低价</span>
+    </div>
+    <!-- <div class="category_subtitle">优选超值低价</div> -->
+    <div class="category_img"><img src="./Image/jiu.avif" /></div>
+    </div>
+</div>

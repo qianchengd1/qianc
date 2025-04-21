@@ -1,0 +1,194 @@
+* {
+    moz-user-select: -moz-none;
+    -moz-user-select: none;
+    -o-user-select: none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    margin: 0;
+    padding: 0;
+    /* 头部 */
+  }
+  html,body{
+    height:100%;
+    background-color: #fff!important;
+   
+  }
+  .header {
+    width: 990px;
+    height: 60px;
+    margin: 0 auto;
+    padding: 10px 0;
+  }
+  .header .logo {
+    margin-right: 20px;
+  }
+
+  /* .header a {
+    color: #999999;
+    float: right;
+    padding-top: 40px;
+    font-size: 13px;
+  }
+  .header a:hover span {
+    color: red;
+    border-bottom: 1px solid red;
+  } */
+  .header img {
+    vertical-align: middle;
+    font-size: 13px;
+  }
+
+  /* 头部下边 */
+  .header_top {
+    background-color: #fff8f0;
+  }
+  .header_top p {
+    line-height: 40px;
+    text-align: center;
+    margin: 0 auto;
+    font-size: 12px;
+    color: #999999;
+  }
+  .header_top p img {
+    vertical-align: middle;
+    font-size: 12px;
+    margin-right: 5px;
+    margin-top: -4px;
+  }
+  .header_top p a {
+    color: black;
+  }
+  .header_top p a:hover {
+    border-bottom: 1px solid black;
+  }
+
+  /* 整个内容   登录页 */
+  .content {
+    height:calc(100% - 65px);
+    background: url(../../img/body_bg.jpg); 
+    background-repeat:no-repeat;
+    background-size: 100% 100%;
+    background-origin: padding-box;
+    background-clip: border-box;
+    
+  }
+  .content .contion {
+    width:90%;
+    height:650px;
+    margin: 0 auto;
+  }
+  .content .contion .login {
+    width: 440px;
+    float: right;
+    margin-top: 2%;
+    background-color: white;
+    padding-bottom: 10px;
+  }
+  .content .contion .login .login_header {
+    width: 100%;
+    line-height: 55px;
+    text-align: center;
+    background-color: #fff8f0;
+    text-decoration: none;
+    color: black;
+    font-size: 22px;
+    border-bottom: 1px solid #f4f4f4;
+  }
+  .content .contion .login .login_a::after {
+    clear: both;
+  }
+  .content .contion .login .login_a:hover {
+    color: red;
+  }
+  .content .contion .login .login_content {
+    display: flex;
+    width:400px;
+    line-height: 38px;
+    text-align: center;
+    margin: 0 auto;
+    margin-top: 28px;
+  }
+  .content .contion .login .login_content:nth-of-type(1) {
+    margin-bottom: -10px;
+  }
+  .content .contion .login .login_content i {
+    /* display: inline-block; */
+    font-size: 14px;
+    height: 38px;
+    width: 60px;
+    float: left;
+    color: gray;
+    font-style: normal;
+  }
+  .content .contion .login .login_content input {
+    border: 1px solid #999999;
+    box-sizing: border-box;
+    flex: 1;
+    height: 38px;
+    padding-left: 10px;
+    outline: none;
+  }
+  .content .contion .login .fpwd a {
+    font-size: 12px;
+    border-bottom: none;
+    margin-left:380px;
+    line-height: 55px;
+    color: black;
+    text-decoration: none;
+  }
+  .content .contion .login .fpwd a:hover {
+    border-bottom: 1px solid red;
+    color: red;
+  }
+  .content .contion .login .login_b {
+    display: inline-block;
+    width: 408px;
+    line-height: 33px;
+    margin: 0 21px;
+    background-color: #e4393c;
+    text-align: center;
+    text-decoration: none;
+    color: white;
+    font-size: 18px;
+  }
+  .content .contion .login .login_footer {
+    text-align: right;
+    background-color: white;
+    height: 40px;
+    margin: 0 20px 0px 20px;
+  }
+  .content .contion .login .login_footer .footer_text {
+    line-height: 50px;
+    color: #999999;
+  }
+
+  .content .contion .login .login_footer .footer_c {
+    color: red;
+  }
+ /* footter样式--开始 */
+footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  margin: auto;
+  clear: both;
+  border-top: 1px solid rgb(223, 219, 219);
+
+  background-color: #f1f1f1;
+  color: #000;
+  text-align: center;
+  font-size: 16px;
+  line-height: 50px;
+}
+
+.footer_2_7_2 {
+  clear: both;
+}
+.footer_2_7_1 img {
+  width: 60px;
+  height: 30px;
+}
+
+/* footer样式结束 */

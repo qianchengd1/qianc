@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title></title>
+    <link href="../../layui/css/layui.css" rel="stylesheet" />
+    <link href="../../css/diy.css" rel="stylesheet" />
+    <style>
+      body {
+        background-color: #f2f2f2;
+      }
+      .list-info-left p {
+        line-height: 15px;
+        font-size: 12px;
+        color: #999;
+      }
+      .list-info-child {
+        clear: both;
+        border-top: 1px dashed gray;
+        padding: 20px 0;
+      }
+      #list_title_text_t {
+        min-height: 32px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="forumList">
+      <div class="list_title">
+        <p class="list_title_text" id="list_title_text_t"></p>
+      </div>
+      <form class="layui-form article_list_form_search">
+        <div class="layui-row article_list_search">
+          <div class="layui-col-md8">
+            <div class="layui-form-item">
+              <input
+                type="text"
+                name="keywords"
+                placeholder="局部检索"
+                autocomplete="off"
+                class="layui-input"
+                id="keywords"
+              />
+            </div>
+          </div>
+          <div class="layui-col-md1">
+            <div class="layui-form-item">
+              <button
+                class="layui-btn demo-dropdown-base layui-btn-sm layui-btn-danger"
+                id="forum_type_list"
+              >
+                <span>全部</span>
+                <i class="layui-icon layui-icon-down layui-font-12"></i>
+              </button>
+            </div>
+          </div>
+          <div class="layui-col-md2">
+            <button
+              type="button"
+              class="layui-btn layui-btn-sm layui-btn-danger"
+              id="searchGo"
+            >
+              <i class="layui-icon layui-icon-search"></i>
+            </button>
+            <button
+              type="button"
+              class="layui-btn layui-btn-sm"
+              id="messageAdd"
+            >
+              发布内容
+            </button>
+          </div>
+        </div>
+        <!-- <div class="diy_list_filter">
+            <div class="layui-form-item">
+              <button class="layui-btn demo-dropdown-base layui-btn-danger">
+                <span>筛选</span>
+                <i class="layui-icon layui-icon-down layui-font-12"></i>
+              </button>
+            </div>
+  
+            <div class="layui-form-item">
+              <button class="layui-btn demo-dropdown-base layui-btn-danger">
+                <span>排序</span>
+                <i class="layui-icon layui-icon-down layui-font-12"></i>
+              </button>
+            </div>
+          </div> -->
+      </form>
+      <div class="layui-fluid layadmin-cmdlist-fluid">
+        <div>
+          <ul id="t_list_box"></ul>
+        </div>
+        <!-- 分页器--开始-->
+        <div id="cont" class="layui-row layui-col-space30"></div>
+        <div id="pageSum"></div>
+        <!-- 分页器--结束 -->
+      </div>
+    </div>
+  </body>
+  <script src="../../js/axios.min.js"></script>
+  <script src="../../js/jquery.2.1.1.min.js"></script>
+  <script src="../../layui/layui.js"></script>
+  <script src="../../js/base.js"></script>
+  <script src="../../js/permissionSet.js"></script>
+
+  <script>
+    var BaseUrl = baseUrl();
+    let pageName = $getUrlParams().pageName;
+    if (pageName) {
+      $("#list_title_text_t").text(pageName);
+    } else {
+      let text =
+        parent.document.getElementById("home-iframe-id").contentWindow.location
+          .href;
+      $("#list_title_text_t").text(text);
+    }
+    layui.use(["laypage", "layer", "dropdown", "jquery"], function () {
+      var laypage = layui.laypage,
+        layer = layui.layer;
+      var dropdown = layui.dropdown;
+      var $ = layui.jquery;
+      let vm = {
+        img: "avatar",
+        forum_id: "forum_id",
+        title: "title",
+        nickname: "nickname",
+        create_time: "create_time",
+        content: "content",
+        user_id: "user_id",
+        email: "email",
+        phone: "phone",
+        reply_state: "reply_state",
+        reply: "reply",
+      };
+      let type_name = $getUrlParams().type_name;
+      let keywords = document.getElementById("keywords");
+      let messageAdd = document.getElementById("messageAdd");
+      let query = {};
+      // 商城中心
+      //#if($model.filter.message)
+      // check_action('/forum/edit', "add", "forumAdd");
+      let btnMessageAdd = $check_action("/forum/list", "add");
+      if (btnMessageAdd) {
+        messageAdd.style.display = "inline-block";
+        messageAdd.onclick = function () {
+          window.location.replace("./view_add.html?&pageName="+pageName);
+        };
+      } else {
+        messageAdd.style.display = "none";
+      }
+      //check_action("/forum/list", "get", "messageList");
+      //let message = $check_action("/forum/list", "get");
+      //if (message) {
+      //}
+      let pages = 1;
+      var laytpl = layui.laytpl;
+      let list_arr = [];
+      let type_arr = [];
+      let searchGo = document.getElementById("searchGo");
+      // 跳转搜索页面
+      searchGo.onclick = function () {
+        submit_search();
+      };
+      //  搜索
+      async function submit_search() {
+        query["title"] = keywords.value;
+        const params = removeEmptyValues(query);
+        console.log(params);
+        let { data: json } = await axios.get(
+          BaseUrl + "/api/forum/get_list?like=0",
+          { params: params }
+        );
+        if (json.result.list) {
+          list_arr = json.result;
+          list_add_html();
+        }
+      }
+
+      // 列表--数据渲染
+      function list_add_html() {
+        $("#t_list_box").empty();
+        // sessionStorage.removeItem("vm");
+        for (var i = 0; i < list_arr.list.length; i++) {
+          var item = list_arr.list[i];
+          let url = "./detail.html";
+          console.log(item);
+          var obj = JSON.stringify(item).replace(/\"/g, "'");
+          var objecthtmls = `<li class="list-info" forum_index="${i}"  >
+        <div class="list-info-left">
+          <img src="${fullUrl(BaseUrl, item.img)}" />
+        </div>
+        <div class="list-info-right">
+          <p class="title">${item[vm.title]}</p>
+          <p class="time"> ${toTime(
+            item[vm.create_time],
+            "yyyy-MM-dd hh:mm:ss"
+          )}</p>
+          <p class="record">
+            <span
+              ><i class="layui-icon layui-icon-username"></i> ${
+                item[vm.nickname]
+              }</span
+            >
+            <span class="record_creator">
+              <span class="">点赞 ${item.praise_len}</span>
+              <span class="">点击 ${item.hits}</span>
+            </span>
+          </p>
+        </div></li>`;
+
+          // ${item[vm.reply].create_time}
+          //src 为你的图片地址
+          $("#t_list_box").append(objecthtmls);
+        }
+        // 分页---总页数低于页码总数
+        laypage.render({
+          elem: "pageSum",
+          curr: pages,
+          count: Number(list_arr.count), //数据总数
+          limit: 8,
+          layout: ["prev", "page", "next"],
+          jump: function (obj, first) {
+            // 首次不执行
+            if (!first) {
+              // 点击其他页码跳转
+              pages = obj.curr;
+              get_tpl_list(obj.curr, {});
+              // layer.msg("第 " + obj.curr + " 页");
+            }
+          },
+        });
+      }
+      // 添加访问量
+      async function add_hits(obj) {
+        let { data: res } = await axios.post(
+          BaseUrl + "/api/forum/set?forum_id=" + obj.forum_id,
+          { hits: parseInt(obj.hits) + 1 }
+        );
+        if (res) {
+          hits = parseInt(obj.hits) + 1;
+        }
+      }
+      $("#t_list_box").on("click", ".list-info", function () {
+        var forum_index = $(this).attr("forum_index");
+        let obj = list_arr.list[forum_index];
+        add_hits(obj);
+        let str = JSON.stringify(obj);
+        sessionStorage.setItem("vm", [str]);
+        window.location.replace("./detail.html?forum_id=" + obj.forum_id);
+      });
+      // 获取list数据
+      // message/forum
+      var getTpl = null;
+      async function get_tpl_list(pagesNum, arr) {
+        let params1 = {
+          page: pagesNum,
+          size: 8,
+          orderby: "create_time desc",
+        };
+        let params;
+        if (arr) {
+          params = Object.assign({}, params1, arr);
+        } else {
+          params = params1;
+        }
+        let { data: res } = await axios.get(BaseUrl + "/api/forum/get_list", {
+          params: params,
+        });
+        if (res.result && res.result.list) {
+          list_arr = res.result;
+          // 列表--数据渲染
+          list_add_html();
+        }
+      }
+      /**
+       *添加论坛类型过滤
+       */
+      let list_forum_type = [];
+      async function get_forum_type() {
+        let { data: res } = await axios.get(
+          BaseUrl + "/api/forum_type/get_list",
+          {}
+        );
+        if (res.result && res.result.list) {
+          if (res.result && res.result.list) {
+            list_forum_type.push({
+              title: "全部",
+              value: "0",
+            });
+            res.result.list.map((o) =>
+              list_forum_type.push({
+                title: o.name,
+                value: o.type_id,
+              })
+            );
+          }
+          // res.result.list.map((o) => list_forum_type.push(o.name));
+        }
+      }
+
+      if (type_name) {
+        query["type"] = type_name;
+        get_tpl_list(1, query);
+      } else {
+        get_tpl_list(1);
+      }
+      get_forum_type();
+      // 筛选--渲染数据
+      dropdown.render({
+        elem: "#forum_type_list",
+        data: list_forum_type,
+        click: function (obj) {
+          this.elem.find("span").text(obj.title);
+          if (obj.title == "全部") {
+            get_tpl_list(1, {});
+          } else {
+            query["type"] = obj.title;
+            get_tpl_list(1, query);
+          }
+        },
+      });
+    });
+  </script>
+</html>

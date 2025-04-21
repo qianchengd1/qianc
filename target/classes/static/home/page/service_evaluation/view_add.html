@@ -1,0 +1,950 @@
+<!-- 新增/Add -->
+<!DOCTYPE html>
+<html lang="en">
+ 
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>智慧社区综合管理系统</title>
+    <link rel="stylesheet" href="../../layui/css/layui.css">
+    <link rel="stylesheet" href="../../css/diy.css">
+     <script src="../../js/jquery.2.1.1.min.js"></script>
+    <script src="../../js/jquery_expand.js"></script>
+    <style>
+        img {
+            width: 200px;
+        }
+         
+ 
+         
+    </style>
+</head>
+ 
+<body>
+<div class="container" id="DeployDevOrderTable(id=100577, orderId=12615, name=service_evaluation, changeName=null, title=服务评价, description=null, config={"only_me":true,"is_user_table":false,"list_page":"有列表","table_site":"无","choose_seat":"无","choose_seat_field":null,"register_page":"无","examine":"无","pay":"无","recommend":"无","to_page":"无","time_type":"无","frequency":"无","figure":"无","cart_page":"无","add_page":"无","details_page":"有详情","sign_page":"无","comment":false,"score":false,"location":false,"map":false,"click_num":false,"export_db":false,"setting":false,"answers":false,"import_db":false,"give_score":false,"subject_exam":false,"if":"","limit_condition":"","compute":"","table":null,"table_nav_name":"","read_from_user":"","show_home":false,"integral":false,"praise":false,"collect":false,"print":false,"scan":false,"share":false,"music_player":false,"book_read":false,"coupon":false,"vip_level":false,"spider":"无"}, fields=[DevOrderField(id=2444090, tableId=100577, name=appointment_number, title=预约编号, type=文本, dropDownTable=null, dropDownField=null, dropDownDiy=null, fromUserTable=null, unique=null, canSort=0, canQuery=1, isTypeShow=0, userGroup=null, display=100, sessionRead=0, compute=null, tipStart=null, tipWay=null, tipEnd=null, countChart=null, alipay=null, isImgList=0, isShowCollect=0, description=, imageType=null, sortItem=0, formula=null, musicPlayer=, spider=), DevOrderField(id=2444091, tableId=100577, name=entry_name, title=项目名称, type=文本, dropDownTable=null, dropDownField=null, dropDownDiy=null, fromUserTable=null, unique=, canSort=0, canQuery=0, isTypeShow=0, userGroup=null, display=100, sessionRead=0, compute=null, tipStart=null, tipWay=null, tipEnd=null, countChart=null, alipay=null, isImgList=0, isShowCollect=0, description=, imageType=null, sortItem=1, formula=null, musicPlayer=, spider=), DevOrderField(id=2444092, tableId=100577, name=project_type, title=项目类型, type=文本, dropDownTable=null, dropDownField=null, dropDownDiy=null, fromUserTable=null, unique=, canSort=0, canQuery=0, isTypeShow=0, userGroup=null, display=100, sessionRead=0, compute=null, tipStart=null, tipWay=null, tipEnd=null, countChart=null, alipay=null, isImgList=0, isShowCollect=0, description=, imageType=null, sortItem=2, formula=null, musicPlayer=, spider=), DevOrderField(id=2444093, tableId=100577, name=community_users, title=社区用户, type=UID, dropDownTable=null, dropDownField=null, dropDownDiy=null, fromUserTable=null, unique=, canSort=0, canQuery=0, isTypeShow=0, userGroup=社区用户, display=100, sessionRead=0, compute=null, tipStart=null, tipWay=null, tipEnd=null, countChart=null, alipay=null, isImgList=0, isShowCollect=0, description=, imageType=null, sortItem=3, formula=null, musicPlayer=, spider=), DevOrderField(id=2444094, tableId=100577, name=user_name, title=用户姓名, type=文本, dropDownTable=null, dropDownField=null, dropDownDiy=null, fromUserTable=null, unique=, canSort=0, canQuery=0, isTypeShow=0, userGroup=null, display=100, sessionRead=0, compute=null, tipStart=null, tipWay=null, tipEnd=null, countChart=null, alipay=null, isImgList=0, isShowCollect=0, description=, imageType=null, sortItem=4, formula=null, musicPlayer=, spider=), DevOrderField(id=2444095, tableId=100577, name=evaluation_level, title=评价等级, type=下拉, dropDownTable=null, dropDownField=null, dropDownDiy=优,良,中,差, fromUserTable=null, unique=, canSort=0, canQuery=1, isTypeShow=0, userGroup=null, display=100, sessionRead=0, compute=null, tipStart=null, tipWay=null, tipEnd=null, countChart=null, alipay=null, isImgList=0, isShowCollect=0, description=, imageType=null, sortItem=5, formula=null, musicPlayer=, spider=), DevOrderField(id=2444096, tableId=100577, name=evaluation_content, title=评价内容, type=多文本, dropDownTable=null, dropDownField=null, dropDownDiy=null, fromUserTable=null, unique=, canSort=0, canQuery=0, isTypeShow=0, userGroup=null, display=100, sessionRead=0, compute=null, tipStart=null, tipWay=null, tipEnd=null, countChart=null, alipay=null, isImgList=0, isShowCollect=0, description=, imageType=null, sortItem=6, formula=null, musicPlayer=, spider=)], tableConfig=DeployTableConfig(only_me=true, is_user_table=false, list_page=有列表, table_site=无, choose_seat=无, choose_seat_field=null, register_page=无, examine=无, pay=无, recommend=无, to_page=无, time_type=无, frequency=无, figure=无, cart_page=无, add_page=无, details_page=有详情, sign_pag=null, comment=false, score=false, location=false, map=false, click_num=false, export_db=false, setting=false, answers=false, import_db=false, give_score=false, subject_exam=false, read_from_user=, show_home=false, integral=false, praise=false, collect=false, print=false, scan=false, share=false, music_player=false, book_read=false, coupon=false, vip_level=false, spider=无, table=null, table_nav_name=, ifCondition=null, limit_condition=null, compute=null, nav=null), arr_vue_compute=[], formula=null, formulaNet=null, check=null, checkNet=null, formula_limit=null, pay_img=/api/upload, imageArr=[], itemArr=[DevOrderField(id=2444090, tableId=100577, name=appointment_number, title=预约编号, type=文本, dropDownTable=null, dropDownField=null, dropDownDiy=null, fromUserTable=null, unique=null, canSort=0, canQuery=1, isTypeShow=0, userGroup=null, display=100, sessionRead=0, compute=null, tipStart=null, tipWay=null, tipEnd=null, countChart=null, alipay=null, isImgList=0, isShowCollect=0, description=, imageType=null, sortItem=0, formula=null, musicPlayer=, spider=), DevOrderField(id=2444091, tableId=100577, name=entry_name, title=项目名称, type=文本, dropDownTable=null, dropDownField=null, dropDownDiy=null, fromUserTable=null, unique=, canSort=0, canQuery=0, isTypeShow=0, userGroup=null, display=100, sessionRead=0, compute=null, tipStart=null, tipWay=null, tipEnd=null, countChart=null, alipay=null, isImgList=0, isShowCollect=0, description=, imageType=null, sortItem=1, formula=null, musicPlayer=, spider=), DevOrderField(id=2444092, tableId=100577, name=project_type, title=项目类型, type=文本, dropDownTable=null, dropDownField=null, dropDownDiy=null, fromUserTable=null, unique=, canSort=0, canQuery=0, isTypeShow=0, userGroup=null, display=100, sessionRead=0, compute=null, tipStart=null, tipWay=null, tipEnd=null, countChart=null, alipay=null, isImgList=0, isShowCollect=0, description=, imageType=null, sortItem=2, formula=null, musicPlayer=, spider=), DevOrderField(id=2444093, tableId=100577, name=community_users, title=社区用户, type=UID, dropDownTable=null, dropDownField=null, dropDownDiy=null, fromUserTable=null, unique=, canSort=0, canQuery=0, isTypeShow=0, userGroup=社区用户, display=100, sessionRead=0, compute=null, tipStart=null, tipWay=null, tipEnd=null, countChart=null, alipay=null, isImgList=0, isShowCollect=0, description=, imageType=null, sortItem=3, formula=null, musicPlayer=, spider=), DevOrderField(id=2444094, tableId=100577, name=user_name, title=用户姓名, type=文本, dropDownTable=null, dropDownField=null, dropDownDiy=null, fromUserTable=null, unique=, canSort=0, canQuery=0, isTypeShow=0, userGroup=null, display=100, sessionRead=0, compute=null, tipStart=null, tipWay=null, tipEnd=null, countChart=null, alipay=null, isImgList=0, isShowCollect=0, description=, imageType=null, sortItem=4, formula=null, musicPlayer=, spider=), DevOrderField(id=2444095, tableId=100577, name=evaluation_level, title=评价等级, type=下拉, dropDownTable=null, dropDownField=null, dropDownDiy=优,良,中,差, fromUserTable=null, unique=, canSort=0, canQuery=1, isTypeShow=0, userGroup=null, display=100, sessionRead=0, compute=null, tipStart=null, tipWay=null, tipEnd=null, countChart=null, alipay=null, isImgList=0, isShowCollect=0, description=, imageType=null, sortItem=5, formula=null, musicPlayer=, spider=)], richArr=[DevOrderField(id=2444096, tableId=100577, name=evaluation_content, title=评价内容, type=多文本, dropDownTable=null, dropDownField=null, dropDownDiy=null, fromUserTable=null, unique=, canSort=0, canQuery=0, isTypeShow=0, userGroup=null, display=100, sessionRead=0, compute=null, tipStart=null, tipWay=null, tipEnd=null, countChart=null, alipay=null, isImgList=0, isShowCollect=0, description=, imageType=null, sortItem=6, formula=null, musicPlayer=, spider=)], can_query=true, hasTipWay=null, hasTableSite=true)_add">
+<article class="sign_in">
+    <div class="warp">
+        <div class="layui-container">
+            <div class="layui-row">
+                <form class="layui-form" action="">
+                                                                                                                                                                                                            <div class="layui-form-item" id="appointment_number_box">
+                                            <label class="layui-form-label">预约编号</label>
+                                            <div class="layui-input-block">
+                                                <input type="text" name="title" lay-verify="title" autocomplete="off"
+                                                       placeholder="请输入预约编号"
+                                                       class="layui-input" id="appointment_number">
+                                            </div>
+                                        </div>
+                                                                                                                                                                                                                                                                <div class="layui-form-item" id="entry_name_box">
+                                            <label class="layui-form-label">项目名称</label>
+                                            <div class="layui-input-block">
+                                                <input type="text" name="title" lay-verify="title" autocomplete="off"
+                                                       placeholder="请输入项目名称"
+                                                       class="layui-input" id="entry_name">
+                                            </div>
+                                        </div>
+                                                                                                                                                                                                                                                                <div class="layui-form-item" id="project_type_box">
+                                            <label class="layui-form-label">项目类型</label>
+                                            <div class="layui-input-block">
+                                                <input type="text" name="title" lay-verify="title" autocomplete="off"
+                                                       placeholder="请输入项目类型"
+                                                       class="layui-input" id="project_type">
+                                            </div>
+                                        </div>
+                                                                                                                                                                                                                                                                <div class="layui-form-item" id="community_users_box">
+                                            <label class="layui-form-label">社区用户</label>
+                                            <div class="layui-input-block">
+                                                <select name="interest" lay-filter="community_users" id="community_users">
+                                                    <option value=""></option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                                                                                                                                                                                                                                                <div class="layui-form-item" id="user_name_box">
+                                            <label class="layui-form-label">用户姓名</label>
+                                            <div class="layui-input-block">
+                                                <input type="text" name="title" lay-verify="title" autocomplete="off"
+                                                       placeholder="请输入用户姓名"
+                                                       class="layui-input" id="user_name">
+                                            </div>
+                                        </div>
+                                                                                                                                                                                                                        <div class="layui-form-item" id="evaluation_level_box">
+                                        <label class="layui-form-label">评价等级</label>
+                                        <div class="layui-input-block">
+                                            <select name="interest" lay-filter="evaluation_level" id="evaluation_level">
+                                                <option value=""></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                                                                                                                                                                    <div class="layui-form-item layui-form-text" id="evaluation_content_box">
+                                        <label class="layui-form-label">评价内容</label>
+                                        <div class="layui-input-block">
+                                            <textarea placeholder="请输入评价内容" class="layui-textarea"
+                                                      id="evaluation_content"></textarea>
+                                        </div>
+                                    </div>
+                                                                                                             
+                                                 
+                         
+                         
+                                                  
+                                                            </form>
+                <div class="layui-btn-container">
+                    <a href="#" type="button" class="layui-btn login" id="submit" >确认/Confirm</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</article>
+ </div>
+</body>
+<script src="../../js/base.js"></script>
+<script src="../../layui/layui.js"></script>
+<script src="../../js/axios.min.js"></script>
+<script src="../../js/permissionSet.js"></script>
+                            <script>
+    var BaseUrl = baseUrl()
+    let service_evaluation_id = location.search.substring(1)
+    layui.use(['upload', 'element', 'layer', 'laydate', 'layedit'], function () {
+        var $ = layui.jquery
+                , upload = layui.upload
+                , element = layui.element
+                , layer = layui.layer
+                , laydate = layui.laydate
+                , layedit = layui.layedit
+                , form = layui.form;
+ 
+        let url
+ 
+        let token = sessionStorage.token || null
+        let personInfo = JSON.parse(sessionStorage.personInfo)
+        let user_group = personInfo.user_group
+        let nickname = personInfo.nickname
+        let use_id = personInfo.user_id
+ 
+        function  $get_stamp() {
+            return new Date().getTime();
+        }
+ 
+        function  $get_rand(len) {
+            var rand = Math.random();
+            return Math.ceil(rand * 10 ** len);
+        }
+         
+            // 权限判断
+            /**
+             * 获取路径对应操作权限 鉴权
+             * @param {String} action 操作名
+             */
+            function $check_action(path1, action = "get") {
+                var o = $get_power(path1);
+                if (o && o[action] != 0 && o[action] != false) {
+                    return true;
+                }
+                return false;
+            }
+ 
+            /**
+             * 获取权限
+             * @param {String} path 路由路径
+             */
+            function $get_power(path) {
+                var list_data = JSON.parse(sessionStorage.list_data)
+                var list = list_data;
+                var obj;
+                for (var i = 0; i < list.length; i++) {
+                    var o = list[i];
+                    if (o.path === path) {
+                        obj = o;
+                        break;
+                    }
+                }
+                return obj;
+            }
+ 
+        let submit = document.querySelector('#submit')
+        // 提交按钮校验权限
+        // if (   user_group == "管理员" ||$check_action('/service_evaluation/view', 'add') || $check_action('/service_evaluation/view', 'set')) {
+        //    submit.style.display = "block"
+        // }
+        // style="display: none"
+ 
+         
+            let field = "service_evaluation_id";
+            let url_add = "service_evaluation";
+            let url_set = "service_evaluation";
+            let url_get_obj = "service_evaluation";
+            let url_upload = "service_evaluation"
+            let query = {
+                "service_evaluation_id": 0,
+            }
+         
+            
+            let form_data2 = {
+                                                        "appointment_number":  '', // 预约编号
+                                                                            "entry_name":  '', // 项目名称
+                                                                            "project_type":  '', // 项目类型
+                                                                                "community_users": 0, // 社区用户
+                                                                            "user_name":  '', // 用户姓名
+                                                                            "evaluation_level":  '', // 评价等级
+                                                                            "evaluation_content":  '', // 评价内容
+                                                                                                                    "service_evaluation_id": 0, // ID
+                                                                                            }
+           
+            layui.layedit.set({
+      uploadImage: {
+        url: BaseUrl + '/api/service_evaluation/upload' //接口url
+        , type: 'post' //默认post
+      }
+    });
+ 
+ 
+            var path1
+ 
+            function getpath() {
+                var list_data = JSON.parse(sessionStorage.list_data)
+                for (var i = 0; i < list_data.length; i++) {
+                    var o = list_data[i];
+                    if (o.path === "/service_evaluation/table") {
+                        path1 = o.path
+                            $get_power(o.path)
+                    }
+                }
+            }
+ 
+            getpath()
+ 
+            /**
+             * 注册时是否有显示或操作字段的权限
+             * @param {String} action 操作名
+             * @param {String} field 查询的字段
+             * @param {String} path 路径
+             */
+            function $check_register_field(action, field, path1) {
+                var o = $get_power(path1);
+                var auth;
+                if (o && o[action] != 0 && o[action] != false) {
+                    auth = o["field_" + action];
+                }
+                if (auth) {
+                    return auth.indexOf(field) !== -1;
+                }
+                return false;
+            }
+ 
+            /**
+             * 是否有显示或操作字段的权限
+             * @param {String} action 操作名
+             * @param {String} field 查询的字段
+             */
+            function $check_field(action, field) {
+                var o = $get_power("/service_evaluation/edit");
+                var auth;
+                if (o && o[action] != 0 && o[action] != false) {
+                    auth = o["field_" + action];
+                }
+                if (auth) {
+                    return auth.indexOf(field) !== -1;
+                }
+                return false;
+            }
+ 
+            /**
+             * 获取路径对应操作权限 鉴权
+             * @param {String} action 操作名
+             */
+            function $check_exam(path1, action = "get") {
+                var o = $get_power(path1);
+                if (o) {
+                    var option = JSON.parse(o.option);
+                    if (option[action])
+                        return true
+                }
+                return false;
+            }
+ 
+            /**
+             * 是否有审核字段的权限
+             */
+            function $check_examine(path) {
+               var o = $get_power(path);
+                if (o){
+                    var option = JSON.parse(o.option);
+                    if (option.examine)
+                        return true
+                }
+                return false;
+            }
+ 
+                            if (user_group === '管理员') {
+                    $("#appointment_number_box").show()
+                } else {
+                    if ($check_field('add', 'appointment_number')){
+                        $("#appointment_number_box").show()
+                    }else {
+                        $("#appointment_number_box").hide()
+                    }
+                }
+                            if (user_group === '管理员') {
+                    $("#entry_name_box").show()
+                } else {
+                    if ($check_field('add', 'entry_name')){
+                        $("#entry_name_box").show()
+                    }else {
+                        $("#entry_name_box").hide()
+                    }
+                }
+                            if (user_group === '管理员') {
+                    $("#project_type_box").show()
+                } else {
+                    if ($check_field('add', 'project_type')){
+                        $("#project_type_box").show()
+                    }else {
+                        $("#project_type_box").hide()
+                    }
+                }
+                            if (user_group === '管理员') {
+                    $("#community_users_box").show()
+                } else {
+                    if ($check_field('add', 'community_users')){
+                        $("#community_users_box").show()
+                    }else {
+                        $("#community_users_box").hide()
+                    }
+                }
+                            if (user_group === '管理员') {
+                    $("#user_name_box").show()
+                } else {
+                    if ($check_field('add', 'user_name')){
+                        $("#user_name_box").show()
+                    }else {
+                        $("#user_name_box").hide()
+                    }
+                }
+                            if (user_group === '管理员') {
+                    $("#evaluation_level_box").show()
+                } else {
+                    if ($check_field('add', 'evaluation_level')){
+                        $("#evaluation_level_box").show()
+                    }else {
+                        $("#evaluation_level_box").hide()
+                    }
+                }
+                            if (user_group === '管理员') {
+                    $("#evaluation_content_box").show()
+                } else {
+                    if ($check_field('add', 'evaluation_content')){
+                        $("#evaluation_content_box").show()
+                    }else {
+                        $("#evaluation_content_box").hide()
+                    }
+                }
+             
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
+                                                                                                                                                                                                                                                         
+                                                             
+                                                             
+                                                             
+                                                             
+                                                             
+                                                             
+                                             
+             
+                                                             
+                                                                             
+                                                                             
+                                                                             
+                                    async function community_users() {
+                        var community_users = document.querySelector("#community_users")
+                        var op1 = document.createElement("option");
+                        op1.value = '0'
+                            community_users.appendChild(op1)
+                        // 收集数据 长度
+                        var count
+                        // 收集数据 数组
+                        var arr = []
+                        $.ajax({
+                            url: BaseUrl + '/api/user/get_list?user_group=社区用户',
+                            type: 'GET',
+                            contentType: 'application/json; charset=UTF-8',
+                            async: false,
+                            dataType: 'json',
+                            success: function (response) {
+                                count = response.result.count
+                                arr = response.result.list
+                            }
+                        })
+                        for (var i = 0; i < arr.length; i++) {
+                            var op = document.createElement("option");
+                            // 给节点赋值
+                            op.innerHTML = arr[i].username + "--" + arr[i].nickname
+                            op.value = arr[i].user_id
+                            // 新增/Add节点
+                                community_users.appendChild(op)
+                            layui.form.render("select");
+                        }
+                    }
+ 
+                    layui.form.on('select(community_users)', function (data) {
+                        form_data2.community_users = Number(data.elem[data.elem.selectedIndex].value);
+                    })
+                        community_users()
+                                                                             
+                                                                                              let evaluation_level_data = ['优','良','中','差']
+                    async function evaluation_level() {
+                        var evaluation_level = document.querySelector("#evaluation_level")
+                        var op1 = document.createElement("option");
+                        op1.value = '0'
+                            evaluation_level.appendChild(op1)
+                        // 收集数据 长度
+                        var count
+                        // 收集数据 数组
+                        var arr = []
+                        count = evaluation_level_data.length
+                        arr = evaluation_level_data
+                        for (var i = 0; i < arr.length; i++) {
+                            var op = document.createElement("option");
+                            // 给节点赋值
+                            op.innerHTML = arr[i]
+                            op.value = arr[i]
+                            // 新增/Add节点
+                                evaluation_level.appendChild(op)
+                            layui.form.render("select");
+                        }
+                    }
+ 
+                    layui.form.on('select(evaluation_level)', function (data) {
+                        form_data2.evaluation_level = data.elem[data.elem.selectedIndex].text;
+                    })
+                        evaluation_level()
+                 
+                                                                             
+                                                     
+                                                //文本
+                    let appointment_number = document.querySelector("#appointment_number")
+                        appointment_number.onkeyup = function (event) {
+                        form_data2.appointment_number = event.target.value
+                    }
+                    //文本
+                                                                                                                                //文本
+                    let entry_name = document.querySelector("#entry_name")
+                        entry_name.onkeyup = function (event) {
+                        form_data2.entry_name = event.target.value
+                    }
+                    //文本
+                                                                                                                                //文本
+                    let project_type = document.querySelector("#project_type")
+                        project_type.onkeyup = function (event) {
+                        form_data2.project_type = event.target.value
+                    }
+                    //文本
+                                                                                                                                                                                                                            //文本
+                    let user_name = document.querySelector("#user_name")
+                        user_name.onkeyup = function (event) {
+                        form_data2.user_name = event.target.value
+                    }
+                    //文本
+                                                                                                                                                                                                                                                                            //多文本
+                    let evaluation_content = document.querySelector("#evaluation_content")
+                    //多文本
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                var data = sessionStorage.data || ''
+            if (data !== '') {
+                var data2 = JSON.parse(data)
+                Object.keys(form_data2).forEach(key => {
+                    Object.keys(data2).forEach(dbKey => {
+                        if (key === dbKey) {
+                            $('#' + key).val(data2[key])
+                            form_data2[key] = data2[key]
+                            $('#' + key).attr('disabled', 'disabled')
+                                                             
+                                                             
+                                                             
+                                                                                                for (let key in form_data2) {
+                                        if (key == 'community_users') {
+                                            let alls = document.querySelector('#community_users').querySelectorAll('option')
+                                            let test = form_data2[key]
+                                            for (let i = 0; i < alls.length; i++) {
+                                                layui.form.render("select");
+                                                if (alls[i].value == test) {
+                                                    alls[i].selected = true
+                                                    form_data2.community_users = alls[i].value
+                                                    layui.form.render("select");
+                                                }
+                                            }
+                                        }
+                                    }
+                                 
+                                                             
+                                                                                                for (let key in form_data2) {
+                                        if (key == 'evaluation_level') {
+                                            let alls = document.querySelector('#evaluation_level').querySelectorAll('option')
+                                            let test = form_data2[key]
+                                            for (let i = 0; i < alls.length; i++) {
+                                                if (alls[i].innerHTML == test) {
+                                                    alls[i].selected = true
+                                                    form_data2.evaluation_level = alls[i].text
+                                                    layui.form.render("select");
+                                                }
+                                            }
+                                        }
+                                    }
+                                
+                                                             
+                                                    }
+                    })
+                })
+                sessionStorage.removeItem("data");
+            }
+                                                                                                                                                                                                                                                                 
+ 
+            if (service_evaluation_id.length==1) {
+                async function axios_get_3() {
+                    const {data: rese} = await axios.get(BaseUrl + '/api/service_evaluation/get_obj', {
+                        params: {
+                                service_evaluation_id: service_evaluation_id
+                        }, headers: {
+                            'x-auth-token': token
+                        }
+                    })
+ 
+                    let data = rese.result.obj
+                    Object.keys(form_data2).forEach((key) => {
+                        form_data2[key] = data[key];
+                        $("#"+key).val(form_data2[key])
+                    });
+ 
+                     
+ 
+                                          for (let key in data) {
+                                              }
+                                          for (let key in data) {
+                                              }
+                                          for (let key in data) {
+                                              }
+                                          for (let key in data) {
+                                                 
+                                if (key == 'community_users') {
+                                    let alls = document.querySelector('#community_users').querySelectorAll('option')
+                                    let test = data[key]
+                                    for (let i = 0; i < alls.length; i++) {
+                                        layui.form.render("select");
+                                        if (alls[i].value == test) {
+                                            alls[i].selected = true
+                                            form_data2.community_users = alls[i].value
+                                            layui.form.render("select");
+                                        }
+                                    }
+                                }
+                                              }
+                                          for (let key in data) {
+                                              }
+                                          for (let key in data) {
+                                                  
+                                if (key == 'evaluation_level') {
+                                    let alls = document.querySelector('#evaluation_level').querySelectorAll('option')
+                                    let test = data[key]
+                                    for (let i = 0; i < alls.length; i++) {
+                                        if (alls[i].innerHTML == test) {
+                                            alls[i].selected = true
+                                            form_data2.evaluation_level = alls[i].text
+                                            layui.form.render("select");
+                                        }
+                                    }
+                                }
+                           
+                                              }
+                                          for (let key in data) {
+                                              }
+                                                                                   if (user_group === '管理员') {
+                            $("#appointment_number_box").show()
+                        } else {
+                            if ($check_field('set', 'appointment_number') || $check_field('get', 'appointment_number')){
+                                $("#appointment_number_box").show()
+                            }else {
+                                $("#appointment_number_box").hide()
+                            }
+                        }
+                                            if (user_group === '管理员') {
+                            $("#entry_name_box").show()
+                        } else {
+                            if ($check_field('set', 'entry_name') || $check_field('get', 'entry_name')){
+                                $("#entry_name_box").show()
+                            }else {
+                                $("#entry_name_box").hide()
+                            }
+                        }
+                                            if (user_group === '管理员') {
+                            $("#project_type_box").show()
+                        } else {
+                            if ($check_field('set', 'project_type') || $check_field('get', 'project_type')){
+                                $("#project_type_box").show()
+                            }else {
+                                $("#project_type_box").hide()
+                            }
+                        }
+                                            if (user_group === '管理员') {
+                            $("#community_users_box").show()
+                        } else {
+                            if ($check_field('set', 'community_users') || $check_field('get', 'community_users')){
+                                $("#community_users_box").show()
+                            }else {
+                                $("#community_users_box").hide()
+                            }
+                        }
+                                            if (user_group === '管理员') {
+                            $("#user_name_box").show()
+                        } else {
+                            if ($check_field('set', 'user_name') || $check_field('get', 'user_name')){
+                                $("#user_name_box").show()
+                            }else {
+                                $("#user_name_box").hide()
+                            }
+                        }
+                                            if (user_group === '管理员') {
+                            $("#evaluation_level_box").show()
+                        } else {
+                            if ($check_field('set', 'evaluation_level') || $check_field('get', 'evaluation_level')){
+                                $("#evaluation_level_box").show()
+                            }else {
+                                $("#evaluation_level_box").hide()
+                            }
+                        }
+                                            if (user_group === '管理员') {
+                            $("#evaluation_content_box").show()
+                        } else {
+                            if ($check_field('set', 'evaluation_content') || $check_field('get', 'evaluation_content')){
+                                $("#evaluation_content_box").show()
+                            }else {
+                                $("#evaluation_content_box").hide()
+                            }
+                        }
+                     
+                    // Array.prototype.slice.call(document.getElementsByTagName('input')).map(i => i.disabled = true)
+                    // Array.prototype.slice.call(document.getElementsByTagName('select')).map(i => i.disabled = true)
+                    // Array.prototype.slice.call(document.getElementsByTagName('textarea')).map(i => i.disabled = true)
+                                                                        //文本
+                                appointment_number.value = form_data2.appointment_number
+                            //文本
+                                                                         
+                                                    if (user_group === '管理员' || (form_data2['service_evaluation_id'] && $check_field('set', 'appointment_number')) || (!form_data2['service_evaluation_id'] && $check_field('add', 'appointment_number'))) {
+                            }else {
+                                $("#appointment_number").attr("disabled", true);
+                                $("#appointment_number > input[name='file']").attr('disabled', true);
+                            }
+                                                                                                //文本
+                                entry_name.value = form_data2.entry_name
+                            //文本
+                                                                         
+                                                    if (user_group === '管理员' || (form_data2['service_evaluation_id'] && $check_field('set', 'entry_name')) || (!form_data2['service_evaluation_id'] && $check_field('add', 'entry_name'))) {
+                            }else {
+                                $("#entry_name").attr("disabled", true);
+                                $("#entry_name > input[name='file']").attr('disabled', true);
+                            }
+                                                                                                //文本
+                                project_type.value = form_data2.project_type
+                            //文本
+                                                                         
+                                                    if (user_group === '管理员' || (form_data2['service_evaluation_id'] && $check_field('set', 'project_type')) || (!form_data2['service_evaluation_id'] && $check_field('add', 'project_type'))) {
+                            }else {
+                                $("#project_type").attr("disabled", true);
+                                $("#project_type > input[name='file']").attr('disabled', true);
+                            }
+                                                                                                                     
+                                                    if (user_group === '管理员' || (form_data2['service_evaluation_id'] && $check_field('set', 'community_users')) || (!form_data2['service_evaluation_id'] && $check_field('add', 'community_users'))) {
+                            }else {
+                                $("#community_users").attr("disabled", true);
+                                $("#community_users > input[name='file']").attr('disabled', true);
+                            }
+                                                                                                //文本
+                                user_name.value = form_data2.user_name
+                            //文本
+                                                                         
+                                                    if (user_group === '管理员' || (form_data2['service_evaluation_id'] && $check_field('set', 'user_name')) || (!form_data2['service_evaluation_id'] && $check_field('add', 'user_name'))) {
+                            }else {
+                                $("#user_name").attr("disabled", true);
+                                $("#user_name > input[name='file']").attr('disabled', true);
+                            }
+                                                                                                                     
+                                                    if (user_group === '管理员' || (form_data2['service_evaluation_id'] && $check_field('set', 'evaluation_level')) || (!form_data2['service_evaluation_id'] && $check_field('add', 'evaluation_level'))) {
+                            }else {
+                                $("#evaluation_level").attr("disabled", true);
+                                $("#evaluation_level > input[name='file']").attr('disabled', true);
+                            }
+                                                                                                                                                //多文本
+                                evaluation_content.value = form_data2.evaluation_content
+                            //多文本
+                         
+                                                    if (user_group === '管理员' || (form_data2['service_evaluation_id'] && $check_field('set', 'evaluation_content')) || (!form_data2['service_evaluation_id'] && $check_field('add', 'evaluation_content'))) {
+                            }else {
+                                $("#evaluation_content").attr("disabled", true);
+                                $("#evaluation_content > input[name='file']").attr('disabled', true);
+                            }
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            layui.form.render("select");
+                                   }
+                axios_get_3()
+            }else{
+              function axios_get_3() {
+                   let data = $.db.get("form");
+                    Object.keys(form_data2).forEach((key) => {
+                      if(data?.[key]){
+                        form_data2[key] = data[key];
+                        $("#"+key).val(form_data2[key])
+                        $("#"+key).attr("disabled", true)
+                       
+                       }
+                    });
+ 
+                     
+ 
+                                             
+                                             
+                                             
+                                                                        for (let key in data) {
+                                if (key == 'community_users') {
+                                    let alls = document.querySelector('#community_users').querySelectorAll('option')
+                                    let test = data[key]
+                                    for (let i = 0; i < alls.length; i++) {
+                                        layui.form.render("select");
+                                        if (alls[i].value == test) {
+                                            alls[i].selected = true
+                                            form_data2.community_users = alls[i].value
+                                            layui.form.render("select");
+                                        }
+                                    }
+                                }
+                            }
+                         
+                                             
+                                                                        for (let key in data) {
+                                if (key == 'evaluation_level') {
+                                    let alls = document.querySelector('#evaluation_level').querySelectorAll('option')
+                                    let test = data[key]
+                                    for (let i = 0; i < alls.length; i++) {
+                                        if (alls[i].innerHTML == test) {
+                                            alls[i].selected = true
+                                            form_data2.evaluation_level = alls[i].text
+                                            layui.form.render("select");
+                                        }
+                                    }
+                                }
+                            }
+                         
+                                             
+                                                                                   if (user_group === '管理员') {
+                            $("#appointment_number_box").show()
+                        } else {
+                            if ($check_field('set', 'appointment_number') || $check_field('get', 'appointment_number')){
+                                $("#appointment_number_box").show()
+                            }else {
+                                $("#appointment_number_box").hide()
+                            }
+                        }
+                                            if (user_group === '管理员') {
+                            $("#entry_name_box").show()
+                        } else {
+                            if ($check_field('set', 'entry_name') || $check_field('get', 'entry_name')){
+                                $("#entry_name_box").show()
+                            }else {
+                                $("#entry_name_box").hide()
+                            }
+                        }
+                                            if (user_group === '管理员') {
+                            $("#project_type_box").show()
+                        } else {
+                            if ($check_field('set', 'project_type') || $check_field('get', 'project_type')){
+                                $("#project_type_box").show()
+                            }else {
+                                $("#project_type_box").hide()
+                            }
+                        }
+                                            if (user_group === '管理员') {
+                            $("#community_users_box").show()
+                        } else {
+                            if ($check_field('set', 'community_users') || $check_field('get', 'community_users')){
+                                $("#community_users_box").show()
+                            }else {
+                                $("#community_users_box").hide()
+                            }
+                        }
+                                            if (user_group === '管理员') {
+                            $("#user_name_box").show()
+                        } else {
+                            if ($check_field('set', 'user_name') || $check_field('get', 'user_name')){
+                                $("#user_name_box").show()
+                            }else {
+                                $("#user_name_box").hide()
+                            }
+                        }
+                                            if (user_group === '管理员') {
+                            $("#evaluation_level_box").show()
+                        } else {
+                            if ($check_field('set', 'evaluation_level') || $check_field('get', 'evaluation_level')){
+                                $("#evaluation_level_box").show()
+                            }else {
+                                $("#evaluation_level_box").hide()
+                            }
+                        }
+                                            if (user_group === '管理员') {
+                            $("#evaluation_content_box").show()
+                        } else {
+                            if ($check_field('set', 'evaluation_content') || $check_field('get', 'evaluation_content')){
+                                $("#evaluation_content_box").show()
+                            }else {
+                                $("#evaluation_content_box").hide()
+                            }
+                        }
+                     
+                    // Array.prototype.slice.call(document.getElementsByTagName('input')).map(i => i.disabled = true)
+                    // Array.prototype.slice.call(document.getElementsByTagName('select')).map(i => i.disabled = true)
+                    // Array.prototype.slice.call(document.getElementsByTagName('textarea')).map(i => i.disabled = true)
+                                                                        //文本
+                                appointment_number.value = form_data2.appointment_number
+                            //文本
+                                                                         
+                                                    if (user_group === '管理员' || (form_data2['service_evaluation_id'] && $check_field('set', 'appointment_number')) || (!form_data2['service_evaluation_id'] && $check_field('add', 'appointment_number'))) {
+                            }else {
+                                $("#appointment_number").attr("disabled", true);
+                                $("#appointment_number > input[name='file']").attr('disabled', true);
+                            }
+                                                                                                //文本
+                                entry_name.value = form_data2.entry_name
+                            //文本
+                                                                         
+                                                    if (user_group === '管理员' || (form_data2['service_evaluation_id'] && $check_field('set', 'entry_name')) || (!form_data2['service_evaluation_id'] && $check_field('add', 'entry_name'))) {
+                            }else {
+                                $("#entry_name").attr("disabled", true);
+                                $("#entry_name > input[name='file']").attr('disabled', true);
+                            }
+                                                                                                //文本
+                                project_type.value = form_data2.project_type
+                            //文本
+                                                                         
+                                                    if (user_group === '管理员' || (form_data2['service_evaluation_id'] && $check_field('set', 'project_type')) || (!form_data2['service_evaluation_id'] && $check_field('add', 'project_type'))) {
+                            }else {
+                                $("#project_type").attr("disabled", true);
+                                $("#project_type > input[name='file']").attr('disabled', true);
+                            }
+                                                                                                                     
+                                                    if (user_group === '管理员' || (form_data2['service_evaluation_id'] && $check_field('set', 'community_users')) || (!form_data2['service_evaluation_id'] && $check_field('add', 'community_users'))) {
+                            }else {
+                                $("#community_users").attr("disabled", true);
+                                $("#community_users > input[name='file']").attr('disabled', true);
+                            }
+                                                                                                //文本
+                                user_name.value = form_data2.user_name
+                            //文本
+                                                                         
+                                                    if (user_group === '管理员' || (form_data2['service_evaluation_id'] && $check_field('set', 'user_name')) || (!form_data2['service_evaluation_id'] && $check_field('add', 'user_name'))) {
+                            }else {
+                                $("#user_name").attr("disabled", true);
+                                $("#user_name > input[name='file']").attr('disabled', true);
+                            }
+                                                                                                                     
+                                                    if (user_group === '管理员' || (form_data2['service_evaluation_id'] && $check_field('set', 'evaluation_level')) || (!form_data2['service_evaluation_id'] && $check_field('add', 'evaluation_level'))) {
+                            }else {
+                                $("#evaluation_level").attr("disabled", true);
+                                $("#evaluation_level > input[name='file']").attr('disabled', true);
+                            }
+                                                                                                                                                //多文本
+                                evaluation_content.value = form_data2.evaluation_content
+                            //多文本
+                         
+                                                    if (user_group === '管理员' || (form_data2['service_evaluation_id'] && $check_field('set', 'evaluation_content')) || (!form_data2['service_evaluation_id'] && $check_field('add', 'evaluation_content'))) {
+                            }else {
+                                $("#evaluation_content").attr("disabled", true);
+                                $("#evaluation_content > input[name='file']").attr('disabled', true);
+                            }
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            layui.form.render("select");
+                      layui.form.render("select");
+                                   }
+                axios_get_3()
+            
+            
+            
+            }
+ 
+ 
+                        submit.onclick = async function () {
+                try {
+                                                                                                                                                    //文本
+                            form_data2.appointment_number = appointment_number.value
+                            //文本
+                                                                                                                                                                        //文本
+                            form_data2.entry_name = entry_name.value
+                            //文本
+                                                                                                                                                                        //文本
+                            form_data2.project_type = project_type.value
+                            //文本
+                                                                                                                                                                                                                                                                                                                            //文本
+                            form_data2.user_name = user_name.value
+                            //文本
+                                                                                                                                                                                                                                                                                                //多文本
+                            form_data2.evaluation_content = evaluation_content.value
+                            //多文本
+                                                                } catch (err) {
+                    console.log(err)
+                }
+                                                                 
+                                                 
+                let customize_field = []
+                                                            customize_field.push({"field_name": "预约编号", "field_value": form_data2.appointment_number});
+                                                                                customize_field.push({"field_name": "项目名称", "field_value": form_data2.entry_name});
+                                                                                customize_field.push({"field_name": "项目类型", "field_value": form_data2.project_type});
+                                                                                customize_field.push({"field_name": "社区用户", "field_value": form_data2.community_users});
+                                                                                customize_field.push({"field_name": "用户姓名", "field_value": form_data2.user_name});
+                                                                                customize_field.push({"field_name": "评价等级", "field_value": form_data2.evaluation_level});
+                                                                                customize_field.push({"field_name": "评价内容", "field_value": form_data2.evaluation_content});
+                                     
+                 
+                if (service_evaluation_id.length >1||service_evaluation_id.length ==0) {
+                                            console.log("新增/Add")
+                                const {data: res} = await axios.post(BaseUrl + '/api/service_evaluation/add',
+                                        form_data2, {
+                                            headers: {
+                                                'x-auth-token': token,
+                                                'Content-Type': 'application/json'
+                                            }
+                                        })
+                                                                if (res.result == 1) {
+                                    layer.msg('确认/Confirm完毕');
+                                    setTimeout(function () {
+                                      const prevPageUrl = document.referrer;
+                                     if(prevPageUrl.includes('index')){
+                                            window.location.replace('../home/home.html');
+                                        }else{
+                                            window.location.replace(prevPageUrl);
+                                        }
+                                       
+                                    }, 1000)
+                                }else {
+                                  layer.msg(res.error.message);
+                                }
+                   
+                                       
+                 
+                } else {
+                                        console.log("详情/Details")
+                     
+                    const {data: res} = await axios.post(BaseUrl + '/api/service_evaluation/set?service_evaluation_id=' + service_evaluation_id,
+                            form_data2, {
+                                headers: {
+                                    'x-auth-token': token,
+                                    'Content-Type': 'application/json'
+                                }
+                            })
+                    if (res.result == 1) {
+                        layer.msg('确认/Confirm完毕');
+                        setTimeout(function () {
+                            window.location.replace("./table.html");
+                        }, 1000)
+                    }else {
+              layer.msg(res.error.message);
+            }
+                }
+            }
+         
+    })
+    ;
+</script>
+ 
+</html>

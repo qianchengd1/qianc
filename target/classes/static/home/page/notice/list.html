@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title></title>
+    <link href="../../layui/css/layui.css" rel="stylesheet" />
+    <link href="../../css/diy.css" rel="stylesheet" />
+    <style>
+      body {
+        background-color: #f2f2f2;
+      }
+      .list-info-left p {
+        line-height: 15px;
+        font-size: 12px;
+        color: #999;
+      }
+      .list-info-child {
+        clear: both;
+        border-top: 1px dashed gray;
+        padding: 20px 0;
+      }
+      #list_title_text_t{
+        min-height: 32px;
+      }
+    </style>
+  </head>
+  <body>
+<div id="noticeList">
+        <div class="list_title"><p class="list_title_text" id="list_title_text_t"></p></div>
+        <div class="layui-fluid layadmin-cmdlist-fluid">
+          <div>
+            <ul id="t_list_box" class="cars"></ul>
+          </div>
+          <!-- 分页器--开始-->
+          <div id="cont" class="layui-row layui-col-space30"></div>
+          <div id="pageSum"></div>
+          <!-- 分页器--结束 -->
+        </div>
+      </div>
+  </body>
+  <script src="../../js/axios.min.js"></script>
+  <script src="../../js/jquery.2.1.1.min.js"></script>
+  <script src="../../layui/layui.js"></script>
+  <script src="../../js/base.js"></script>
+  <script src="../../js/permissionSet.js"></script>
+  <script>
+        var BaseUrl = baseUrl();
+        let pageName = $getUrlParams().pageName;
+      if(pageName){
+        $("#list_title_text_t").text(pageName);
+      }else{
+        let text=parent.document.getElementById("home-iframe-id").contentWindow.location.href
+        $("#list_title_text_t").text(text);
+      }
+    layui.use(["laypage", "layer", "dropdown", "jquery", "form"], function () {
+      var laypage = layui.laypage,
+        layer = layui.layer;
+      form = layui.form;
+      var dropdown = layui.dropdown;
+      var $ = layui.jquery;
+      let pages = 1;
+      var laytpl = layui.laytpl;
+      let list_arr = [];
+
+      // 获取list数据
+      // message/forum/cart/order
+      var getTpl = null;
+      async function get_tpl_list(pagesNum, arr) {
+        let params = {
+          page: pagesNum,
+          size: 10,
+        };
+        let { data: res } = await axios.get(BaseUrl + "/api/notice/get_list", {
+          params: params,
+        });
+        if (res.result && res.result.list) {
+          list_arr = res.result;
+          // 列表--数据渲染
+          $("#t_list_box").empty();
+          var objecthtmls = "";
+          for (var i = 0; i < list_arr.list.length; i++) {
+            var item = list_arr.list[i];
+            let str = JSON.stringify(item);
+            objecthtmls += `<li>
+              <a class="list-info" href="./detail.html?notice_id=${item.notice_id}">
+            <div class="list-info-left">
+            </div>
+            <div class="list-info-right">
+              <p class="title">${item.title}<span class="record_creator">
+               ${toTime(item.create_time,"yyyy-MM-dd hh:mm:ss")}
+              </span> </p>
+            </div>
+          </a>
+          </li>`;
+          }
+          $("#t_list_box").append(objecthtmls);
+          // 分页---总页数低于页码总数
+          laypage.render({
+            elem: "pageSum",
+            curr: pages,
+            count: Number(list_arr.count), //数据总数
+            limit: 10,
+            layout: ["prev", "page", "next"],
+            jump: function (obj, first) {
+              // 首次不执行
+              if (!first) {
+                // 点击其他页码跳转
+                pages = obj.curr;
+                get_tpl_list(obj.curr, {});
+                // layer.msg("第 " + obj.curr + " 页");
+              }
+            },
+          });
+        }
+      }
+      get_tpl_list(1);
+    });
+  </script>
+</html>

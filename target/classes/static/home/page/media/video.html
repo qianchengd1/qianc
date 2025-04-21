@@ -1,0 +1,65 @@
+<!-- 查看视频 -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title></title>
+  <link rel="stylesheet" href="../../layui/css/layui.css">
+  <link rel="stylesheet" href="../../css/diy.css">
+  
+<style>
+  .container{
+    min-height: 750px;
+  }
+  #myVideo {
+    width: 100%;
+  }
+  #media_video {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 50px;
+  }
+  #media_video .video_show {
+    width: 100%;
+  }
+</style>
+
+</head>
+
+<body>
+<div class="page_media" id="media_video">
+    <div class="container">
+        <div class="row">
+        <div class="col">
+            <div class="video_show">
+            <video
+                    id="myVideo"
+                    src="url"
+                    controls
+            >
+                您的浏览器不支持Video标签。
+            </video>
+            </div>
+        </div>
+        </div>
+    </div>
+    </div>
+</div>
+  </body>
+
+  <script src="../../js/base.js"></script>
+  <script src="../../js/jquery.2.1.1.min.js"></script>
+  <script src="../../js/permissionSet.js"></script>
+<script>
+   // 获取地址栏参数
+   let filename = $getUrlParams().filename;
+   if (filename){
+       $('#myVideo').attr('src',filename)
+    }
+
+</script>
+
+</html>

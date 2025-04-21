@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title></title>
+    <link href="../../layui/css/layui.css" rel="stylesheet" />
+    <link href="../../css/diy.css" rel="stylesheet" />
+    <style>
+      body {
+        background-color: #f2f2f2;
+      }
+      .list-info-left p {
+        line-height: 15px;
+        font-size: 12px;
+        color: #999;
+      }
+      .list-info-child {
+        clear: both;
+        border-top: 1px dashed gray;
+        padding: 20px 0;
+      }
+    </style>
+  </head>
+  <body>
+      <div class="notice_detail">
+        <div class="list_title"><p class="list_title_text">网站公告</p></div>
+        <div class="layui-fluid layadmin-cmdlist-fluid">
+          <div>
+            <ul id="t_list_box" class="cars"></ul>
+          </div>
+        </div>
+      </div>
+  </body>
+  <script src="../../js/axios.min.js"></script>
+  <script src="../../js/jquery.2.1.1.min.js"></script>
+  <script src="../../layui/layui.js"></script>
+  <script src="../../js/base.js"></script>
+  <script src="../../js/permissionSet.js"></script>
+  <script>
+      var BaseUrl = baseUrl();
+    layui.use(["jquery"], function () {
+      var $ = layui.jquery;
+      //获取地址栏参数
+      function getUrlParams() {
+        let url = window.location.search; //获取url中"?"符后的字串
+        let paramsObj = new Object();
+        if (url.indexOf("?") != -1) {
+          let str = url.substr(1);
+          strs = str.split("&");
+          for (let i = 0; i < strs.length; i++) {
+            paramsObj[strs[i].split("=")[0]] = decodeURI(strs[i].split("=")[1]);
+          }
+        }
+        return paramsObj;
+      }
+      let notice_id = getUrlParams().notice_id;
+      // 获取list数据
+      // message/forum/cart/order
+      async function getNoticeDetail() {
+        let { data: res } = await axios.get(
+          BaseUrl + `/api/notice/get_obj?notice_id=${notice_id}`,
+          {}
+        );
+        if (res.result) {
+          let item = res.result.obj;
+          // 列表--数据渲染
+          $("#t_list_box").empty();
+          var objecthtmls = `<li class="list-info">
+            <div class="list-info-left">
+            </div>
+            <div class="list-info-right">
+              <p class="title">${item.title}<span class="record_creator">
+                ${toTime(item.create_time, "yyyy-MM-dd hh:mm:ss")}
+              </span> </p>
+              <p class="title">${item.content}</p>
+            </div>
+          </a>
+          </li>`;
+          $("#t_list_box").append(objecthtmls);
+        }
+      }
+      getNoticeDetail();
+    });
+  </script>
+</html>

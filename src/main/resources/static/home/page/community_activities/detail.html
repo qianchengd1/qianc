@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title></title>
+    <link href="../../layui/css/layui.css" rel="stylesheet"/>
+    <link href="../../css/diy.css" rel="stylesheet"/>
+    <script src="../../js/jquery.2.1.1.min.js"></script>
+    <script src="../../js/jquery_expand.js"></script>
+    <style>
+        body {
+            font: 16px/28px "Microsoft yahei";
+        }
+
+        .description {
+            margin-bottom: 1rem;
+            color: #292828;
+        }
+
+        .article_content img {
+            width: 100%;
+            height: 100%;
+        }
+         .qecodeWrap{
+          height:50px;
+          position: relative;
+         }
+        .qecode {
+        width: 270px;
+        background: white;
+        position: absolute;
+        left:5%;
+        top: 0;
+        z-index: 999;
+        }
+        .qecodeImg {
+        display: flex;
+        flex-direction: column;
+        align-content: center;
+        text-align: center;
+        padding-top: 10px;
+        margin: 0 auto;
+        }
+        .btn_share{
+            position: relative;
+            top: 15px;
+            background: rgb(240, 238, 238);
+            border: 1px solid #ccc;
+            height: 38px;
+            padding: 3px 10px;
+            cursor: pointer;
+            overflow: hidden;
+            border-radius: 5px;
+        }
+        .btn_share_icon{
+            width: 30px;
+            height: 28px;
+            float: left;
+            margin-right: 10px;
+        }
+        .share_box{
+            display: none;
+            float: left;
+        }
+        .share_box img{
+            width: 30px;
+            height: 28px;
+            margin-right: 10px;
+        }
+        .btn_share:hover .share_box{
+            display: block;
+        }
+        .rich_text{
+	margin-bottom: 25px;
+	border-bottom: 1px solid #ccc;
+	padding-top: 25px;
+	display: block;
+	width: 100%;
+	padding-bottom: 25px;
+}
+.rich_text .diy_title{
+	font-size: 22px;
+	height: 24px;
+	line-height: 24px;
+	padding-left: 10px;
+	border-left: 6px solid rgb(200, 0, 0);
+	margin-bottom: 25px;
+
+}
+.rich_text .diy_html h1,
+.rich_text .diy_html h2,
+.rich_text .diy_html h3{
+	font-size: 18px!important;
+	color: #333!important;
+	font-weight: bold!important;
+	margin-bottom: 15px!important;
+}
+.rich_text .diy_html p,
+.rich_text .diy_html div,
+.rich_text .diy_html a,
+.rich_text .diy_html span{
+	font-size: 16px!important;
+	color: #666!important;
+}
+.rich_text .diy_html img{
+	max-width: 100%!important;
+}
+    </style>
+</head>
+
+<body>
+<div class="container">
+<div class="diy_detail">
+<div class="t_detail" id="community_activities_detail_box">
+    <div class="source_time">
+        时间:　
+        <span id="create_time" class="forum_create_time"></span>
+    </div>
+    <!-- <hr>水平分割线 -->
+    <hr/>
+    <div class="label_text">
+        <div class="operation_interface">
+            <div class="operation_interface_left">
+                <span class="hits_sum">点击数：<span id="hits_sum"></span></span>
+                <span class="praise_len_sum">点赞数：<span id="praise_len_sum"></span></span>
+            </div>
+            <div class="operation_interface_right">
+	                <el-button class="layui-btn layui-btn-sm layui-btn-primary" style="margin: 5px !important;"    id="registration_information_nav">
+                <span>报名</span>
+        </el-button>
+            
+                           <button class="layui-btn layui-btn-sm layui-btn-primary" id="add_praise">
+                    <i class="layui-icon layui-icon-heart layui-font-12" id="detail_praise"></i>
+                    <span>点赞</span>
+                </button>
+                <button class="layui-btn layui-btn-sm layui-btn-primary" id="add_collect">
+                    <i class="layui-icon layui-icon-rate layui-font-12" id="detail_collect"></i>
+                    <span>收藏</span>
+                </button>
+            </div>
+
+        </div>
+    </div>
+    <img src="" id="cover_photo_img" class="detial_img" />
+        <div class="description" id="activity_number_description"></div>
+            <div class="description" id="activity_name_description"></div>
+            <div class="description" id="activity_type_description"></div>
+            <div class="description" id="activity_time_description"></div>
+            <div class="description" id="event_location_description"></div>
+                <div class="description" id="publishing_personnel_description"></div>
+            <div class="description" id="user_name_description"></div>
+    </div>
+<!-- 富文本 -->
+<div class='richWrap  t_detail'></div>
+<div class="t_detail comment_editor" id="t_comment_list">
+    <p class="comment_editor_title">评论区</p>
+    <div class="comment_editor" id="t_comment"></div>
+    <!-- 分页器--开始-->
+    <div id="cont" class="layui-row layui-col-space30"></div>
+    <div id="pageSum"></div>
+    <!-- 分页器--结束 -->
+    <p class="replyToSb">
+            对<span id="replyToSbName">XX</span>回复
+            <button
+                    class="layui-btn layui-btn-sm layui-btn-primary"
+                    id="resetReplySb"
+            >
+                重置回复人
+            </button>
+        </p>
+    <form
+            class="layui-form"
+            action=""
+            lay-filter="addCommentForm"
+            id="addCommentForm"
+    >
+        
+        <div class="layui-form-item">
+        <textarea
+                class="layui-textarea"
+                id="demo"
+                placeholder="请输入内容"
+                style="display: none"
+                name="demo"
+                autocomplete="off"
+        ></textarea>
+        </div>
+        <div class="layui-form-item publish_comment">
+            <button
+                    type="button"
+                    class="layui-btn"
+                    data-type="text"
+                    id="fileNotifySubmit"
+            >
+                发 表
+            </button>
+        </div>
+    </form>
+</div>
+</div>
+ </div>
+</div>
+</body>
+<script src="../../js/base.js"></script>
+<script src="../../layui/layui.js"></script>
+<script src="../../js/axios.min.js"></script>
+<script src="../../js/sdk.js"></script>
+<script src="../../js/permissionSet.js"></script>
+<!--富文本编辑器-->
+<script>
+var BaseUrl = baseUrl();
+            layui.use(["layedit", "form", "laypage", "jquery"], function () {
+        var layedit = layui.layedit,
+                laypage = layui.laypage,
+                $ = layui.jquery;    
+        // 获取地址栏参数
+        let community_activities_id = $getUrlParams().community_activities_id;
+        let token = sessionStorage.token;
+        let user_id;
+        let nickname;
+        let avatar;
+         if (token) {
+            user_id = JSON.parse(sessionStorage.personInfo).user_id;
+            avatar = JSON.parse(sessionStorage.personInfo).avatar;
+            nickname = JSON.parse(sessionStorage.personInfo).nickname;
+        }
+       
+        // 详情区域显示与否
+        check_action("/community_activities/details", "get", "community_activities_detail_box");
+                                                                                                                                                             // 用户列表
+                let  list_user_publishing_personnel=[];
+                /**
+			 * 获取社区用户用户列表
+			 */
+			async function get_list_user_publishing_personnel() {
+				let { data: json } = await axios.get(
+                       BaseUrl + "/api/user/get_list?user_group=社区用户"
+                    );
+                if(json.result && json.result.list){
+					list_user_publishing_personnel = json.result.list;
+                    get_community_activities_detail();
+				}
+				else if(json.error){
+					console.error(json.error);
+				}
+			}
+           get_list_user_publishing_personnel()
+                                                                    function get_user_info(name,id){
+            var obj = null;
+                                                                                                                                                                                                                                                                                    if (name == 'publishing_personnel'){
+                            obj =list_user_publishing_personnel.getObj({"user_id":id});
+                        }
+                                                                                                                        var ret = "";
+            if(obj){
+                ret = obj.nickname+"-"+obj.username;  
+            }
+             return ret; 
+		}
+        //<!-- 富文本-->
+        let	richList= [
+                     {
+                title: "活动内容",
+                name: "activity_content",
+                type: "多文本"
+            },
+        		]
+         // 初始话富文本
+        function initrichWrap(){
+            $('.richWrap').empty();
+            let objecthtmls=''
+            if(richList.length){
+                for (let idx = 0; idx < richList.length; idx++) {
+                    let item= richList[idx];
+                    // $check_field('get',item.name)
+                    if($check_field('get',item.name,"/community_activities/details")){
+                        objecthtmls="<div class='rich_text'>"
+                            +"<div class='view'>"
+                            +"<div class='diy_title'>"
+                               +"<span>"+item.title+"</span>"
+                            +"</div>"
+                            +"<div class='diy_html' >"+community_activities_detail[item.name]+"</div>"
+                            +"</div></div>";
+                    }
+                $(".richWrap").append(objecthtmls);
+                }
+            }
+        }
+                              
+              // 获取社区活动详情
+        let community_activities_detail = {};
+
+        async function get_community_activities_detail() {
+            let { data: res } = await axios.get(
+                    BaseUrl + "/api/community_activities/get_obj?community_activities_id=" + community_activities_id
+            );
+            if (res.result && res.result.obj) {
+                community_activities_detail = res.result.obj;
+                
+                $("#create_time").html($toTime(community_activities_detail['create_time'],"yyyy-MM-dd hh:mm:ss"))
+                $("#hits_sum").html(community_activities_detail['hits']);
+                $("#praise_len_sum").html(community_activities_detail['praise_len']);
+    $("#cover_photo_img").attr("src",fullUrl(BaseUrl,community_activities_detail['cover_photo']));
+          $("#activity_number_description").html("活动编号"+":"+community_activities_detail['activity_number']);
+     
+              $("#activity_name_description").html("活动名称"+":"+community_activities_detail['activity_name']);
+     
+              $("#activity_type_description").html("活动类型"+":"+community_activities_detail['activity_type']);
+     
+              $("#activity_time_description").html("活动时间"+":"+community_activities_detail['activity_time']);
+     
+              $("#event_location_description").html("活动地点"+":"+community_activities_detail['event_location']);
+     
+              $("#publishing_personnel_description").html("发布人员"+":"+get_user_info('publishing_personnel',community_activities_detail['publishing_personnel']))
+              $("#user_name_description").html("用户姓名"+":"+community_activities_detail['user_name']);
+     
+     //<!-- 富文本-->
+   initrichWrap()
+
+
+                    await get_obj_after(res);
+
+     //跨表按钮
+                   if($check_action('/registration_information/edit','add')){
+          $("#registration_information_nav").css('display','inline-block')
+          $('#registration_information_nav').click(function(){
+            if('community_activities'=='registration_information'){
+                to_table(community_activities_detail,'./view_add.html?'+community_activities_id)
+            }else{
+                to_table(community_activities_detail,'../registration_information/view_add.html')
+            }
+           
+           })
+          
+        }else{
+           $("#registration_information_nav").css('display','none')
+        }       
+                }
+}
+        get_community_activities_detail();
+
+  //重置回复人
+      $('#resetReplySb').click( function (){
+          form_comment.reply_to_id=0
+          $('#replyToSbName').text('XX')
+          
+      })
+        // 评论区显示与否
+        check_action("/comment/list", "get", "t_comment_list");
+        let form_comment = {
+            content: "",
+            source_table: "community_activities",
+            source_field: "community_activities_id",
+            source_id: 0,
+            reply_to_id: 0,
+        };
+
+
+        let list_comment_list = [];
+        let pages = 1;
+        let count_pages = 0;
+
+        /**
+         * 获取评论
+         * @param { Object } obj 文章对象
+         * @param { Number } page 分页数
+         * @param { Number } size 评论显示条数
+         */
+        async function get_comment(page = 1, size = 5) {
+            let { data: res } = await axios.get(BaseUrl + `/api/comment/get_list`, {
+                params: {
+                    source_table: "community_activities",
+                    source_field: "community_activities_id",
+                    source_id: community_activities_id,
+                    page,
+                    size,
+                    reply_to_id: "0",
+                    orderby: "create_time desc",
+                },
+            });
+            if (res.result) {
+                var list_comment = res.result.list;
+                list_comment.map((o) => {
+                    o.list_reply = [];
+                });
+                add_reply(list_comment);
+
+                count_pages = res.result.count;
+                // 分页---总页数低于页码总数
+                laypage.render({
+                    elem: "pageSum",
+                    curr: pages,
+                    count: Number(count_pages), //数据总数
+                    limit: 5,
+                    layout: ["prev", "page", "next"],
+                    jump: function (obj, first) {
+                        // 首次不执行
+                        if (!first) {
+                            // 点击其他页码跳转
+                            pages = obj.curr;
+                            get_comment(obj.curr);
+                        }
+                    },
+                });
+            }
+        }
+
+        /**
+         * @param { Array } list 评论列表
+         * 添加回复到评论列表
+         */
+        async function add_reply(list) {
+            list_comment_list = list;
+            for (let idx = 0; idx < list.length; idx++) {
+                const obj = list[idx];
+                let { data: res } = await axios.get(
+                        BaseUrl + `/api/comment/get_list`,
+                        {
+                            params: {
+                                source_table: "community_activities",
+                                source_field: "community_activities_id",
+                                source_id: community_activities_id,
+                                orderby: "create_time desc",
+                                reply_to_id: obj.comment_id,
+                            },
+                        }
+                );
+                if (res.result) {
+                    list_comment_list[idx].list_reply = list;
+                    obj.list_reply = res.result.list;
+                }
+            }
+            //  渲染评论列表
+            let t_comment = document.getElementById("t_comment");
+            t_comment.innerHTML = "";
+            var objecthtmls = "";
+            for (let idx = 0; idx < list_comment_list.length; idx++) {
+                const item = list_comment_list[idx];
+                let childItem = item.list_reply;
+              objecthtmls += "<div class='comment_area'>"
+              +"<div class='comment_area_wrap'>"
+               +"<div class='comment_area_left'>"
+                +"<img src='"+fullUrl(BaseUrl,item.avatar)+"' />"
+                +"</div>"
+                +"<div class='comment_area_right'>"
+                 + "<p class='title'>"
+                   +"<span>"+item.nickname+"</span>"
+                    +"<span class='time'>"+$toTime(item.create_time, "yyyy-MM-dd hh:mm:ss")+"</span>"
+                  +"</p>"
+                  +"<p class='record'>"
+                   +"<span>"+item.content+"</span>"
+                   +"<button class='layui-btn layui-btn-sm layui-btn-primary'  id='responden' comment_id="+item.comment_id+">回复</button>"
+                  
+                  +"</p>"
+                +"</div>"
+              +"</div>";
+                // console.log(childItem.length)
+                if (childItem.length) {
+                    for (let idxChild = 0; idxChild < childItem.length; idxChild++) {
+                        let childItemObj = childItem[idxChild];
+                        objecthtmls += "<div class='comment_area_child comment_area_wrap'>"
+                            +"<div class='comment_area_left'>"
+                            +"<img src='"+fullUrl(BaseUrl,childItemObj.avatar)+"' /></div>"
+                            +"<div class='comment_area_right'>"
+                            +"<p class='title'>"
+                            +"<span>"+childItemObj.nickname+"</span>"
+                            +"<span class='time'>"+$toTime(childItemObj.create_time, "yyyy-MM-dd hh:mm:ss")+"</span>"
+                                +"</p>"
+                                +"<p class='record'>"
+                                +"<span>"+childItemObj.content+"</span>"
+                                +"</p>"
+                            +"</div>"
+                        +"</div>";
+                    }
+                }
+            }
+            t_comment.innerHTML = objecthtmls;
+        }
+        // 获取回复人
+        $("#t_comment").on("click", "#responden", function () {
+            var comment_id = $(this).attr("comment_id");
+            let replyToSbName = document.getElementById("replyToSbName");
+            form_comment.reply_to_id = comment_id;
+            var reply_to_id = form_comment.reply_to_id;
+            list_comment_list.map((o) => {
+                if (o.comment_id == reply_to_id) {
+                    replyToSbName.innerHTML = o.nickname;
+                }
+            });
+        });
+        setTimeout(() => {
+            get_comment();
+        }, 1000);
+
+        /**
+         * 获取对象之后
+         * @param {Object} json 结果对象
+         */
+        async function get_obj_after(json) {
+            let obj = json.result.obj;
+                await add_hits(obj)
+                await get_comment();
+                form_comment.source_id = obj.community_activities_id;
+                get_praise();
+                check_collect();
+        };
+        // 添加访问量
+        async function add_hits(obj) {
+            let {data: res} = await axios.post(
+                    BaseUrl + "/api/community_activities/set?community_activities_id="+obj.community_activities_id,
+                    {hits: parseInt(obj.hits) + 1}
+            );
+            if (res) {
+                hits = parseInt(obj.hits) + 1;
+                if(res.result){
+                        console.log("添加访问量状态：" ,res.result);
+						var body = {
+							source_table: "community_activities",
+							source_field: "community_activities_id",
+							source_id: obj.community_activities_id,
+							user_id: user_id,
+						};
+                    let {data: ress} = await axios.post(
+                        BaseUrl + "/api/hits/add",
+                        body
+                    );
+                }else if(ress.error){
+						console.error(ress.error);
+				}    
+            }
+        }
+        let check_praised = false; // 是否已点赞
+        let check_collected = false; // 是否已收藏
+        // 获取点赞
+        async function get_praise() {
+            let { data: res } = await axios.get(BaseUrl + `/api/praise/count`, {
+                params: {
+                    source_table: "community_activities",
+                    source_field: "community_activities_id",
+                    source_id: community_activities_id,
+                    user_id: user_id,
+                },
+            });
+            if (res.result || res.result === 0) {
+                check_praised = res.result ? true : false;
+                if (check_praised) {
+                    $("#detail_praise")
+                            .removeClass("layui-icon-heart")
+                            .addClass("layui-icon-heart-fill");
+                } else {
+                    $("#detail_praise")
+                            .removeClass("layui-icon-heart-fill")
+                            .addClass("layui-icon-heart");
+                }
+                console.log("点赞状态：", check_praised);
+            } else if (res.error) {
+                layer.msg(res.error.message);
+                console.error(res.error);
+            }
+        }
+        // 添加点赞
+        $("#add_praise").click(function () {
+            add_praise_opt();
+        });
+        // 添加点赞
+        async function add_praise_opt() {
+            if (!user_id) {
+                window.top.location.replace("../../login.html");
+                return;
+            }
+            var body = {
+                source_table: "community_activities",
+                source_field: "community_activities_id",
+                source_id: community_activities_id,
+                user_id: user_id,
+            };
+            let praise_len = parseInt(community_activities_detail.praise_len);
+            if (!check_praised) {
+                check_praised = true;
+                let { data: res } = await axios.post(
+                        BaseUrl + `/api/praise/add`,
+                        body
+                );
+                if (res.result) {
+                    praise_len += 1;
+                   community_activities_detail.praise_len=praise_len
+                    $("#praise_len_sum").html(community_activities_detail['praise_len']);
+                    let praise_len_new = praise_len;
+                    let { data: res } = await axios.post(
+                            BaseUrl + "/api/community_activities/set?community_activities_id="+community_activities_id,
+                            {"praise_len":praise_len_new}
+                    );
+                    if (res.result) {
+                        $("#detail_praise")
+                                .removeClass("layui-icon-heart")
+                                .addClass("layui-icon-heart-fill");
+                        console.log("添加点赞数状态：", res.result);
+                    } else if (res.error) {
+                        console.error(res.error);
+                    }
+                    // get_community_activities_detail()
+                    layer.msg("点赞成功");
+                } else if (res.error) {
+                    $("#detail_praise")
+                            .removeClass("layui-icon-heart-fill")
+                            .addClass("layui-icon-heart");
+
+                    layer.msg(res.error.message);
+                    console.error(res.error);
+                }
+            } else {
+                check_praised = false;
+                let { data: res } = await axios.get(BaseUrl + `/api/praise/del`, {
+                    params: {
+                        source_table: "community_activities",
+                        source_field: "community_activities_id",
+                        source_id: community_activities_id,
+                        user_id,
+                    },
+                });
+                if (res.result) {
+                    if(praise_len>0){
+                    praise_len -= 1;
+                    }else{
+                    praise_len=0;
+                    }
+                    community_activities_detail.praise_len=praise_len
+                    $("#praise_len_sum").html(community_activities_detail['praise_len']);
+                    let praise_len_new = praise_len;
+                    let { data: praiseAdd } = await axios.post(
+                            BaseUrl + "/api/community_activities/set?community_activities_id="+community_activities_id,
+                            {"praise_len":praise_len_new}
+                    );
+                    if (praiseAdd.result) {
+                    $("#detail_praise")
+                            .removeClass("layui-icon-heart-fill")
+                            .addClass("layui-icon-heart");
+
+                        console.log("取消点赞数状态：", praiseAdd.result);
+                    } else if (praiseAdd.error) {
+                        console.error(praiseAdd.error);
+                    }
+                    // get_community_activities_detail()
+                    layer.msg("取消点赞");
+                } else if (res.error) {
+                    layer.msg(res.error.message);
+                    console.error(res.error);
+                }
+            }
+        }
+        // 是否被收藏
+        async function check_collect() {
+            let { data: res } = await axios.get(BaseUrl + "/api/collect/count", {
+                params: {
+                    source_table: "community_activities",
+                    source_field: "community_activities_id",
+                    source_id: community_activities_id,
+                    user_id: user_id,
+                },
+            });
+            if (res.result || res.result === 0) {
+                check_collected = res.result ? true : false;
+                if (check_collected) {
+                    $("#detail_collect")
+                            .removeClass("layui-icon-rate")
+                            .addClass("layui-icon-rate-solid");
+                } else {
+                    $("#detail_collect")
+                            .removeClass("layui-icon-rate-solid")
+                            .addClass("layui-icon-rate");
+                }
+            }
+        }
+        // 添加收藏
+        $("#add_collect").click(function () {
+            add_collect_opt();
+        });
+        async function add_collect_opt() {
+            if (!user_id) {
+                window.top.location.replace("../../login.html");
+                return;
+            }
+            var body = {
+                source_table: "community_activities",
+                source_field: "community_activities_id",
+                source_id: community_activities_id,
+                user_id: user_id,
+            };
+            if (!check_collected) {
+              check_collected = true;
+                                                                                                                                                    body.title =  community_activities_detail.activity_name
+                                                                                                                                                                                                                            body.img =  community_activities_detail.cover_photo
+                                                                                                                                                                                                                                                                                                                                                                                                                       
+                let { data: resCollect } = await axios.post(
+                        BaseUrl + `/api/collect/add`,
+                        body
+                );
+                if (resCollect) {
+                    $("#detail_collect")
+                            .removeClass("layui-icon-rate")
+                            .addClass("layui-icon-rate-solid");
+                    layer.msg("收藏成功");
+                }
+            } else {
+                check_collected = false;
+                let { data: resCollect } = await axios.get(
+                        BaseUrl + "/api/collect/del",
+                        {
+                            params: {
+                                source_table: "community_activities",
+                                source_field: "community_activities_id",
+                               
+                                source_id: community_activities_id,
+                                user_id: user_id
+                            },
+                        }
+                );
+                if (resCollect) {
+                    layer.msg("取消收藏");
+                    $("#detail_collect")
+                            .removeClass("layui-icon-rate-solid")
+                            .addClass("layui-icon-rate");
+                }
+            }
+        }
+
+   
+        layui.layedit.set({
+            uploadImage: {
+                url: BaseUrl + "/api/comment/upload", //接口url
+                type: "post", //默认post
+            },
+        });
+
+
+        var demo = layui.layedit.build("demo", {
+            tool: [
+                "strong", //加粗
+                "italic", //斜体
+                "underline", //下划线
+                "del", //删除/Del线
+                "|", //分割线
+                "left", //左对齐
+                "center", //居中对齐
+                "right", //右对齐
+                "link", //超链接
+                "unlink", //清除链接
+                //"face", //表情
+                //"image", //插入图片
+                //"help", //帮助
+            ],
+        });
+        layedit.sync(demo);
+
+        let postUrl;
+        /**
+         * 发表评论
+         */
+        async function publish() {
+            if (!user_id) {
+              window.top.location.replace("../../login.html");
+                return;
+            }
+            form_comment.source_id = community_activities_id;
+            form_comment["content"] = layui.layedit.getContent(demo);
+            var form = form_comment;
+            form = Object.assign(form, {
+                user_id: user_id,
+                avatar: avatar,
+                nickname: nickname,
+            });
+            if (!form.content) {
+                layer.msg("输入内容不能为空");
+                return;
+            }
+            var post_url = postUrl;
+            if (!post_url) {
+                post_url = "/api/comment/add";
+            }
+
+            var contentSensitiveWords = await filterSensitiveWords(form.content)
+
+            if(contentSensitiveWords.length > 0){
+                layer.msg('正文不能包含敏感词:' + contentSensitiveWords.join(','))
+                return
+            }
+
+            let { data: res } = await axios.post(BaseUrl + post_url, form, {
+                headers: {
+                    "x-auth-token": token,
+                    "Content-Type": "application/json",
+                },
+            });
+            let returnContent = "";
+            if (res.result) {
+                //layedit.setContent(demo, returnContent);
+                // window.location.reload();
+                await get_comment();
+                $("#addCommentForm")[0].reset();
+                layui.form.render();
+                form_comment.content = "";
+            } else if (res.error) {
+                layer.msg(res.error.message);
+            }
+        }
+        $("#fileNotifySubmit").on("click", function () {
+            // layedit.sync(demo);
+            publish();
+        });
+    });
+</script>
+</html>

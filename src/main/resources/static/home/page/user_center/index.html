@@ -1,0 +1,599 @@
+<!-- 首页 -->
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title></title>
+    <!-- 引入刚刚下载的 ECharts 文件 -->
+    <script src="../../js/axios.min.js"></script>
+    <script src="../../js/echarts.js"></script>
+    <link rel="stylesheet" href="../../layui/css/layui.css" />
+    <link rel="stylesheet" href="../../css/diy.css" />
+  </head>
+  <style>
+    canvas {
+      position: relative !important;
+    }
+    .myDetail_dd{
+     visibility:hidden;
+    }
+    .myDetail .layui-tab-title li {
+    position: relative;
+    line-height: 40px;
+     min-width:auto;
+    padding: 0 10px;
+    text-align: center;
+    cursor: pointer;
+    }
+  </style>
+
+  <body>
+  <div id="personal_center">
+            <div class="list_title"><p class="list_title_text" id='list_title_text_t'>个人中心</p></div>
+            <div class="layui-fluid layadmin-cmdlist-fluid">
+              <div id="personal_center_warp">
+                <div id="t_list_box" class="myDetail">
+                    <div class="layui-tab layui-tab-card" lay-filter="tab-all">
+                        <ul class="layui-tab-title myDetail_dd">
+                        <li class="layui-this" data-table='index'>个人中心</li>
+                                                  <li id='community_users_title' data-table='community_users' data-text='社区用户' data-url='./community_users/table.html?tabName=社区用户'>
+                            社区用户
+                          </li>
+                                                  <li id='project_classification_title' data-table='project_classification' data-text='项目分类' data-url='./project_classification/table.html?tabName=项目分类'>
+                            项目分类
+                          </li>
+                                                  <li id='service_center_title' data-table='service_center' data-text='服务中心' data-url='./service_center/table.html?tabName=服务中心'>
+                            服务中心
+                          </li>
+                                                  <li id='appointment_information_title' data-table='appointment_information' data-text='预约信息' data-url='./appointment_information/table.html?tabName=预约信息'>
+                            预约信息
+                          </li>
+                                                  <li id='service_evaluation_title' data-table='service_evaluation' data-text='服务评价' data-url='./service_evaluation/table.html?tabName=服务评价'>
+                            服务评价
+                          </li>
+                                                  <li id='community_activities_title' data-table='community_activities' data-text='社区活动' data-url='./community_activities/table.html?tabName=社区活动'>
+                            社区活动
+                          </li>
+                                                  <li id='activity_classification_title' data-table='activity_classification' data-text='活动分类' data-url='./activity_classification/table.html?tabName=活动分类'>
+                            活动分类
+                          </li>
+                                                  <li id='registration_information_title' data-table='registration_information' data-text='报名信息' data-url='./registration_information/table.html?tabName=报名信息'>
+                            报名信息
+                          </li>
+                                                  <li id='community_notifications_title' data-table='community_notifications' data-text='社区通知' data-url='./community_notifications/table.html?tabName=社区通知'>
+                            社区通知
+                          </li>
+                                                  <li id='repair_service_title' data-table='repair_service' data-text='报修服务' data-url='./repair_service/table.html?tabName=报修服务'>
+                            报修服务
+                          </li>
+                                                  <li id='complaint_feedback_title' data-table='complaint_feedback' data-text='投诉反馈' data-url='./complaint_feedback/table.html?tabName=投诉反馈'>
+                            投诉反馈
+                          </li>
+                                                  <li id='volunteer_application_title' data-table='volunteer_application' data-text='志愿者申请' data-url='./volunteer_application/table.html?tabName=志愿者申请'>
+                            志愿者申请
+                          </li>
+                                                                                                <li id='forum_title' data-table='forum' data-text='论坛' data-url='../forum/table.html?tabName=论坛'>论坛</li>
+                                                                                                                        <li id='collect' data-table='collect' data-text='收藏' data-url='../collect/list.htm?tabName=收藏'>收藏</li>
+                                                </ul>
+
+                        <div class="layui-tab-content" style="max-height:5000px">
+                         <div class="layui-tab-item layui-show">
+                                                 	                                                      	                                                      	                                                      	                                                      	                                                      	                                                      	                                                      	                                                      	                                                      	                                                      	                                                      	                                                                                                              </div>
+                                                        <div class="layui-tab-item">
+                                <div align="center" style="margin:0 auto;">
+                                    <div style="width:100%;height:3000px;overflow:hidden;border:0px">
+                                        <div style="position:relative">
+                                        <iframe src="../community_users/table.html?tabName='社区用户'" id="community_users_ifyemian" scrolling="no" frameborder="0" style="position:absolute;
+                                                    width: 100%;
+                                                    height: 3000px;
+                                                    display:block;
+                                                    left: 0;
+                                                    right:0;">
+                                        </iframe>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                                                        <div class="layui-tab-item">
+                                <div align="center" style="margin:0 auto;">
+                                    <div style="width:100%;height:3000px;overflow:hidden;border:0px">
+                                        <div style="position:relative">
+                                        <iframe src="../project_classification/table.html?tabName='项目分类'" id="project_classification_ifyemian" scrolling="no" frameborder="0" style="position:absolute;
+                                                    width: 100%;
+                                                    height: 3000px;
+                                                    display:block;
+                                                    left: 0;
+                                                    right:0;">
+                                        </iframe>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                                                        <div class="layui-tab-item">
+                                <div align="center" style="margin:0 auto;">
+                                    <div style="width:100%;height:3000px;overflow:hidden;border:0px">
+                                        <div style="position:relative">
+                                        <iframe src="../service_center/table.html?tabName='服务中心'" id="service_center_ifyemian" scrolling="no" frameborder="0" style="position:absolute;
+                                                    width: 100%;
+                                                    height: 3000px;
+                                                    display:block;
+                                                    left: 0;
+                                                    right:0;">
+                                        </iframe>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                                                        <div class="layui-tab-item">
+                                <div align="center" style="margin:0 auto;">
+                                    <div style="width:100%;height:3000px;overflow:hidden;border:0px">
+                                        <div style="position:relative">
+                                        <iframe src="../appointment_information/table.html?tabName='预约信息'" id="appointment_information_ifyemian" scrolling="no" frameborder="0" style="position:absolute;
+                                                    width: 100%;
+                                                    height: 3000px;
+                                                    display:block;
+                                                    left: 0;
+                                                    right:0;">
+                                        </iframe>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                                                        <div class="layui-tab-item">
+                                <div align="center" style="margin:0 auto;">
+                                    <div style="width:100%;height:3000px;overflow:hidden;border:0px">
+                                        <div style="position:relative">
+                                        <iframe src="../service_evaluation/table.html?tabName='服务评价'" id="service_evaluation_ifyemian" scrolling="no" frameborder="0" style="position:absolute;
+                                                    width: 100%;
+                                                    height: 3000px;
+                                                    display:block;
+                                                    left: 0;
+                                                    right:0;">
+                                        </iframe>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                                                        <div class="layui-tab-item">
+                                <div align="center" style="margin:0 auto;">
+                                    <div style="width:100%;height:3000px;overflow:hidden;border:0px">
+                                        <div style="position:relative">
+                                        <iframe src="../community_activities/table.html?tabName='社区活动'" id="community_activities_ifyemian" scrolling="no" frameborder="0" style="position:absolute;
+                                                    width: 100%;
+                                                    height: 3000px;
+                                                    display:block;
+                                                    left: 0;
+                                                    right:0;">
+                                        </iframe>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                                                        <div class="layui-tab-item">
+                                <div align="center" style="margin:0 auto;">
+                                    <div style="width:100%;height:3000px;overflow:hidden;border:0px">
+                                        <div style="position:relative">
+                                        <iframe src="../activity_classification/table.html?tabName='活动分类'" id="activity_classification_ifyemian" scrolling="no" frameborder="0" style="position:absolute;
+                                                    width: 100%;
+                                                    height: 3000px;
+                                                    display:block;
+                                                    left: 0;
+                                                    right:0;">
+                                        </iframe>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                                                        <div class="layui-tab-item">
+                                <div align="center" style="margin:0 auto;">
+                                    <div style="width:100%;height:3000px;overflow:hidden;border:0px">
+                                        <div style="position:relative">
+                                        <iframe src="../registration_information/table.html?tabName='报名信息'" id="registration_information_ifyemian" scrolling="no" frameborder="0" style="position:absolute;
+                                                    width: 100%;
+                                                    height: 3000px;
+                                                    display:block;
+                                                    left: 0;
+                                                    right:0;">
+                                        </iframe>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                                                        <div class="layui-tab-item">
+                                <div align="center" style="margin:0 auto;">
+                                    <div style="width:100%;height:3000px;overflow:hidden;border:0px">
+                                        <div style="position:relative">
+                                        <iframe src="../community_notifications/table.html?tabName='社区通知'" id="community_notifications_ifyemian" scrolling="no" frameborder="0" style="position:absolute;
+                                                    width: 100%;
+                                                    height: 3000px;
+                                                    display:block;
+                                                    left: 0;
+                                                    right:0;">
+                                        </iframe>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                                                        <div class="layui-tab-item">
+                                <div align="center" style="margin:0 auto;">
+                                    <div style="width:100%;height:3000px;overflow:hidden;border:0px">
+                                        <div style="position:relative">
+                                        <iframe src="../repair_service/table.html?tabName='报修服务'" id="repair_service_ifyemian" scrolling="no" frameborder="0" style="position:absolute;
+                                                    width: 100%;
+                                                    height: 3000px;
+                                                    display:block;
+                                                    left: 0;
+                                                    right:0;">
+                                        </iframe>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                                                        <div class="layui-tab-item">
+                                <div align="center" style="margin:0 auto;">
+                                    <div style="width:100%;height:3000px;overflow:hidden;border:0px">
+                                        <div style="position:relative">
+                                        <iframe src="../complaint_feedback/table.html?tabName='投诉反馈'" id="complaint_feedback_ifyemian" scrolling="no" frameborder="0" style="position:absolute;
+                                                    width: 100%;
+                                                    height: 3000px;
+                                                    display:block;
+                                                    left: 0;
+                                                    right:0;">
+                                        </iframe>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                                                        <div class="layui-tab-item">
+                                <div align="center" style="margin:0 auto;">
+                                    <div style="width:100%;height:3000px;overflow:hidden;border:0px">
+                                        <div style="position:relative">
+                                        <iframe src="../volunteer_application/table.html?tabName='志愿者申请'" id="volunteer_application_ifyemian" scrolling="no" frameborder="0" style="position:absolute;
+                                                    width: 100%;
+                                                    height: 3000px;
+                                                    display:block;
+                                                    left: 0;
+                                                    right:0;">
+                                        </iframe>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                                                                                                                 <div class="layui-tab-item">
+                                <div align="center" style="margin:0 auto;">
+                                    <div style="width:100%;height:2000px;overflow:hidden;border:0px">
+                                        <div style="position:relative">
+                                        <iframe src="../forum/table.html?tabName='论坛'" id="forum_ifyemian" scrolling="no" frameborder="0" style="position:absolute;
+                                                    width: 100%;
+                                                    height: 2000px;
+                                                    display:block;
+                                                    left: 0;
+                                                    right:0;">
+                                        </iframe>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                                                                                    
+                                                        <div class="layui-tab-item">
+                               <ul id="collec_list_box" class="cars"></ul>
+                            </div>
+                                                    </div>
+                    </div>
+                </div>
+              </div>
+            </div>
+        </div>
+</body>
+    <script src="../../js/axios.min.js"></script>
+    <script src="../../js/jquery.2.1.1.min.js"></script>
+    <script src="../../layui/layui.js"></script>
+    <script src="../../js/base.js"></script>
+    <script src="../../js/permissionSet.js"></script>
+    <script>
+            let user_group = "";
+            let user_id = null;
+            var BaseUrl = baseUrl();
+            let token = sessionStorage.token;
+            // 查看登录与否
+            if (sessionStorage.token != undefined) {
+                user_group = JSON.parse(sessionStorage.personInfo).user_group;
+            user_id = JSON.parse(sessionStorage.personInfo).user_id;
+            nickname = JSON.parse(sessionStorage.personInfo).nickname;
+
+            } else {
+            user_group = "游客";
+            user_id = null;
+
+            }
+       async function  get_nickname(list,flag){
+            if (flag) {
+                for (let i=0;i<list.length;i++){
+                    let { data: json } = await axios.get(BaseUrl + "/api/user/get_obj?user_id="+list[i],
+                           null
+                         );
+                     if(json.result){
+                      list[i] = json.result.obj.nickname
+                     }
+                }
+            }else {
+                for (let i=0;i<list.length;i++){
+                let { data: json } = await axios.get(BaseUrl + "/api/user/get_obj?user_id="+list[i].name,
+                           null
+                         );
+                     if (json.result) {
+                        list[i].name = json.result.obj.nickname;
+                    }
+                }
+            }
+        }
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          window.onload = function () {
+       let user_group = JSON.parse(sessionStorage.personInfo).user_group;
+       layui.use('layer', function () {
+        var layer = layui.layer;
+        layer.load(); // 加载动画
+                   let forum_show_flag= $check_action('/forum/table','get')
+            if(user_group == '管理员' ||forum_show_flag){
+                let forum_title=$page_title("/forum/table")||"论坛"
+                $('#forum_title').text(forum_title)
+            }else{
+               $('#forum_title').css("display","none")
+            }
+                                           let list_show_flag= $check_action('/collect/list','get')
+            if(user_group == '管理员' ||list_show_flag){
+            }else{
+              $('#collect').css("display","none")
+            }
+                            let community_users_show_flag= $check_action('/community_users/table','get')
+            if(user_group == '管理员' ||community_users_show_flag){
+            let community_users_title= $page_title('/community_users/table')
+              $('#community_users').text(community_users_title)
+            }else{
+                $('#community_users_title').css("display","none")
+            }
+
+                            let community_users_chart_box_flag=$check_figure('/community_users/table')
+
+                if(user_group == '管理员'||community_users_chart_box_flag){
+                 $('#list_community_users').css("display","none")
+                }
+
+                                let project_classification_show_flag= $check_action('/project_classification/table','get')
+            if(user_group == '管理员' ||project_classification_show_flag){
+            let project_classification_title= $page_title('/project_classification/table')
+              $('#project_classification').text(project_classification_title)
+            }else{
+                $('#project_classification_title').css("display","none")
+            }
+
+                            let project_classification_chart_box_flag=$check_figure('/project_classification/table')
+
+                if(user_group == '管理员'||project_classification_chart_box_flag){
+                 $('#list_project_classification').css("display","none")
+                }
+
+                                let service_center_show_flag= $check_action('/service_center/table','get')
+            if(user_group == '管理员' ||service_center_show_flag){
+            let service_center_title= $page_title('/service_center/table')
+              $('#service_center').text(service_center_title)
+            }else{
+                $('#service_center_title').css("display","none")
+            }
+
+                            let service_center_chart_box_flag=$check_figure('/service_center/table')
+
+                if(user_group == '管理员'||service_center_chart_box_flag){
+                 $('#list_service_center').css("display","none")
+                }
+
+                                let appointment_information_show_flag= $check_action('/appointment_information/table','get')
+            if(user_group == '管理员' ||appointment_information_show_flag){
+            let appointment_information_title= $page_title('/appointment_information/table')
+              $('#appointment_information').text(appointment_information_title)
+            }else{
+                $('#appointment_information_title').css("display","none")
+            }
+
+                            let appointment_information_chart_box_flag=$check_figure('/appointment_information/table')
+
+                if(user_group == '管理员'||appointment_information_chart_box_flag){
+                 $('#list_appointment_information').css("display","none")
+                }
+
+                                let service_evaluation_show_flag= $check_action('/service_evaluation/table','get')
+            if(user_group == '管理员' ||service_evaluation_show_flag){
+            let service_evaluation_title= $page_title('/service_evaluation/table')
+              $('#service_evaluation').text(service_evaluation_title)
+            }else{
+                $('#service_evaluation_title').css("display","none")
+            }
+
+                            let service_evaluation_chart_box_flag=$check_figure('/service_evaluation/table')
+
+                if(user_group == '管理员'||service_evaluation_chart_box_flag){
+                 $('#list_service_evaluation').css("display","none")
+                }
+
+                                let community_activities_show_flag= $check_action('/community_activities/table','get')
+            if(user_group == '管理员' ||community_activities_show_flag){
+            let community_activities_title= $page_title('/community_activities/table')
+              $('#community_activities').text(community_activities_title)
+            }else{
+                $('#community_activities_title').css("display","none")
+            }
+
+                            let community_activities_chart_box_flag=$check_figure('/community_activities/table')
+
+                if(user_group == '管理员'||community_activities_chart_box_flag){
+                 $('#list_community_activities').css("display","none")
+                }
+
+                                let activity_classification_show_flag= $check_action('/activity_classification/table','get')
+            if(user_group == '管理员' ||activity_classification_show_flag){
+            let activity_classification_title= $page_title('/activity_classification/table')
+              $('#activity_classification').text(activity_classification_title)
+            }else{
+                $('#activity_classification_title').css("display","none")
+            }
+
+                            let activity_classification_chart_box_flag=$check_figure('/activity_classification/table')
+
+                if(user_group == '管理员'||activity_classification_chart_box_flag){
+                 $('#list_activity_classification').css("display","none")
+                }
+
+                                let registration_information_show_flag= $check_action('/registration_information/table','get')
+            if(user_group == '管理员' ||registration_information_show_flag){
+            let registration_information_title= $page_title('/registration_information/table')
+              $('#registration_information').text(registration_information_title)
+            }else{
+                $('#registration_information_title').css("display","none")
+            }
+
+                            let registration_information_chart_box_flag=$check_figure('/registration_information/table')
+
+                if(user_group == '管理员'||registration_information_chart_box_flag){
+                 $('#list_registration_information').css("display","none")
+                }
+
+                                let community_notifications_show_flag= $check_action('/community_notifications/table','get')
+            if(user_group == '管理员' ||community_notifications_show_flag){
+            let community_notifications_title= $page_title('/community_notifications/table')
+              $('#community_notifications').text(community_notifications_title)
+            }else{
+                $('#community_notifications_title').css("display","none")
+            }
+
+                            let community_notifications_chart_box_flag=$check_figure('/community_notifications/table')
+
+                if(user_group == '管理员'||community_notifications_chart_box_flag){
+                 $('#list_community_notifications').css("display","none")
+                }
+
+                                let repair_service_show_flag= $check_action('/repair_service/table','get')
+            if(user_group == '管理员' ||repair_service_show_flag){
+            let repair_service_title= $page_title('/repair_service/table')
+              $('#repair_service').text(repair_service_title)
+            }else{
+                $('#repair_service_title').css("display","none")
+            }
+
+                            let repair_service_chart_box_flag=$check_figure('/repair_service/table')
+
+                if(user_group == '管理员'||repair_service_chart_box_flag){
+                 $('#list_repair_service').css("display","none")
+                }
+
+                                let complaint_feedback_show_flag= $check_action('/complaint_feedback/table','get')
+            if(user_group == '管理员' ||complaint_feedback_show_flag){
+            let complaint_feedback_title= $page_title('/complaint_feedback/table')
+              $('#complaint_feedback').text(complaint_feedback_title)
+            }else{
+                $('#complaint_feedback_title').css("display","none")
+            }
+
+                            let complaint_feedback_chart_box_flag=$check_figure('/complaint_feedback/table')
+
+                if(user_group == '管理员'||complaint_feedback_chart_box_flag){
+                 $('#list_complaint_feedback').css("display","none")
+                }
+
+                                let volunteer_application_show_flag= $check_action('/volunteer_application/table','get')
+            if(user_group == '管理员' ||volunteer_application_show_flag){
+            let volunteer_application_title= $page_title('/volunteer_application/table')
+              $('#volunteer_application').text(volunteer_application_title)
+            }else{
+                $('#volunteer_application_title').css("display","none")
+            }
+
+                            let volunteer_application_chart_box_flag=$check_figure('/volunteer_application/table')
+
+                if(user_group == '管理员'||volunteer_application_chart_box_flag){
+                 $('#list_volunteer_application').css("display","none")
+                }
+
+                            $('.myDetail_dd').css('visibility','visible')
+          layer.closeAll('loading'); //关闭动画
+        });
+	  };
+        let list_arr = [];
+    async function get_tpl_list() {
+        let params = {
+        orderby: 'create_time asc',
+        user_id: user_id,
+        };
+        let { data: res } = await axios.get(BaseUrl + "/api/collect/get_list", {
+        params: params,
+        });
+        if (res.result && res.result.list) {
+            list_arr = res.result;
+            // 列表--数据渲染
+            $("#collec_list_box").empty();
+            var objecthtmls = "";
+            for (var i = 0; i < list_arr.list.length; i++) {
+                var item = list_arr.list[i];
+                let str = JSON.stringify(item);
+                objecthtmls += "<li>"
+                +"<div class='list-info'>"
+                +"<a  href='../"+item.source_table+"/detail.html?"+item.source_field+"="+item.source_id+"'>"
+                + "<div class='list-info-left'>"
+                +"<img src='"+fullUrl(BaseUrl, item.img)+"' />"
+                +"</div>"
+                +"</a>"
+                +"<div class='list-info-right'>"
+                +"<p>"+item.title+"<span class='record_creator order_state'>"+$toTime(item.create_time,"yyyy-MM-dd hh:mm:ss")+"</span></p>"
+                +"<p class='record'>"
+                +"<i class='layui-icon layui-icon-delete record_creator delCart' collect_id='"+item.collect_id+"'></i>"
+                +"</p>"
+                +"</div>"
+                 +"</div>"
+
+                +"</li>";
+            }
+            $("#collec_list_box").append(objecthtmls);
+        }
+    }
+    get_tpl_list();
+
+            async function handleDelCart(id, index) {
+                let { data: res } = await axios.get(
+                   BaseUrl + `/api/collect/del?collect_id=${id}`,
+                  {}
+                 );
+                if (res.result) {
+                    list_arr.list.splice(index, 1);
+                    layer.msg("删除成功");
+                    get_tpl_list();
+                }
+            }
+            $(".cars").on("click", ".delCart", function () {
+                var collect_id = $(this).attr("collect_id");
+                //2.把数量文本框里的数字+1
+                let list = list_arr.list;
+                for (let i = 0; i < list.length; i++) {
+                    if (collect_id == list[i].collect_id) {
+                        handleDelCart(collect_id, i);
+                    }
+                }
+            });
+           layui.use(['element', "layer", "jquery"], function () {
+            var $ = layui.jquery, element = layui.element;
+            let personInfo = JSON.parse(sessionStorage.personInfo);
+            let user_group = personInfo.user_group;
+            let user_id = personInfo.user_id;
+            element.on('tab(tab-all)', function (data) {
+            localStorage.setItem("tabName", data.elem.context.outerText);
+             var id = $(this).attr('data-table')
+             if(id){
+                document.getElementById(id+'_ifyemian').contentWindow.location.reload()
+             }
+                //var id = $(this).attr('data-table')
+                //if(id!=='index'||id!=='collect'){
+                //    var url = $(this).attr('data-url')
+                //    $('#'+id+'_ifyemian').attr('src',url)
+                //}
+            })
+
+        });
+    </script>
+</html>

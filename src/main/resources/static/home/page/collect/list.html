@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title></title>
+    <link rel="stylesheet" href="../../layui/css/layui.css" />
+    <link rel="stylesheet" href="../../css/diy.css" />
+    <style>
+      body {
+        background-color: #f2f2f2;
+      }
+      .list-info-left p {
+        line-height: 15px;
+        font-size: 12px;
+        color: #999;
+      }
+      .list-info-child {
+        clear: both;
+        border-top: 1px dashed gray;
+        padding: 20px 0;
+      }
+    </style>
+  </head>
+  <body>
+      <div class="collectList">
+        <div class="layui-fluid layadmin-cmdlist-fluid">
+          <div id="collec_List">
+            <ul id="collec_list_box" class="cars"></ul>            
+          </div>
+        </div>
+      </div>
+  </body>
+  <script src="../../js/axios.min.js"></script>
+  <script src="../../js/jquery.2.1.1.min.js"></script>
+  <script src="../../layui/layui.js"></script>
+  <script src="../../js/base.js"></script>
+  <script src="../../js/permissionSet.js"></script>
+  <script>
+    var BaseUrl = baseUrl()
+    layui.use(["laypage", "layer", "dropdown", "jquery", "form"], function () {
+      var laypage = layui.laypage,
+        layer = layui.layer;
+      form = layui.form;
+      var dropdown = layui.dropdown;
+      var $ = layui.jquery;
+      
+      let personInfo = JSON.parse(sessionStorage.personInfo);
+      let user_group = personInfo.user_group;
+      let user_id = personInfo.user_id;
+      
+     
+      var laytpl = layui.laytpl;
+      let list_arr = [];
+      var getTpl = null;
+      async function get_tpl_list() {
+        let params = {
+          orderby: 'create_time asc',
+          user_id: user_id,
+        };
+        let { data: res } = await axios.get(BaseUrl + "/api/collect/get_list", {
+          params: params,
+        });
+        if (res.result && res.result.list) {
+          list_arr = res.result;
+          // 列表--数据渲染
+          $("#collec_list_box").empty();
+          var objecthtmls = "";
+          for (var i = 0; i < list_arr.list.length; i++) {
+            var item = list_arr.list[i];
+            let str = JSON.stringify(item);
+            objecthtmls += `<li>
+              <a class="list-info" href="../${item.source_table}/detail.html?${item.source_field}=${item.source_id}">
+                <div class="list-info-left">
+              <img src="${fullUrl(BaseUrl, item.img)}" />
+            </div>
+            <div class="list-info-right">
+              <p>${item.title}<span class="record_creator order_state">${toTime(item.create_time,"yyyy-MM-dd hh:mm:ss")}</span></p>
+              <p class="record">
+                <i class="layui-icon layui-icon-delete record_creator delCart" collect_id=${item.collect_id} ></i>
+              </p>
+            </div>
+            </a>
+          </li>`;
+          }
+          $("#collec_list_box").append(objecthtmls);
+        }
+      }
+      get_tpl_list();
+      
+      async function handleDelCart(id, index) {
+        let { data: res } = await axios.get(
+          BaseUrl + `/api/collect/del?collect_id=${id}`,
+          {}
+        );
+        if (res.result) {
+          list_arr.list.splice(index, 1);
+          layer.msg("删除成功"); 
+          get_tpl_list();
+        }
+      }
+      $(".cars").on("click", ".delCart", function () {
+        console.log(22);
+        var collect_id = $(this).attr("collect_id");
+        //2.把数量文本框里的数字+1
+        let list = list_arr.list;
+        for (let i = 0; i < list.length; i++) {
+          if (collect_id == list[i].collect_id) {
+            handleDelCart(collect_id, i);
+          }
+        }
+      });
+      
+    });
+  </script>
+</html>

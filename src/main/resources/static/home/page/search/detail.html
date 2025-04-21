@@ -1,0 +1,223 @@
+<!--
+* @Description:局部搜索详情 
+-->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="../../layui/css/layui.css" rel="stylesheet" />
+    <link href="../../css/diy.css" rel="stylesheet" />
+    <title></title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0%;
+        list-style: none;
+        text-decoration: none;
+      }
+
+      .search_details {
+        width: 80%;
+        margin: 0 auto;
+        padding: 20px;
+        border-radius: 8px;
+      }
+
+      .search_details h4 {
+        /* color: #333; */
+        color: #333;
+        font-size: 22px;
+        margin-bottom: 5px;
+        padding-bottom: 20px;
+      }
+
+      .search_details h4 > a {
+        color: #999;
+        font-size: 12px;
+        text-align: right;
+        /* vertical-align: middle; */
+      }
+      .search_details li {
+        width: 100%;
+        list-style-type: decimal;
+        border-bottom: 1px solid #cbc0c0;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        padding: 8px 0;
+      }
+      .search_details li > a > span:last-child {
+        color: #666;
+        font-size: 16px;
+      }
+      .search_details a > span:last-child:hover {
+        color: #e1251b;
+      }
+      .search_details a:hover {
+        color: #e1251b;
+      }
+      .list_search .layui-input {
+        height: 38px;
+        line-height: 38px;
+        display: inline-block;
+      }
+      #seach_list_box {
+        padding-bottom: 20px;
+      }
+    </style>
+  </head>
+
+  <body>
+<div class="page_search search_details">
+      <h4>搜索结果</h4>
+      <div class="layui-row list_search">
+        <div class="layui-col-md11">
+          <div class="layui-form-item">
+            <input
+              type="keywords"
+              name="keywords"
+              placeholder="继续搜索"
+              autocomplete="off"
+              class="layui-input"
+              id="search_val"
+            />
+          </div>
+        </div>
+        <div class="layui-col-md1">
+          <button
+            type="button"
+            class="layui-btn layui-btn-danger"
+            onclick="submit_search()"
+          >
+            <i class="layui-icon layui-icon-search"></i>
+          </button>
+        </div>
+      </div>
+      <ul id="seach_list_box"></ul>
+      <!-- 分页器--开始-->
+      <div id="cont" class="layui-row layui-col-space30"></div>
+      <div id="demo0"></div>
+      <!-- 分页器--结束 -->
+    </div>
+</body>
+  <script src="../../js/jquery.2.1.1.min.js"></script>
+  <script src="../../js/axios.min.js"></script>
+  <script src="../../layui/layui.js"></script>
+  <script src="../../js/base.js"></script>
+  <script src="../../js/permissionSet.js"></script>
+  <script>
+    var BaseUrl = baseUrl();
+    // let search_val = document.getElementById("search_val");
+    let query = {
+      word: "",
+      search_key: "",
+      search_type: "",
+      search_title: "",
+    };
+    let search_list_result = [];
+    let page_result = 1;
+    let size = 10;
+    let count = 0;
+    let pages = 1;
+    // 解析url 拿到所有参数对象 parseQueryString(urlStr);
+    //获取解析url栏参数的方法
+    function getQueryString(name) {
+      var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+      var r = window.location.search.substr(1).match(reg);
+      if (r != null) return unescape(r[2]);
+      return null;
+    }
+    //获取地址栏参数
+    function getQueryParams() {
+      for (const key in query) {
+        //获取地址栏参数,只需要转一次码
+        query[key] = decodeURI(getQueryString(key));
+      }
+    }
+
+    getQueryParams();
+
+    // 获得结果
+    async function get_result(page_result = 1) {
+      if (word == "") {
+        return;
+      }
+      var params = {};
+      var { word, search_key, search_type } = query;
+      params[search_key] = word;
+      params.page = page_result;
+      params.size = size;
+      let { data: res } = await axios.get(
+        BaseUrl + "/api/" + search_type + "/get_list?like=0",
+        {
+          params: params,
+        }
+      );
+      if (res.result) {
+        var list_result = res.result.list || [];
+        count = res.result.count;
+        list_result.map((o) => {
+          var title = o[search_key];
+          o.title = title;
+        });
+        console.log(list_result);
+        // res.result.list = list_result;
+        // search_list_result = res.result;
+
+        // 列表--数据渲染
+        layui.use(["laytpl", "laypage", "jquery"], function () {
+          var $ = layui.jquery;
+          var laypage = layui.laypage;
+          var laytpl = layui.laytpl;
+          //var seachTpl = seach_box.innerHTML,
+          //  seach_tpl = document.getElementById("seach_list_box");
+          //laytpl(seachTpl).render(search_list_result, function (html) {
+          //  seach_tpl.innerHTML = html;
+          //});
+
+          // 检索结果
+          $("#seach_list_box").empty();
+          for (var i = 0; i < list_result.length; i++) {
+            var item = list_result[i];
+            var title = `${query.search_type}_id`;
+            var href = `../${query.search_type}/detail.html?${query.search_type}_id=${item[title]}`;
+            $("#seach_list_box").append(
+              `<li>
+                <a href=${href}> ${i + 1} <span>${item.title} </span> </a>
+              </li>`
+            );
+          }
+          // 分页---总页数低于页码总数
+          laypage.render({
+            elem: "demo0",
+            curr: pages,
+            limit: 8,
+            count: Number(count), //数据总数
+            jump: function (obj, first) {
+              // 首次不执行
+              if (!first) {
+                // 跳转
+                pages = obj.curr;
+                get_result(obj.curr);
+                // layer.msg("第 " + obj.curr + " 页");
+              }
+            },
+          });
+        });
+      }
+    }
+    get_result(1);
+
+    //function jumpTo(page_result) {
+    //  get_result(page_result);
+    // }
+
+    // 搜索
+    function submit_search() {
+      query.word = search_val.value;
+      get_result();
+    }
+  </script>
+</html>

@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title></title>
+    <link href="../../layui/css/layui.css" rel="stylesheet" />
+    <link href="../../css/diy.css" rel="stylesheet" />
+    <style>
+      body {
+        background-color: #f2f2f2;
+      }
+      .diy_list_search .layui-input,
+      .diy_list_search .layui-textarea {
+        width: 150px;
+      }
+      .t_box .website_announcement_item {
+        width: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header_box">
+        <div class="header">
+          <div class="guide">
+            <ul class="layui-nav nav—style">
+              <div class="layui-nav-bug" id="t_menu_list">
+                <li class="layui-nav-item" id="loggedIn">
+                  <a href="javascript:;" class="nav-more" id="loginName"></a>
+                  <dl class="layui-nav-child">
+                    <dd><a href="/">我的账号</a></dd>
+                    <dd><a href="/">个人中心</a></dd>
+                    <dd>
+                      <a onclick="sign_out('./search/search.html')">退出</a>
+                    </dd>
+                  </dl>
+                </li>
+                <li class="layui-nav-item" id="notLoggedIn">
+                  <a href="../../login.html">你好，请登录</a>
+                </li>
+                <li class="layui-nav-item" id="notRegister">
+                  <a href="../../register.html" style="color: red">免费注册</a>
+                </li>
+                <span>|</span>
+                <li class="layui-nav-item" id="forum">
+                  <a href="../../index.html">首页</a>
+                </li>
+                <span>|</span>
+                <li class="layui-nav-item" id="forum">
+                  <a href="../forum/list.html">交流论坛</a>
+                </li>
+                <span>|</span>
+                <li class="layui-nav-item" id="exam">
+                  <a href="../exam/list.html">在线考试</a>
+                </li>
+                <span>|</span>
+                <li class="layui-nav-item" id="subject_exam">
+                  <a href="../subject_exam/list.html">考试管理</a>
+                </li>
+                <span>|</span>
+                <li class="layui-nav-item">
+                  <a href="../notice/list.html">关于我们</a>
+                </li>
+                <span>|</span>
+                <li class="layui-nav-item">
+                  <a href="./article/list.html" id="article">新闻通知</a>
+                </li>
+                <span>|</span>
+                <li class="layui-nav-item" id="message">
+                  <a href="../message/list.html">测试留言板</a>
+                </li>
+                <span>|</span>
+                <li class="layui-nav-item">
+                  <a href="../goods/list.html">测试</a>
+                </li>
+                <span>|</span>
+                <li class="layui-nav-item">
+                  <a href="../goods/list.html">商城中心</a>
+                </li>
+                <span>|</span>
+                <li class="layui-nav-item">
+                  <a href="javascript:;" class="nav-more">商城管理</a>
+                  <dl class="layui-nav-child">
+                    <dd><a href="../cart/list.html">我的购物车</a></dd>
+                    <dd><a href="../order/list.html">我的订单</a></dd>
+                    <dd><a href="../user/address.html">我的地址</a></dd>
+                  </dl>
+                </li>
+                <span>|</span>
+              </div>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="banner">
+        <div class="banner_box">
+          <div class="logo">
+            <img src="../../img/logo-201305-b.png" />
+          </div>
+          <div class="searchbox">
+            <input
+              id="search_val"
+              class="search_input"
+              type="text"
+              name="searchcontext"
+            />
+            <button type="button" class="layui-btn search_btn">
+              <i class="layui-icon layui-icon-search"></i> 搜索
+            </button>
+          </div>
+          <a class="shopcar" href="../cart/list.html">
+            <input
+              type="button"
+              class="layui-btn layui-btn-primary layui-border-red"
+              value="我的购物车"
+            />
+            <i class="layui-icon layui-icon-cart iconCart"></i>
+          </a>
+        </div>
+      </div>
+      <div id="articleList">
+        <div class="list_title"><p class="list_title_text" id="list_title_text_t"></p></div>
+        <form class="layui-form diy_list_form_search">
+          <div class="layui-row diy_list_search">
+            <div class="layui-col-md4">
+              <div class="layui-form-item">
+                关键字搜索：
+                <input
+                  type="text"
+                  name="title"
+                  placeholder="标题搜索"
+                  autocomplete="off"
+                  class="layui-input"
+                  id="title"
+                />
+                <input
+                  type="text"
+                  name="publisher"
+                  placeholder="发布人搜索"
+                  autocomplete="off"
+                  class="layui-input"
+                  id="publisher"
+                />
+              </div>
+            </div>
+            <div class="layui-col-md2">
+              <button
+                type="button"
+                class="layui-btn layui-btn-sm layui-btn-danger"
+                id="searchGo"
+              >
+                <i class="layui-icon layui-icon-search"></i>
+              </button>
+              <!-- <button
+              type="button"
+              class="layui-btn layui-btn-sm layui-btn-danger"
+              onclick="reset()"
+            >
+              重置
+            </button> -->
+            </div>
+          </div>
+          <div class="diy_list_filter">
+            <div class="layui-form-item">
+              下拉搜索：
+              <button
+                class="layui-btn demo-dropdown-base layui-btn-danger"
+                id="sort_list_box"
+              >
+                <span>排序</span>
+                <i class="layui-icon layui-icon-down layui-font-12"></i>
+              </button>
+            </div>
+          </div>
+        </form>
+        <div class="layui-fluid layadmin-cmdlist-fluid">
+          <div
+            class="layui-row layui-col-space15 t_list_wrap"
+            id="t_list_box"
+          ></div>
+          <!-- 分页器--开始-->
+          <div id="cont" class="layui-row layui-col-space30"></div>
+          <div id="demo0"></div>
+          <!-- 分页器--结束 -->
+        </div>
+      </div>
+    </div>
+    <footer class="color-F00">
+      <div class="footer_wrap">
+        <div class="footer_2_7_2">
+          　　© Copyright buildnox2024 . All right reserved.
+        </div>
+        <div class="footer_2_7_1">
+          <p id="link_list_box">
+            友情链接:
+            <script id="links" type="text/html">
+              {{# layui.each(d.list, function(index, item){ }}
+              <a href="{{=item.url}}">
+                <!-- <img src="{{=BaseUrl}}{{=item.img}}" /> -->
+                <img src="../../img/jiu.avif" />
+                <span>{{=item.name}} |</span>
+              </a>
+              {{# }); }} {{# if(d.list.length === 0){ }} 无 {{# } }}
+            </script>
+          </p>
+        </div>
+      </div>
+    </footer>
+  </body>
+  <script src="../../js/axios.min.js"></script>
+  <script src="../../js/jquery.2.1.1.min.js"></script>
+  <script src="../../layui/layui.js"></script>
+  <script src="../../js/base.js"></script>
+  <script src="../../js/permissionSet.js"></script>
+  <script src="../../js/common.js"></script>
+
+  <script>
+    // 商城中心
+    //#if($model.filter.website_announcement)
+    check_action("/website_announcement/list", "get", "articleList");
+    let website_announcement = $check_action(
+      "/website_announcement/list",
+      "get"
+    );
+    if (website_announcement) {
+      layui.use(["laypage", "layer", "dropdown", "jquery"], function () {
+        var laypage = layui.laypage,
+          layer = layui.layer;
+        var dropdown = layui.dropdown;
+        var $ = layui.jquery;
+        let vm = {
+          img: "cover",
+          article_id: "website_announcement_id",
+          title: "website_announcemen",
+          description: "brief_introduction",
+          create_time: "create_time",
+          praise_len: "praise_len",
+          hits: "hits",
+        };
+
+        let pages = 1;
+        let list_arr = [];
+        let type_arr = [];
+        // 排序内容
+        let list_sort = [
+          {
+            title: "创建时间从高到低",
+            value: "create_time desc",
+          },
+          {
+            title: "创建时间从低到高",
+            value: "create_time asc",
+          },
+          {
+            title: "创建时间从高到低",
+            value: "update_time desc",
+          },
+          {
+            title: "创建时间从低到高",
+            value: "update_time asc",
+          },
+          {
+            title: "标题正序",
+            value: "title asc",
+          },
+          {
+            title: "标题倒序",
+            value: "title desc",
+          },
+          {
+            title: "发布人正序",
+            value: "publisher asc",
+          },
+          {
+            title: "发布人倒序",
+            value: "publisher desc",
+          },
+        ];
+        // 获取list数据
+        function list_add_html() {
+          // 列表--数据渲染
+          $("#t_list_box").empty();
+          for (var i = 0; i < list_arr.list.length; i++) {
+            var item = list_arr.list[i];
+            let url = "./details.html";
+            let str = JSON.stringify(item);
+            sessionStorage.setItem("vm", [str]);
+            var obj = JSON.stringify(item).replace(/\"/g, "'");
+            var objecthtmls = `<div class="layui-col-md3 layui-col-sm3 t_list">
+          <div class="t_box">
+              <a href="./details.html?website_announcement_id=${item.website_announcement_id}">
+                  <div class="t_box_left website_announcement_item">
+                      <p class="t_title">标题:${item.title}</p>
+                      <p class="t_subtitle">发布人:${item.publisher}</p>
+                      <p class="t_subtitle">
+                      发布时间:${item.create_time}
+                      </p>
+                  </div>
+                  
+              </a>
+          </div>
+        </div>`;
+            //src 为你的图片地址
+            $("#t_list_box").append(objecthtmls);
+          }
+          // 分页---总页数低于页码总数
+          laypage.render({
+            elem: "demo0",
+            curr: pages,
+            count: Number(list_arr.count), //数据总数
+            limit: 8,
+            layout: ["prev", "page", "next"],
+            jump: function (obj, first) {
+              // 首次不执行
+              if (!first) {
+                // 点击其他页码跳转
+                pages = obj.curr;
+                get_tpl_list(obj.curr, {});
+                // layer.msg("第 " + obj.curr + " 页");
+              }
+            },
+          });
+        }
+        // article
+        var getTpl = null;
+        async function get_tpl_list(pagesNum, arr) {
+          let params1 = {
+            page: pagesNum,
+            size: 8,
+          };
+          let params;
+          if (arr) {
+            params = Object.assign({}, params1, arr);
+          } else {
+            params = params1;
+          }
+          let { data: res } = await axios.get(
+            BaseUrl + "/api/website_announcement/get_list",
+            {
+              params: params,
+            }
+          );
+          if (res.result && res.result.list) {
+            list_arr = res.result;
+            list_add_html();
+          }
+        }
+        get_tpl_list(1);
+        let query = {
+          orderby: "",
+          page: 1,
+          size: 8,
+          title: "", // 标题
+          publisher: "", // 发布人
+        };
+        function reset() {
+          query["title"] = "";
+          query["publisher"] = "";
+        }
+        let title = document.getElementById("title");
+        title.addEventListener("blur", function () {
+          const value = title.value;
+          if (value.length) {
+            query["title"] = value;
+          }
+        });
+        let publisher = document.getElementById("publisher");
+        publisher.addEventListener("blur", function () {
+          const value = publisher.value;
+          if (value.length) {
+            query["publisher"] = value;
+          }
+        });
+        let searchGo = document.getElementById("searchGo");
+        // 跳转搜索页面
+        searchGo.onclick = function () {
+          if (title.value.length) {
+            query["title"] = title.value;
+          } else {
+            query["title"] = "";
+          }
+          if (title.value.length) {
+            query["publisher"] = publisher.value;
+          } else {
+            query["publisher"] = "";
+          }
+          submit_search();
+        };
+        //  搜索
+        async function submit_search() {
+          // query['title']=keywords.value
+          let { data: json } = await axios.get(
+            BaseUrl + "/api/website_announcement/get_list?like=0",
+            { params: query }
+          );
+          if (json.result.list) {
+            list_arr = json.result;
+            list_add_html();
+            reset();
+          }
+        }
+
+        // 初始化页面数据
+        // 排序--渲染数据
+        dropdown.render({
+          elem: "#sort_list_box",
+          data: list_sort,
+          click: function (obj) {
+            this.elem.find("span").text(obj.title);
+            query["orderby"] = obj.value;
+            get_tpl_list(1, query);
+          },
+        });
+      });
+    }
+    //}
+    //#end
+  </script>
+</html>

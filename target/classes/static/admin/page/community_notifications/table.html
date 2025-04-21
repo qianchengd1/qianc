@@ -1,0 +1,546 @@
+<!-- 社区通知 table 页面 -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../../layui/css/layui.css">
+    <link rel="stylesheet" href="../../css/diy.css">
+
+</head>
+
+<body>
+<div class="section1">
+    <!-- 内容主体区域 -->
+    
+    <div class="manu manu-btns" style="padding: 15px;">
+        <form class="layui-form" action="">
+            <div class="form-input-box-s layui-form-item">
+                
+                                                                                                                                                                            <div class="input-box">
+                            <label class="layui-form-label">用户姓名</label>
+                                                            <div class="layui-input-block block select">
+                                                                        <select name="interest" lay-filter="user_name" id="user_name">
+                                        <option value=""></option>
+                                    </select>
+                                                                    </div>
+                        </div>
+
+                                                                                                                                                                                            </div>
+        </form>
+
+          <div class="buts">
+                            <button type="button" class="layui-btn layui-btn-normal" id="inquire"><span>查询</span></button>
+                <button type="button" class="layui-btn layui-btn-normal" id="reset"><span>重置</span></button>
+                        <button type="button" class="layui-btn layui-btn-normal" id="delete" style="display: none"><span>删除</span></button>
+            <button  type="button" class="layui-btn layui-btn-normal" target="main_self_frame" id="add" style="display: none"><span>新增</span></button>
+
+                    </div>
+
+        <div class="Customize-the-box">
+            <div class="circle"></div>
+            <div class="circle"></div>
+            <div class="card-inner"></div>
+        </div>
+    </div>
+  
+  
+ 
+
+    <div class="table">
+        <table class="layui-hide" id="community_notifications" lay-filter="community_notifications"></table>
+
+        <script type="text/html" id="toolbarDemo">
+            <div class="layui-btn-container">
+
+                
+                                
+                
+                {{# if(d.detail_flag){ }}
+                <button class="layui-btn layui-btn-sm" lay-event="detail">详情</button>
+                {{# } }}
+
+                            </div>
+        </script>
+    </div>
+</div>
+</body>
+<script src="../../layui/layui.js"></script>
+<script src="../../js/index.js"></script>
+<script src="../../js/base.js"></script>
+<script src="../../js/axios.min.js"></script>
+    <script>
+
+    var BaseUrl = baseUrl()
+    layui.use(['element', 'layer', 'util'], function () {
+        var element = layui.element
+                , layer = layui.layer
+                , util = layui.util
+                , table = layui.table
+                , $ = layui.$;
+
+        let personInfo = JSON.parse(sessionStorage.personInfo)
+        let user_group = personInfo.user_group
+        let use_id = personInfo.user_id
+        let url = BaseUrl + '/api/community_notifications/get_list?like=0'
+
+        let deletes = document.querySelector('#delete')
+        let add = document.querySelector('#add')
+
+        add.addEventListener('click', () => {
+            
+            layopen_add("./view_add.html")
+        })
+
+
+        let sqlwhere
+        let data_data = {size: 10, orderby: 'create_time desc'}
+        let detail_flag = false;
+
+        // 获取路径权限
+        async function get_list() {
+            let {data: ren} = await axios.get(BaseUrl + '/api/auth/get_list', {
+                params: {
+                    user_group: personInfo.user_group
+                }
+            })
+        }
+
+        get_list()
+
+
+        // 权限判断
+        /**
+         * 获取路径对应操作权限 鉴权
+         * @param {String} action 操作名
+         */
+        function $check_action(path1, action = "get") {
+            var o = $get_power(path1);
+            if (o && o[action] != 0 && o[action] != false) {
+                return true;
+            }
+            return false;
+        }
+
+        if (user_group == "管理员" || $check_action('/community_notifications/table', 'del') || $check_action('/community_notifications/view', 'del')) {
+            deletes.style.display = "block"
+        }
+        if (user_group == "管理员" || $check_action('/community_notifications/table', 'add') || $check_action('/community_notifications/view', 'add')) {
+            add.style.display = "block"
+        }
+        if (user_group == "管理员" || $check_action('/community_notifications/view', 'get') || $check_action('/community_notifications/view', 'set')) {
+            detail_flag = true;
+        }
+
+        /**
+         * 获取权限
+         * @param {String} path 路由路径
+         */
+        function $get_power(path) {
+            var list_data = JSON.parse(sessionStorage.list_data)
+            var list = list_data;
+            var obj;
+            for (var i = 0; i < list.length; i++) {
+                var o = list[i];
+                if (o.path === path) {
+                    obj = o;
+                    break;
+                }
+            }
+            return obj;
+        }
+
+        var path1
+
+        function getpath() {
+            var list_data = JSON.parse(sessionStorage.list_data)
+            for (var i = 0; i < list_data.length; i++) {
+                var o = list_data[i];
+                if (o.path === "/community_notifications/table") {
+                    console.log(o.path);
+                    path1 = o.path
+                        $get_power(o.path)
+                }
+            }
+        }
+
+        getpath()
+        /**
+         * 注册时是否有显示或操作字段的权限
+         * @param {String} action 操作名
+         * @param {String} field <span>查询</span>的字段
+         * @param {String} path 路径
+         */
+        function $check_register_field(action, field, path1) {
+            var o = $get_power(path1);
+            var auth;
+            if (o && o[action] != 0 && o[action] != false) {
+                auth = o["field_" + action];
+            }
+            if (auth) {
+                return auth.indexOf(field) !== -1;
+            }
+            return false;
+        }
+
+        /**
+         * 是否有显示或操作字段的权限
+         * @param {String} action 操作名
+         * @param {String} field <span>查询</span>的字段
+         */
+        function $check_field(action, field, path1) {
+            var o = $get_power(path1);
+            var auth;
+            if (o && o[action] != 0 && o[action] != false) {
+                auth = o["field_" + action];
+            }
+            if (auth) {
+                return auth.indexOf(field) !== -1;
+            }
+            return false;
+        }
+
+        /**
+         * 是否有显示或操作支付的权限
+         * @param {String} path 路径
+         */
+        function $check_pay(path) {
+            let o = $get_power(path);
+            if (o){
+                let option = JSON.parse(o.option);
+                if (option.pay)
+                    return true
+            }
+            return false;
+        }
+
+        /**
+         * 获取路径对应操作权限 鉴权
+         * @param {String} action 操作名
+         */
+        function $check_exam(path1, action = "get") {
+            var o = $get_power(path1);
+            if (o) {
+                var option = JSON.parse(o.option);
+                if (option[action])
+                    return true
+            }
+            return false;
+        }
+
+        function $check_option(path,op) {
+            var o = $get_power(path);
+            if (o){
+                var option = JSON.parse(o.option);
+                if (option[op])
+                    return true
+            }
+            return false;
+        }
+
+                    if (user_group != "管理员") {
+                                    sqlwhere = "(";
+                                                                                                                    if (user_group == "社区用户") {
+                                sqlwhere += "community_users = " + use_id + " or ";
+                            }
+                                                                                                                                                                                                    if (sqlwhere.length > 1) {
+                        sqlwhere = sqlwhere.substr(0, sqlwhere.length - 4);
+                        sqlwhere += ")";
+                        data_data = {size: 10, orderby: 'create_time desc', sqlwhere: sqlwhere}
+                    }else {
+                        sqlwhere = null
+                    }
+                            }
+        
+        let token = sessionStorage.token || null
+    table.render({
+        elem: '#community_notifications'
+        , toolbar: true
+        , url: url
+        , headers: {
+            'x-auth-token': token,
+            'Content-Type': 'application/json'
+        }
+        , page: {
+            layout: ['limit', 'count', 'prev', 'page', 'next', 'skip']
+            //,curr: 5
+            , groups: 1
+            , first: false
+            , last: false
+        }
+        , cols: [[
+                    {type: 'checkbox', fixed: 'left'}
+                        
+                                    , {
+                field: 'title_name', width: 180, title: '标题名称', sort: true
+                                                                                                                                                
+            }
+                                                , {
+                field: 'community_users', width: 180, title: '社区用户', sort: true
+                                                                                                                                                                    , templet:
+
+                            function (d) {
+                                let nickname = ""
+                                let username = ""
+                                $.ajax({
+                                    url: BaseUrl + "/api/user/get_list",
+                                    type: "get",
+                                    async: false,
+                                    data: {
+                                        user_group: "社区用户"
+                                    },
+                                    success: function (data) {
+                                        if (data && typeof data === 'string'){
+                                            data = JSON.parse(data);
+                                        }
+                                        if (data.result) {
+                                            for (let index = 0; index < data.result.list.length; index++) {
+                                                if (d.community_users === data.result.list[index].user_id) {
+                                                    nickname = data.result.list[index].nickname
+                                                    username = data.result.list[index].username
+                                                }
+                                            }
+                                        }
+                                    }
+                                });
+                                return '<span>' + username + '-' + nickname + '</span>'
+                            }
+                
+            }
+                                                , {
+                field: 'user_name', width: 180, title: '用户姓名', sort: true
+                                                                                                                                                
+            }
+                                                , {
+                field: 'sending_date', width: 180, title: '发送日期', sort: true
+                                                                    , templet: "<div>{{layui.util.toDateString(d.sending_date, 'yyyy-MM-dd')}}</div>"
+                                                                                                                
+            }
+                                                , {
+                field: 'notification_content', width: 180, title: '通知内容', sort: true
+                                                                                                                                                
+            }
+                    
+        
+        
+                
+    ,
+        {
+            field: 'create_time',
+                    width
+        :
+            '20%',
+                    title
+        :
+            '新增时间',
+                    sort
+        :
+            true,
+                    templet
+        :
+            "<div>{{layui.util.toDateString(d.create_time, 'yyyy-MM-dd HH:mm:ss')}}</div>"
+        }
+    ,
+        {
+            field: 'update_time',
+                    width
+        :
+            '20%',
+                    title
+        :
+            '更新时间',
+                    sort
+        :
+            true,
+                    templet
+        :
+            "<div>{{layui.util.toDateString(d.update_time, 'yyyy-MM-dd HH:mm:ss')}}</div>"
+        }
+                
+        
+        
+        
+                ,
+            {
+                field: 'operate',
+                        title
+            :
+                '操作',
+                        sort
+            :
+                true,
+                        width
+            :
+                '20%',
+                        fixed
+            :
+                'right',
+                        toolbar
+            :
+                "#toolbarDemo"
+            }
+            ]]
+
+    ,
+        done: function (res, curr, count) { // 表格渲染完成之后的回调
+            if (res.count == null) { // 无数据时直接返回了
+                return;
+            }
+
+                                                if (user_group === '管理员' || $check_field('get', 'title_name', path1)) {
+                        // console.log("显示")
+                    } else {
+                        $("[data-field='title_name']").css('display', 'none');
+                    }
+                                                                if (user_group === '管理员' || $check_field('get', 'community_users', path1)) {
+                        // console.log("显示")
+                    } else {
+                        $("[data-field='community_users']").css('display', 'none');
+                    }
+                                                                if (user_group === '管理员' || $check_field('get', 'user_name', path1)) {
+                        // console.log("显示")
+                    } else {
+                        $("[data-field='user_name']").css('display', 'none');
+                    }
+                                                                if (user_group === '管理员' || $check_field('get', 'sending_date', path1)) {
+                        // console.log("显示")
+                    } else {
+                        $("[data-field='sending_date']").css('display', 'none');
+                    }
+                                                                if (user_group === '管理员' || $check_field('get', 'notification_content', path1)) {
+                        // console.log("显示")
+                    } else {
+                        $("[data-field='notification_content']").css('display', 'none');
+                    }
+                            
+            
+            
+            
+                        // 重新渲染
+        }
+    ,
+        page: true,
+                request
+    :
+        {
+            limitName: 'size'
+        }
+    ,
+        response: {
+            statusName: 'code', //规定返回/Back的状态码字段为code
+                    statusCode
+        :
+            200 //规定成功的状态码为200
+        }
+    ,
+        parseData: function (res) {
+
+            
+            if (user_group == "管理员" || $check_pay('/community_notifications/table')) {
+                for (var i = 0; i < res.result.list.length; i++) {
+                    res.result.list[i].check_pay = true
+                }
+            }
+            if (user_group == "管理员" || $check_action('/community_notifications/view', 'set') || $check_action('/community_notifications/view', 'get')) {
+                for (var i = 0; i < res.result.list.length; i++) {
+                    res.result.list[i].detail_flag = detail_flag
+                }
+            }
+            return {
+                "code": 200,
+                "msg": "",
+                "count": res.result.count,
+                "data": res.result.list
+            }
+        }
+    ,
+        where: data_data
+    })
+        ;
+
+
+        table.on('tool(community_notifications)', function (obj) {
+            var data = obj.data;
+        if (obj.event === 'detail')
+        {
+
+                           // window.location.href = "./view_add.html?" + data.community_notifications_id;
+                  layopen_dateil("./view_add.html?" + data.community_notifications_id)
+                    }
+            
+            
+
+                                            });
+
+        //下拉框
+
+        
+                                                                                local("community_users", "社区用户", "community_users")
+                let community_users
+                layui.form.on('select(community_users)', function (data) {
+                    request['community_users'] = Number(data.elem[data.elem.selectedIndex].value);
+                });
+                                                async function initss(url, id, ff) {
+                    // 拿到单选框的父级节点
+                    var select = document.querySelector("#"+id)
+                    var op1 = document.createElement('option')
+                    select.appendChild(op1)
+                    // 收集数据 长度
+                    var count
+                    // 收集数据 数组
+                    var arr = []
+                    let {data: res} = await axios.get(url)
+                    count = res.result.count
+                    arr = res.result.list
+                    for (var i = 0; i < arr.length; i++) {
+                        // 创建节点
+                        var op = document.createElement('option')
+                        // 给节点赋值
+                        op.innerHTML = arr[i][ff]
+                        op.value = arr[i][ff]
+                        // 新增/Add节点
+                        select.appendChild(op)
+                        layui.form.render('select')
+                    }
+                }
+
+                initss(BaseUrl + '/api/community_users/get_list?', "user_name", "user_name")
+
+                let user_name
+                layui.form.on('select(user_name)', function (data) {
+                    request['user_name'] = data.elem[data.elem.selectedIndex].text
+                });
+                                                                                                                                                                                                            
+        // 请求参数：
+        let request = {
+            like: 0, size: 10, page: 1,
+                                                                                                                                            'user_name': '',
+                                                                                                                }
+
+        if (user_group != "管理员") {
+            request['orderby'] = 'create_time desc'
+            if (sqlwhere){
+                request['sqlwhere'] = sqlwhere
+            }
+        }
+
+        // <span>重置</span>/Reset参数
+        let resetName = data_data
+
+        // 下拉框的<span>重置</span>/Reset参数
+        let resetSelect = []
+        //下拉框<span>重置</span>/Reset参数
+        fun('community_notifications', BaseUrl + '/api/community_notifications/del', 'community_notifications_id', request, resetName, resetSelect        )
+
+
+              
+        
+    
+
+    })
+</script>
+
+</html>

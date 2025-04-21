@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title></title>
+    <link href="../../layui/css/layui.css" rel="stylesheet" />
+    <link href="../../css/diy.css" rel="stylesheet" />
+    <style>
+      body {
+        background-color: #f2f2f2;
+      }
+    </style>
+  </head>
+  <body>
+ <div class="address-container">
+        <div class="address-btn" id="AddAddress">
+          <a
+            type="button"
+            href="./address_detail.html"
+            class="layui-btn layui-btn-primary"
+          >
+            新增收货地址</a
+          >
+          <!-- <span>您已创建7 个收货地址，最多可创建25 个</span> -->
+        </div>
+        <div id="address_list"></div>
+      </div>
+</body>
+  <script src="../../js/axios.min.js"></script>
+  <script src="../../js/jquery.2.1.1.min.js"></script>
+  <script src="../../layui/layui.js"></script>
+  <script src="../../js/base.js"></script>
+  <script src="../../js/permissionSet.js"></script>
+  <script src="../../js/common.js"></script>
+  <script>
+    var BaseUrl = baseUrl();
+    layui.use(["laypage", "layer", "dropdown", "jquery", "form"], function () {
+      var laypage = layui.laypage,
+        layer = layui.layer;
+      form = layui.form;
+      var dropdown = layui.dropdown;
+      var $ = layui.jquery;
+
+      let personInfo = JSON.parse(sessionStorage.personInfo);
+      let user_group = personInfo.user_group;
+      let username = personInfo.username;
+      let user_id = personInfo.user_id;
+      //权限查验
+      check_action("/address/list", "add", "AddAddress");
+      let delAddress = $check_action("/address/list", "del");
+      let setAddress = $check_action("/address/list", "set");
+
+      var laytpl = layui.laytpl;
+      let list_arr = [];
+
+      async function get_address() {
+        let { data: res } = await axios.get(BaseUrl + "/api/address/get_list", {
+          params: {
+            user_id: user_id,
+          },
+        });
+        if (res.result.count) {
+          // const res01 = res.result.list.findIndex(item => item.default == true)
+          // console.log(res01)if(res01)
+        
+          list_arr = res.result;
+          $("#address_list").empty();
+          var objecthtmls = "";
+          for (var i = 0; i < list_arr.list.length; i++) {
+            var item = list_arr.list[i];
+            if(typeof(item.default)=='string'){
+              item.default=Number(item.default)
+            }
+            let url = "./detail.html";
+            objecthtmls += `<div class="address-info">
+              <p class="consignee">
+                <b>${username}</b>
+                <i class="layui-icon layui-icon-link cartIcon"></i>`;
+            if (item.default) {
+              objecthtmls += `<button
+                  type="button"
+                  class="layui-btn layui-btn-warm layui-btn-xs"
+                >
+                  默认地址
+                </button>`;
+            }
+            if (delAddress) {
+              objecthtmls += `<i class="layui-icon layui-icon-delete deleteIcon"  address_id='${item.address_id}'></i>`;
+            }
+            objecthtmls += `</p>
+              <ul class="address-detail">
+                <li>
+                  <span class="info-title">收货人：</span>
+                  <span class="address-val">${item.name}</span>
+                </li>
+                <li>
+                  <span class="info-title">地址：</span>
+                  <span class="address-val"
+                    >${item.address}</span
+                  >
+                </li>
+                <li>
+                  <span class="info-title">手机：</span>
+                  <span class="address-val">${item.phone}</span>
+                </li>
+              <div class='operate-btn'>`;
+            if (!item.default && setAddress) {
+              objecthtmls += `<span class="address-default" address_id='${item.address_id}'>设为默认</span>`;
+            }
+            if (setAddress) {
+              objecthtmls += `<a  href="./address_detail.html?address_id=${item.address_id}" class="address-edit">编辑</a>`;
+            }
+            objecthtmls += `</div></div>`;
+          }
+          //src 为你的图片地址
+          $("#address_list").append(objecthtmls);
+        }else{
+          $("#address_list").empty();
+        }
+      }
+      get_address();
+      // 删除
+      $("#address_list").on("click", ".deleteIcon", function () {
+        console.log(22);
+        var address_id = $(this).attr("address_id");
+        //2.把数量文本框里的数字+1
+        let list = list_arr.list;
+        for (let i = 0; i < list.length; i++) {
+          if (address_id == list[i].address_id) {
+            handleDelAddress(address_id, i);
+          }
+        }
+      });
+      // 设置默认地址
+      $("#address_list").on("click", ".address-default", function () {
+        let address_id = $(this).attr("address_id");
+        handleDefault(address_id);
+      });
+      // 默认地址接口
+      async function handleDefault(id, index) {
+        let { data: res } = await axios.post(
+          BaseUrl + `/api/address/set?user_id=${user_id}`,
+          {
+            default: 0,
+          }
+        );
+        if (res.result) {
+          list_arr.list.map((o) => (o.default = 0));
+          let { data: json } = await axios.post(
+            BaseUrl + `/api/address/set?user_id=${user_id}&address_id=${id}`,
+            {
+              default: 1,
+            }
+          );
+          if (json.result) {
+            layer.msg("修改默认地址成功！");
+            get_address();
+          } else if (json.error) {
+            layer.msg(json.error.message);
+          }
+        } else if (res.error) {
+          layer.msg(res.error.message);
+        }
+      }
+      // 删除地址接口
+      async function handleDelAddress(id, index) {
+        let { data: res } = await axios.get(
+          BaseUrl + `/api/address/del?address_id=${id}`,
+          {}
+        );
+        if (res.result) {
+          list_arr.list.splice(index, 1);
+          layer.msg("删除成功");
+          get_address();
+        }else if (res.error) {
+					console.log(res.error)
+					layer.msg(res.error.message);
+				}
+      }
+    });
+  </script>
+</html>
